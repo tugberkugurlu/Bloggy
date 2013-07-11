@@ -1,0 +1,39 @@
+@model Bloggy.Client.Web.Models.LoginRequestModel
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<div class="row">
+    <div class="span9">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(false)
+
+            <div>
+                <div class="row">
+                    <div class="span2">
+                        @Html.DisplayNameFor(model => model.Username)
+                    </div>
+                    <div class="span7">
+                        @Html.TextBoxFor(model => model.Username)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        @Html.DisplayNameFor(model => model.Password)
+                    </div>
+                    <div class="span7">
+                        @Html.PasswordFor(model => model.Password)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span9">
+                        <button type="submit" class="btn btn-info">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
