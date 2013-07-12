@@ -2,4 +2,5 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+@Html.Partial("_BlogPostListItemPartial", new Bloggy.Client.Web.Models.BlogPostModelLight { Title = "Scaling out SignalR with a Redis Backplane and Testing It with IIS Express" })
+@Html.Partial("_BlogPostListItemPartial", new Bloggy.Client.Web.Models.BlogPostModelLight { Title = "Getting Started With OWIN and the Katana Stack" })

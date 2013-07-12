@@ -1,4 +1,10 @@
-﻿.navbar > .navbar-inner > .container {
+﻿pre {
+    width: 100%!important;
+    margin: 0!important;
+    padding: 2.5px;
+}
+
+.navbar > .navbar-inner > .container {
     max-width: 1170px;
 }
 
@@ -6,11 +12,8 @@
     margin-bottom: 0;
 }
 
-/*.navbar .nav-collapse {
-    float: right;
-}*/
-
 #main {
+
     padding: 20px;
     background-color: #fff;
     margin-bottom: 10px;
@@ -22,7 +25,7 @@
     border-top: none;
 
     #content {
-        border-right: 1px solid #eee;
+
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
@@ -32,6 +35,79 @@
 
         div.row {
             margin-bottom: 15px;
+        }
+    }
+}
+
+.blog-post-list-item {
+
+    .item-header {
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee;
+
+        h4.title {
+            margin: 0;
+            margin-bottom: 5px;
+
+            a {
+                font-size: 20px;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+
+        div.brief-info {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        div.misc {
+
+            div.misc-item {
+            }
+        }
+    }
+
+    div.content {
+        border-bottom: 3px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        /*.code-wrapper {
+
+            background-color: White;
+            border: 1px solid gray;
+            padding-left: 15px;
+            padding-right: 150px;
+            margin: 15px 0;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        .border-shadow-1 {
+
+            -moz-box-shadow: 0 0 5px #888;
+            -webkit-box-shadow: 0 0 5px#888;
+            box-shadow: 0 0 5px #888;
+        }*/
+        h2, h3 {
+            line-height: 30px;
+        }
+
+        .code-wrapper {
+            margin-bottom: 10px;
+        }
+    }
+
+    &:last-of-type {
+
+        div.content {
+
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
         }
     }
 }
@@ -86,3 +162,40 @@ input[type=password].input-validation-error {
     input[type=password].input-validation-error:focus {
         border-color: #bbbbbb;
     }
+
+@media (max-width: 767px) {
+
+    #content {
+
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .blog-post-list-item {
+
+        .item-header {
+
+            h4.title {
+                a {
+                    &:hover {
+                    }
+                }
+            }
+
+            div.brief-info {
+            }
+
+            div.misc {
+                div.misc-item {
+
+                    text-align: center;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+
+        div.content {
+        }
+    }
+}

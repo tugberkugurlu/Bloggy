@@ -1,0 +1,32 @@
+@model Bloggy.Client.Web.Models.BlogPostModelLight
+<div class="row blog-post-list-item">
+    <div class="span9 item-header">
+        <h4 class="title">
+            <a href="#">
+                <strong>@Model.Title</strong>
+            </a>
+        </h4>
+        <div class="brief-info">
+            Learn how easy to scale out SignalR with a Redis backplane and simulate a local web farm scenario with IIS Express
+        </div>
+        <div class="misc">
+            <div class="row">
+                <div class="span2 misc-item">
+                    <span><i class="icon-calendar-empty"></i> 2013-09-23 15:45</span>
+                </div>
+                <div class="span2 misc-item">
+                    <span><i class="icon-user"></i> Tugberk Ugurlu</span>
+                </div>
+                <div class="span5 misc-item">
+                    <span class="badge badge-info">SignalR</span>
+                    <span class="badge badge-info">Redis</span>
+                    <span class="badge badge-info">ASP.NET</span>
+                    <span class="badge badge-info">ASP.NET Web API</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span9 content">
+        @Html.Partial("_SamplePostPartial")
+    </div>
+</div>

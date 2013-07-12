@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Bloggy.Client.Web.Controllers
 {
-    public class DefaultController : Controller
+    public class DefaultController : RavenController
     {
         //
         // GET: /Default/

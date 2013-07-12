@@ -29,6 +29,7 @@ namespace Bloggy.Client.Web
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AutofacMvc.Initialize();
         }
     }
 }
