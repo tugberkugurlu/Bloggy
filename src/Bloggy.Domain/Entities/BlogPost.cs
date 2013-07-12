@@ -14,10 +14,18 @@ namespace Bloggy.Domain.Entities
         public string Title { get; set; }
         public string BriefInfo  { get; set; }
         public string Content { get; set; }
-        public ICollection<string> Tags { get; set; }
         public string IsApproved { get; set; }
         public DateTimeOffset CreatedOn { get; set; }
         public string CreationIp { get; set; }
         public DateTimeOffset LastUpdatedOn { get; set; }
+
+        public ICollection<string> Tags { get; set; }
+        public ICollection<UrlPath> UrlPaths { get; set; }
+    }
+
+    public class UrlPath
+    {
+        public string Path { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
     }
 }
