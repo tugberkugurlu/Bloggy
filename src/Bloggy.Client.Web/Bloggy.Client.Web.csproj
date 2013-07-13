@@ -247,6 +247,7 @@
     <Content Include="Views\Shared\_TopHeaderPartial.cshtml" />
     <Content Include="Views\Default\_BlogPostListItemPartial.cshtml" />
     <Content Include="Views\Default\_SamplePostPartial.cshtml" />
+    <Content Include="Views\Blog\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
