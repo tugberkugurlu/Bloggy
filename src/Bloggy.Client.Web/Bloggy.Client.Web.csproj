@@ -149,6 +149,8 @@
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\img\MVP_Horizontal_BlueOnly9.png" />
+    <Content Include="Content\img\raven_badge1.png" />
+    <Content Include="Content\img\raven_badge2.png" />
     <Content Include="Content\less\bootstrap.css">
       <DependentUpon>bootstrap.less</DependentUpon>
     </Content>

@@ -2,7 +2,7 @@
 
 namespace AspNet.Identity.RavenDB.Entities
 {
-    class Role : IRole
+    public class Role : IRole
     {
         public string Id { get; set; }
     }

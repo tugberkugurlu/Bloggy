@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace AspNet.Identity.RavenDB
+namespace AspNet.Identity.RavenDB.Utils
 {
     internal static class Crypto
     {
