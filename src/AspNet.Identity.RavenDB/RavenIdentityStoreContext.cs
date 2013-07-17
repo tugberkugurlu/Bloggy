@@ -34,7 +34,10 @@ namespace AspNet.Identity.RavenDB
 
         public IUserSecretStore Secrets
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return new RavenUserSecretStore<RavenUser, UserSecret>(_documentSession);
+            }
         }
 
         public IUserClaimStore UserClaims
