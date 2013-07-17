@@ -1,4 +1,5 @@
-﻿using AspNet.Identity.RavenDB.Stores;
+﻿using AspNet.Identity.RavenDB.Entities;
+using AspNet.Identity.RavenDB.Stores;
 using Microsoft.AspNet.Identity;
 using Raven.Client;
 using System;
@@ -25,12 +26,10 @@ namespace AspNet.Identity.RavenDB
 
         public IRoleStore Roles
         {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IUserLoginStore Logins
-        {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return new RavenRoleStore<RavenUser, Role>(_documentSession);
+            }
         }
 
         public IUserSecretStore Secrets
@@ -39,6 +38,11 @@ namespace AspNet.Identity.RavenDB
         }
 
         public IUserClaimStore UserClaims
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public IUserLoginStore Logins
         {
             get { throw new NotImplementedException(); }
         }
