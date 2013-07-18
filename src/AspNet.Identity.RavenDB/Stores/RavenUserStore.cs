@@ -46,14 +46,33 @@ namespace AspNet.Identity.RavenDB.Stores
                 throw new ArgumentNullException("user");
             }
 
+            if (string.IsNullOrWhiteSpace(user.UserName))
+            {
+                throw new ArgumentException("user.UserName");
+            }
+
+            bool result;
             TUser tUser = user as TUser;
             if (tUser == null)
             {
-                return false;
+                result = false;
+            }
+            else
+            {
+                // TODO: This's poor man's uniqueness constraint. Find a better way.
+                TUser existingUser = await GetUserByUserName(user.UserName);
+                if (existingUser != null)
+                {
+                    result = false;
+                }
+                else
+                {
+                    await DocumentSession.StoreAsync(tUser).ConfigureAwait(false);
+                    result = true;
+                }
             }
 
-            await DocumentSession.StoreAsync(tUser).ConfigureAwait(false);
-            return true;
+            return result;
         }
 
         public async Task<bool> Delete(string userId)

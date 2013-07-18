@@ -35,6 +35,24 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
         }
 
         [Fact]
+        public async Task Should_Not_Create_Dubplicate_User()
+        {
+            string userName = "Tugberk";
+
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IUserStore userStore = new RavenUserStore<RavenUser>(ses);
+                await ses.StoreAsync(new RavenUser { UserName = userName });
+                await ses.SaveChangesAsync();
+
+                bool result = await userStore.Create(new RavenUser { UserName = userName });
+
+                Assert.False(result);
+            }
+        }
+
+        [Fact]
         public async Task Should_Retrieve_User_By_UserName()
         {
             string userName = "Tugberk";
@@ -50,6 +68,25 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
 
                 Assert.NotNull(user);
                 Assert.Equal(userName, user.UserName, StringComparer.InvariantCultureIgnoreCase);
+            }
+        }
+
+        [Fact]
+        public async Task Should_Return_Null_For_Non_Existing_User_By_UserName()
+        {
+            string userName = "Tugberk";
+            string nonExistingUserName = "Tugberk2";
+
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IUserStore userStore = new RavenUserStore<RavenUser>(ses);
+                await ses.StoreAsync(new RavenUser { UserName = userName });
+                await ses.SaveChangesAsync();
+
+                IUser user = await userStore.FindByUserName(nonExistingUserName);
+
+                Assert.Null(user);
             }
         }
 
