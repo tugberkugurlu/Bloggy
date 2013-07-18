@@ -59,7 +59,7 @@ namespace AspNet.Identity.RavenDB.Stores
             }
             else
             {
-                // TODO: This's poor man's uniqueness constraint. Find a better way.
+                // TODO: This's poor man's uniqueness constraint and not safe. Find a better way.
                 TUser existingUser = await GetUserByUserName(user.UserName);
                 if (existingUser != null)
                 {
