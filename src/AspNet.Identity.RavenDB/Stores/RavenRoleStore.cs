@@ -43,13 +43,11 @@ namespace AspNet.Identity.RavenDB.Stores
                 throw new ArgumentException("userId");
             }
 
-            IEnumerable<string> roles = await DocumentSession.Query<TUser>()
-                .Where(user => user.Id == userId)
-                .SelectMany(user => user.Roles.Select(role => role.Id))
-                .ToListAsync()
-                .ConfigureAwait(false);
+            TUser user = await GetUserById(userId).ConfigureAwait(false);
 
-            return roles;
+            return user == null
+                ? Enumerable.Empty<string>()
+                : user.Roles.Select(role => role.Id);
         }
 
         public async Task<IEnumerable<string>> GetUsersInRoles(string roleId)
