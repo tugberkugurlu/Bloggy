@@ -55,6 +55,26 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
             }
         }
 
+        [Fact]
+        public async Task Should_Retrieve_User_By_UserId()
+        {
+            string userName = "Tugberk";
+            string userId = "RavenUser/2";
+
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IUserStore userStore = new RavenUserStore<RavenUser>(ses);
+                await ses.StoreAsync(new RavenUser { Id = userId, UserName = userName });
+                await ses.SaveChangesAsync();
+
+                IUser user = await userStore.Find(userId);
+
+                Assert.NotNull(user);
+                Assert.Equal(userName, user.UserName, StringComparer.InvariantCultureIgnoreCase);
+            }
+        }
+
         // privates
         private IDocumentStore CreateEmbeddableStore()
         {
