@@ -3,9 +3,7 @@ using Microsoft.AspNet.Identity;
 using Raven.Client;
 using Raven.Client.Embedded;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -72,6 +70,29 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
 
                 Assert.NotNull(user);
                 Assert.Equal(userName, user.UserName, StringComparer.InvariantCultureIgnoreCase);
+            }
+        }
+
+        [Fact]
+        public async Task Should_Remove_User()
+        {
+            string userName = "Tugberk";
+            string userId = "RavenUser/2";
+
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IUserStore userStore = new RavenUserStore<RavenUser>(ses);
+                await ses.StoreAsync(new RavenUser { Id = userId, UserName = userName });
+                await ses.SaveChangesAsync();
+
+                bool result = await userStore.Delete(userId);
+                await ses.SaveChangesAsync();
+
+                IUser user = await ses.LoadAsync<RavenUser>(userId).ConfigureAwait(false);
+
+                Assert.True(result);
+                Assert.Null(user);
             }
         }
 
