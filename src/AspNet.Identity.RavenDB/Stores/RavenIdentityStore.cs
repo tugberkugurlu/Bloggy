@@ -1,5 +1,8 @@
 ﻿using Raven.Client;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace AspNet.Identity.RavenDB.Stores
 {
@@ -15,6 +18,22 @@ namespace AspNet.Identity.RavenDB.Stores
             }
 
             DocumentSession = documentSession;
+        }
+
+        internal protected async Task<TUser> GetUserById(string userId)
+        {
+            return await DocumentSession.LoadAsync<TUser>(userId).ConfigureAwait(false);
+        }
+
+        internal protected async Task<TUser> GetUserByUserName(string userName)
+        {
+            IEnumerable<TUser> users = await DocumentSession.Query<TUser>()
+                .Where(user => user.UserName == userName)
+                .Take(1)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return users.FirstOrDefault();
         }
     }
 }

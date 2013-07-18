@@ -23,7 +23,7 @@ namespace AspNet.Identity.RavenDB.Stores
                 throw new ArgumentException("userId");
             }
 
-            TUser user = await GetUser(userId).ConfigureAwait(false);
+            TUser user = await GetUserById(userId).ConfigureAwait(false);
 
             return user == null
                 ? Enumerable.Empty<UserClaim>()
@@ -56,7 +56,7 @@ namespace AspNet.Identity.RavenDB.Stores
             }
             else
             {
-                TUser user = await GetUser(userClaim.UserId).ConfigureAwait(false);
+                TUser user = await GetUserById(userClaim.UserId).ConfigureAwait(false);
                 if (user == null || user.UserClaims.Any(claim =>
                     claim.ClaimType.Equals(userClaim.ClaimType, StringComparison.InvariantCultureIgnoreCase) &&
                     claim.ClaimValue.Equals(userClaim.ClaimValue, StringComparison.InvariantCultureIgnoreCase)))
@@ -91,7 +91,7 @@ namespace AspNet.Identity.RavenDB.Stores
             }
 
             bool result;
-            TUser user = await GetUser(userId).ConfigureAwait(false);
+            TUser user = await GetUserById(userId).ConfigureAwait(false);
             if (user == null)
             {
                 result = false;
@@ -114,18 +114,6 @@ namespace AspNet.Identity.RavenDB.Stores
             }
 
             return result;
-        }
-
-        // privates
-        private async Task<TUser> GetUser(string userId)
-        {
-            IEnumerable<TUser> users = await DocumentSession.Query<TUser>()
-                .Where(user => user.Id == userId)
-                .Take(1)
-                .ToListAsync()
-                .ConfigureAwait(false);
-
-            return users.FirstOrDefault();
         }
     }
 }

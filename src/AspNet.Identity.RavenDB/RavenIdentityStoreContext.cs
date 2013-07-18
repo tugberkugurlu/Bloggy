@@ -50,7 +50,10 @@ namespace AspNet.Identity.RavenDB
 
         public IUserLoginStore Logins
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return new RavenUserLoginStore<RavenUser, UserLogin>(_documentSession);
+            }
         }
 
         public Task SaveChanges()

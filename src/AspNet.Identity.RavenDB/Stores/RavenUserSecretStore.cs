@@ -43,7 +43,7 @@ namespace AspNet.Identity.RavenDB.Stores
 
             bool result;
             TUserSecret tUserSecret = userSecret as TUserSecret;
-            TUser user = await GetUser(userSecret.UserName).ConfigureAwait(false);
+            TUser user = await GetUserByUserName(userSecret.UserName).ConfigureAwait(false);
 
 			if (tUserSecret == null || user == null || user.Secret != null)
 			{
@@ -72,7 +72,7 @@ namespace AspNet.Identity.RavenDB.Stores
             }
 
             bool result;
-            TUser user = await GetUser(userName).ConfigureAwait(false);
+            TUser user = await GetUserByUserName(userName).ConfigureAwait(false);
 			
 			if (user != null && user.Secret != null)
 			{
@@ -95,7 +95,7 @@ namespace AspNet.Identity.RavenDB.Stores
             }
 
             bool result;
-            TUser user = await GetUser(userName).ConfigureAwait(false);
+            TUser user = await GetUserByUserName(userName).ConfigureAwait(false);
 
             if (user != null && user.Secret != null)
             {
@@ -123,7 +123,7 @@ namespace AspNet.Identity.RavenDB.Stores
             }
 
             bool result;
-            TUser user = await GetUser(userName).ConfigureAwait(false);
+            TUser user = await GetUserByUserName(userName).ConfigureAwait(false);
             if (user != null && user.Secret != null)
             {
                 result = Crypto.VerifyHashedPassword(user.Secret.Secret, loginSecret);
@@ -134,19 +134,6 @@ namespace AspNet.Identity.RavenDB.Stores
             }
 
             return result;
-        }
-
-        // privates
-
-        private async Task<TUser> GetUser(string userName)
-        {
-            IEnumerable<TUser> users = await DocumentSession.Query<TUser>()
-                .Where(user => user.UserName == userName)
-                .Take(1)
-                .ToListAsync()
-                .ConfigureAwait(false);
-
-            return users.FirstOrDefault();
         }
     }
 }
