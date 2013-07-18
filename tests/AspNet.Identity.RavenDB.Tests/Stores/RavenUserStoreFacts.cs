@@ -9,7 +9,7 @@ using Xunit;
 
 namespace AspNet.Identity.RavenDB.Tests.Stores
 {
-    public class RavenUserStoreFacts
+    public class RavenUserStoreFacts : TestBase
     {
         [Fact]
         public async Task Should_Create_User()
@@ -35,7 +35,7 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
         }
 
         [Fact]
-        public async Task Should_Not_Create_Dubplicate_User()
+        public async Task Should_Not_Create_Duplicate_User()
         {
             string userName = "Tugberk";
 
@@ -131,19 +131,6 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
                 Assert.True(result);
                 Assert.Null(user);
             }
-        }
-
-        // privates
-        private IDocumentStore CreateEmbeddableStore()
-        {
-            return new EmbeddableDocumentStore
-            {
-                Configuration =
-                {
-                    RunInUnreliableYetFastModeThatIsNotSuitableForProduction = true,
-                    RunInMemory = true,
-                }
-            }.Initialize();
         }
     }
 }

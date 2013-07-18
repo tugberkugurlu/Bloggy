@@ -22,7 +22,7 @@ namespace AspNet.Identity.RavenDB.Indexes
                               select new 
                               {
                                   Name = groupedRole.Key,
-                                  Count = groupedRole.Count()
+                                  Count = groupedRole.Sum(role => role.Count)
                               };
         }
     }
