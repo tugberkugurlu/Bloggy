@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Raven.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,12 +15,22 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<IUser> Find(string userId)
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentException("userId");
+            }
+
             return await DocumentSession.LoadAsync<TUser>(userId).ConfigureAwait(false);
         }
 
         public async Task<IUser> FindByUserName(string userName)
         {
-            IList<TUser> users = await DocumentSession.Query<TUser>()
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("userName");
+            }
+
+            IEnumerable<TUser> users = await DocumentSession.Query<TUser>()
                 .Where(usr => usr.UserName == userName)
                 .Take(1)
                 .ToListAsync()
@@ -30,6 +41,11 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<bool> Create(IUser user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
             TUser tUser = user as TUser;
             if (tUser == null)
             {

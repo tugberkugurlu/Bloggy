@@ -42,7 +42,10 @@ namespace AspNet.Identity.RavenDB
 
         public IUserClaimStore UserClaims
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return new RavenUserClaimStore<RavenUser, UserClaim>(_documentSession);
+            }
         }
 
         public IUserLoginStore Logins

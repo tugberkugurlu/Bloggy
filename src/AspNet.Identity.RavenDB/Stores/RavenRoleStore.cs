@@ -19,6 +19,16 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<bool> IsUserInRole(string userId, string roleId)
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentException("userId");
+            }
+
+            if (string.IsNullOrWhiteSpace(roleId))
+            {
+                throw new ArgumentException("roleId");
+            }
+
             bool result = await (from user in DocumentSession.Query<TUser>()
                                  where user.Id == userId && user.Roles.Any(role => role.Id == roleId)
                                  select user).AnyAsync();
@@ -28,6 +38,11 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<IEnumerable<string>> GetRolesForUser(string userId)
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentException("userId");
+            }
+
             IEnumerable<string> roles = await DocumentSession.Query<TUser>()
                 .Where(user => user.Id == userId)
                 .SelectMany(user => user.Roles.Select(role => role.Id))
@@ -39,6 +54,11 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<IEnumerable<string>> GetUsersInRoles(string roleId)
         {
+            if (string.IsNullOrWhiteSpace(roleId))
+            {
+                throw new ArgumentException("roleId");
+            }
+
             IEnumerable<string> users = await DocumentSession.Query<TUser>()
                 .Where(user => user.Roles.Any(role => role.Id == roleId))
                 .Select(user => user.Id)
@@ -50,6 +70,16 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<bool> AddUserToRole(string roleId, string userId)
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentException("userId");
+            }
+
+            if (string.IsNullOrWhiteSpace(roleId))
+            {
+                throw new ArgumentException("roleId");
+            }
+
             bool result;
             IEnumerable<TUser> users = await DocumentSession.Query<TUser>()
                 .Where(usr => usr.Id == userId && usr.Roles.Any(role => role.Id == roleId))
@@ -72,6 +102,16 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<bool> RemoveUserFromRole(string roleId, string userId)
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentException("userId");
+            }
+
+            if (string.IsNullOrWhiteSpace(roleId))
+            {
+                throw new ArgumentException("roleId");
+            }
+
             bool result;
             IEnumerable<TUser> users = await DocumentSession.Query<TUser>()
                 .Where(usr => usr.Id == userId && usr.Roles.Any(role => role.Id == roleId))
@@ -95,6 +135,11 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<bool> RoleExists(string roleId)
         {
+            if (string.IsNullOrWhiteSpace(roleId))
+            {
+                throw new ArgumentException("roleId");
+            }
+
             bool result = await DocumentSession.Query<RavenUser_Roles.ReduceResult, RavenUser_Roles>()
                 .Where(role => role.Name == roleId).AnyAsync();
 

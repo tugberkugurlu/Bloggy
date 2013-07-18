@@ -54,6 +54,7 @@
     <Compile Include="Indexes\RavenUser_Roles.cs" />
     <Compile Include="Stores\RavenRoleStore.cs" />
     <Compile Include="Stores\RavenIdentityStore.cs" />
+    <Compile Include="Stores\RavenUserClaimStore.cs" />
     <Compile Include="Stores\RavenUserSecretStore.cs" />
     <Compile Include="Utils\Crypto.cs" />
     <Compile Include="Entities\Role.cs" />

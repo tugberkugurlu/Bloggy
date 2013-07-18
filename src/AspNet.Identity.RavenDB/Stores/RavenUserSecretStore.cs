@@ -2,6 +2,7 @@
 using AspNet.Identity.RavenDB.Utils;
 using Microsoft.AspNet.Identity;
 using Raven.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,11 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<IUserSecret> Find(string userName)
         {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("userName");
+            }
+
             IEnumerable<UserSecret> userSecrets = await DocumentSession.Query<TUser>()
                 .Where(user => user.UserName == userName)
                 .Take(1)
@@ -30,9 +36,14 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<bool> Create(IUserSecret userSecret)
         {
+            if (userSecret == null)
+            {
+                throw new ArgumentNullException("userSecret");
+            }
+
             bool result;
             TUserSecret tUserSecret = userSecret as TUserSecret;
-            TUser user = await GetUser(userSecret.UserName);
+            TUser user = await GetUser(userSecret.UserName).ConfigureAwait(false);
 
 			if (tUserSecret == null || user == null || user.Secret != null)
 			{
@@ -50,8 +61,18 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<bool> Update(string userName, string newSecret)
         {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("userName");
+            }
+
+            if (string.IsNullOrWhiteSpace(newSecret))
+            {
+                throw new ArgumentException("newSecret");
+            }
+
             bool result;
-            TUser user = await GetUser(userName);
+            TUser user = await GetUser(userName).ConfigureAwait(false);
 			
 			if (user != null && user.Secret != null)
 			{
@@ -68,8 +89,13 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<bool> Delete(string userName)
         {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("userName");
+            }
+
             bool result;
-            TUser user = await GetUser(userName);
+            TUser user = await GetUser(userName).ConfigureAwait(false);
 
             if (user != null && user.Secret != null)
             {
@@ -86,8 +112,18 @@ namespace AspNet.Identity.RavenDB.Stores
 
         public async Task<bool> Validate(string userName, string loginSecret)
         {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("userName");
+            }
+
+            if (string.IsNullOrWhiteSpace(loginSecret))
+            {
+                throw new ArgumentException("loginSecret");
+            }
+
             bool result;
-            TUser user = await GetUser(userName);
+            TUser user = await GetUser(userName).ConfigureAwait(false);
             if (user != null && user.Secret != null)
             {
                 result = Crypto.VerifyHashedPassword(user.Secret.Secret, loginSecret);
