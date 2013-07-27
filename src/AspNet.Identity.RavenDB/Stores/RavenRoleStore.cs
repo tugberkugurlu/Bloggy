@@ -79,13 +79,9 @@ namespace AspNet.Identity.RavenDB.Stores
             }
 
             bool result;
-            IEnumerable<TUser> users = await DocumentSession.Query<TUser>()
-                .Where(usr => usr.Id == userId && usr.Roles.Any(role => role.Id == roleId))
-                .Take(1).ToListAsync().ConfigureAwait(false);
+            TUser user = await DocumentSession.LoadAsync<TUser>(userId).ConfigureAwait(false);
 
-            TUser user = users.FirstOrDefault();
-
-            if (user == null)
+            if (user == null || user.Roles.Any(role => role.Id == roleId))
             {
                 result = false;
             }

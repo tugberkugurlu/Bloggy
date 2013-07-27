@@ -224,6 +224,50 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
             }
         }
 
+        // ------- AddUserToRole -------
+
+        [Fact]
+        public async Task AddUserToRole_Should_Add_The_User_In_Role_If_User_Exists_And_Is_Not_In_Role()
+        {
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IRoleStore roleStore = new RavenRoleStore<RavenUser, Role>(ses);
+                await ses.StoreAsync(new RavenUser { Id = "RavenUsers/1", UserName = "Tugberk", Roles = new List<Role> { new Role { Id = "Admin" }, new Role { Id = "Guest" } } });
+                await ses.SaveChangesAsync();
+
+                bool result = await roleStore.AddUserToRole("Sales", "RavenUsers/1");
+                await ses.SaveChangesAsync();
+
+                RavenUser user = await ses.LoadAsync<RavenUser>("RavenUsers/1");
+                Assert.True(result);
+                Assert.True(user.Roles.Any(role => role.Id.Equals("Sales", StringComparison.InvariantCultureIgnoreCase)));
+            }
+        }
+
+        [Fact]
+        public async Task AddUserToRole_Should_Add_The_User_In_Roles_Consecutively_If_User_Exists_And_Is_Not_In_Role()
+        {
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IRoleStore roleStore = new RavenRoleStore<RavenUser, Role>(ses);
+                await ses.StoreAsync(new RavenUser { Id = "RavenUsers/1", UserName = "Tugberk", Roles = new List<Role> { new Role { Id = "Admin" }, new Role { Id = "Guest" } } });
+                await ses.SaveChangesAsync();
+
+                bool result = await roleStore.AddUserToRole("Sales", "RavenUsers/1");
+                bool result2 = await roleStore.AddUserToRole("Accounting", "RavenUsers/1");
+                await ses.SaveChangesAsync();
+
+                RavenUser user = await ses.LoadAsync<RavenUser>("RavenUsers/1");
+
+                Assert.True(result);
+                Assert.True(result2);
+                Assert.True(user.Roles.Any(role => role.Id.Equals("Sales", StringComparison.InvariantCultureIgnoreCase)));
+                Assert.True(user.Roles.Any(role => role.Id.Equals("Accounting", StringComparison.InvariantCultureIgnoreCase)));
+            }
+        }
+
         // privates
         private static async Task AddUsers(IAsyncDocumentSession ses)
         {
