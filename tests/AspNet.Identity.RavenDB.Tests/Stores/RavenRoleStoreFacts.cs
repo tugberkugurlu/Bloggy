@@ -13,6 +13,8 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
 {
     public class RavenRoleStoreFacts : TestBase
     {
+        // ------- GetRolesForUser -------
+
         [Fact]
         public async Task GetRolesForUser_Should_Retrieve_Correct_Roles()
         {
@@ -65,6 +67,8 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
             }
         }
 
+        // ------- IsUserInRole -------
+
         [Fact]
         public async Task IsUserInRole_Should_Return_True_If_User_Is_Really_In_Role()
         {
@@ -110,6 +114,113 @@ namespace AspNet.Identity.RavenDB.Tests.Stores
                 bool isAdmin = await roleStore.IsUserInRole("RavenUsers/2", "Admin");
 
                 Assert.False(isAdmin);
+            }
+        }
+
+        // ------- GetUsersInRoles -------
+
+        [Fact]
+        public async Task GetUsersInRoles_Should_Return_Correct_Usurs_In_Role()
+        {
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using(IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IRoleStore roleStore = new RavenRoleStore<RavenUser, Role>(ses);
+                await ses.StoreAsync(new RavenUser { Id = "RavenUsers/1", UserName = "Tugberk", Roles = new List<Role> { new Role { Id = "Admin" }, new Role { Id = "Guest" } } });
+                await ses.StoreAsync(new RavenUser { Id = "RavenUsers/2", UserName = "Tugberk2", Roles = new List<Role> { new Role { Id = "Admin" } } });
+                await ses.StoreAsync(new RavenUser { Id = "RavenUsers/3", UserName = "Tugberk3", Roles = new List<Role> { new Role { Id = "Guest" } } });
+                await ses.SaveChangesAsync();
+
+                IEnumerable<string> users = await roleStore.GetUsersInRoles("Admin");
+
+                Assert.Equal(2, users.Count());
+                Assert.Equal("RavenUsers/1", users.ElementAt(0), StringComparer.InvariantCultureIgnoreCase);
+                Assert.Equal("RavenUsers/2", users.ElementAt(1), StringComparer.InvariantCultureIgnoreCase);
+            }
+        }
+
+        [Fact]
+        public async Task GetUsersInRoles_Should_Return_Enumberable_Empty_If_There_Is_No_user_In_Role()
+        {
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IRoleStore roleStore = new RavenRoleStore<RavenUser, Role>(ses);
+                await ses.StoreAsync(new RavenUser { Id = "RavenUsers/1", UserName = "Tugberk", Roles = new List<Role> { new Role { Id = "Admin" }, new Role { Id = "Guest" } } });
+                await ses.StoreAsync(new RavenUser { Id = "RavenUsers/2", UserName = "Tugberk2", Roles = new List<Role> { new Role { Id = "Admin" } } });
+                await ses.StoreAsync(new RavenUser { Id = "RavenUsers/3", UserName = "Tugberk3", Roles = new List<Role> { new Role { Id = "Guest" } } });
+                await ses.SaveChangesAsync();
+
+                IEnumerable<string> users = await roleStore.GetUsersInRoles("Sales");
+
+                Assert.NotNull(users);
+                Assert.False(users.Any());
+            }
+        }
+
+        [Fact]
+        public void GetUsersInRoles_Should_Throw_ArgumentException_If_RoleId_Param_Is_Null()
+        {
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IRoleStore roleStore = new RavenRoleStore<RavenUser, Role>(ses);
+
+                Assert.Throws<ArgumentException>(() => 
+                {
+                    try
+                    {
+                        roleStore.GetUsersInRoles(null).Wait();
+                    }
+                    catch (AggregateException ex)
+                    {
+                        throw ex.GetBaseException();
+                    }
+                });
+            }
+        }
+
+        [Fact]
+        public void GetUsersInRoles_Should_Throw_ArgumentException_If_RoleId_Param_Is_Empty()
+        {
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IRoleStore roleStore = new RavenRoleStore<RavenUser, Role>(ses);
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    try
+                    {
+                        roleStore.GetUsersInRoles(string.Empty).Wait();
+                    }
+                    catch (AggregateException ex)
+                    {
+                        throw ex.GetBaseException();
+                    }
+                });
+            }
+        }
+
+        [Fact]
+        public void GetUsersInRoles_Should_Throw_ArgumentException_If_RoleId_Param_Is_Whitespace()
+        {
+            using (IDocumentStore store = CreateEmbeddableStore())
+            using (IAsyncDocumentSession ses = store.OpenAsyncSession())
+            {
+                IRoleStore roleStore = new RavenRoleStore<RavenUser, Role>(ses);
+
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    try
+                    {
+                        roleStore.GetUsersInRoles(" ").Wait();
+                    }
+                    catch (AggregateException ex)
+                    {
+                        throw ex.GetBaseException();
+                    }
+                });
             }
         }
 
