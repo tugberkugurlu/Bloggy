@@ -230,7 +230,7 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\RavenController.cs" />
     <Compile Include="Models\AuthorModel.cs" />
-    <Compile Include="Models\BlogPostModel.cs" />
+    <Compile Include="Models\BlogPostModelLight.cs" />
     <Compile Include="Models\LanguageModel.cs" />
     <Compile Include="RequestModels\LoginRequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
