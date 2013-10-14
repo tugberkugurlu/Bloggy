@@ -1,6 +1,7 @@
 ﻿using Bloggy.Wrappers.Akismet.RequestModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,10 +11,13 @@ namespace Bloggy.Wrappers.Akismet.Tests.Integration
 {
     public class AkismetClientTests
     {
+        [Fact]
         public async Task CheckCommentAsyncShouldReturnOkForTheComment()
         {
             // Arrange
-            AkismetClient akismetClient = new AkismetClient("", "");
+            string apiKey = ConfigurationManager.AppSettings["akismet:apiKey"];
+            string blog = ConfigurationManager.AppSettings["akismet:blog"];
+            AkismetClient akismetClient = new AkismetClient(apiKey, blog);
             CommentRequestModel requestModel = new CommentRequestModel
             {
                 UserIp = "127.0.0.1",

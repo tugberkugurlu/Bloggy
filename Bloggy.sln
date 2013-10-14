@@ -20,6 +20,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Wrappers.Akismet", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Wrappers.Akismet.Tests.Integration", "tests\Bloggy.Wrappers.Akismet.Tests.Integration\Bloggy.Wrappers.Akismet.Tests.Integration.csproj", "{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{8D115F5C-B348-4535-A9F1-502AB035B3F3}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
