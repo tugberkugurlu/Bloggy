@@ -28,23 +28,32 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Prod|Any CPU = Prod|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DBFBE9D0-4FCF-4D7F-B146-D5A28A447856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DBFBE9D0-4FCF-4D7F-B146-D5A28A447856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBFBE9D0-4FCF-4D7F-B146-D5A28A447856}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{DBFBE9D0-4FCF-4D7F-B146-D5A28A447856}.Prod|Any CPU.Build.0 = Prod|Any CPU
 		{DBFBE9D0-4FCF-4D7F-B146-D5A28A447856}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBFBE9D0-4FCF-4D7F-B146-D5A28A447856}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF5FF3A1-4877-4323-A457-D65E8764580E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF5FF3A1-4877-4323-A457-D65E8764580E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF5FF3A1-4877-4323-A457-D65E8764580E}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{BF5FF3A1-4877-4323-A457-D65E8764580E}.Prod|Any CPU.Build.0 = Prod|Any CPU
 		{BF5FF3A1-4877-4323-A457-D65E8764580E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF5FF3A1-4877-4323-A457-D65E8764580E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}.Prod|Any CPU.Build.0 = Prod|Any CPU
 		{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Prod|Any CPU.ActiveCfg = Prod|Any CPU
+		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Prod|Any CPU.Build.0 = Prod|Any CPU
 		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
