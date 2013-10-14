@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A40F744D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Wrappers.Akismet", "src\Bloggy.Wrappers.Akismet\Bloggy.Wrappers.Akismet.csproj", "{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloggy.Wrappers.Akismet.Tests.Integration", "tests\Bloggy.Wrappers.Akismet.Tests.Integration\Bloggy.Wrappers.Akismet.Tests.Integration.csproj", "{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,8 +38,15 @@ Global
 		{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9889441-EC1A-4BB8-842F-D6EEBF0D2E84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6D11ECC7-4AF0-4A26-AC47-83E0ED8F66D9} = {A40F744D-B6B0-449A-BB7E-4E11893912FA}
 	EndGlobalSection
 EndGlobal

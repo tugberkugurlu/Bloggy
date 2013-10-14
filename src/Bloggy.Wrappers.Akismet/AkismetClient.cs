@@ -1,9 +1,6 @@
 ﻿using Bloggy.Wrappers.Akismet.RequestModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Bloggy.Wrappers.Akismet
@@ -38,7 +35,7 @@ namespace Bloggy.Wrappers.Akismet
             }
 
             string requestUri = string.Concat(BaseApiUriPath, "/comment-check");
-            HttpContent content = commentRequestModel.ToFormUrlEncodedContent(_blog);
+            using (HttpContent content = commentRequestModel.ToFormUrlEncodedContent(_blog))
             using (HttpResponseMessage response = await _httpClient.PostAsync(requestUri, content))
             {
                 AkismetResponse<bool> result;
@@ -52,8 +49,8 @@ namespace Bloggy.Wrappers.Akismet
                     }
                     else
                     {
-                        result = new AkismetResponse<bool>(response.StatusCode);
-                        result.ErrorMessage = "Couldn't cast the response result into Boolean!";
+                        string errorMessageFormat = "Couldn't cast the response result into Boolean! Status Code: {0}, Message Body: {1}";
+                        throw new InvalidOperationException(string.Format(errorMessageFormat, response.StatusCode, responseContent));
                     }
                 }
                 else
