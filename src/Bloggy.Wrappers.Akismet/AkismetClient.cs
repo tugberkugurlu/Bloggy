@@ -63,6 +63,64 @@ namespace Bloggy.Wrappers.Akismet
             }
         }
 
+        public async Task<AkismetResponse> SubmitSpamAsync(CommentRequestModel commentRequestModel)
+        {
+            if (commentRequestModel == null)
+            {
+                throw new ArgumentNullException("commentRequestModel");
+            }
+
+            string requestUri = string.Concat(BaseApiUriPath, "/submit-spam");
+            using (HttpContent content = commentRequestModel.ToFormUrlEncodedContent(_blog))
+            using (HttpResponseMessage response = await _httpClient.PostAsync(requestUri, content))
+            {
+                AkismetResponse result;
+                if (response.IsSuccessStatusCode)
+                {
+                    result = new AkismetResponse(response.StatusCode);
+                }
+                else
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    result = new AkismetResponse(response.StatusCode)
+                    {
+                        ErrorMessage = responseContent
+                    };
+                }
+
+                return result;
+            }
+        }
+
+        public async Task<AkismetResponse> SubmitHamAsync(CommentRequestModel commentRequestModel)
+        {
+            if (commentRequestModel == null)
+            {
+                throw new ArgumentNullException("commentRequestModel");
+            }
+
+            string requestUri = string.Concat(BaseApiUriPath, "/submit-ham");
+            using (HttpContent content = commentRequestModel.ToFormUrlEncodedContent(_blog))
+            using (HttpResponseMessage response = await _httpClient.PostAsync(requestUri, content))
+            {
+                AkismetResponse result;
+                if (response.IsSuccessStatusCode)
+                {
+                    result = new AkismetResponse(response.StatusCode);
+                }
+                else
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    result = new AkismetResponse(response.StatusCode)
+                    {
+                        ErrorMessage = responseContent
+                    };
+                }
+
+                return result;
+            }
+        }
+
         public void Dispose()
         {
             if (!_disposed)
