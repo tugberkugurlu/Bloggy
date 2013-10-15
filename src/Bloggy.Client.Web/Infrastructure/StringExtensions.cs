@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -14,22 +15,24 @@ namespace Bloggy.Client.Web
         private static readonly Regex WhiteSpaceBetweenHtmlTagsExpression = new Regex(@">(/w+)<", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex HtmlLineBreakExpression = new Regex(@"<br(/s+)/>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Dictionary<string, List<string>> ValidHtmlTags = new Dictionary<string, List<string>> {
-            { "p", new List<string>() },
-            { "br", new List<string>() }, 
-            { "strong", new List<string>() }, 
-            { "em", new List<string>() }, 
-            { "u", new List<string>() }, 
-            { "strike", new List<string>() }, 
-            { "ol", new List<string>() }, 
-            { "ul", new List<string>() }, 
-            { "li", new List<string>() }, 
-            { "a", new List<string> { "href" } }, 
-            { "img", new List<string> { "src", "height", "width", "alt" } },
-            { "blockquote", new List<string> { "cite" } }, 
-            { "abbr", new List<string>() }, 
-            { "acronym", new List<string>() }, 
-        };
+        private static readonly IDictionary<string, IEnumerable<string>> ValidHtmlTags = 
+            new Dictionary<string, IEnumerable<string>>
+            {
+                { "p", Enumerable.Empty<string>() },
+                { "br", Enumerable.Empty<string>() }, 
+                { "strong", Enumerable.Empty<string>() }, 
+                { "em", Enumerable.Empty<string>() }, 
+                { "u", Enumerable.Empty<string>() }, 
+                { "strike", Enumerable.Empty<string>() }, 
+                { "ol", Enumerable.Empty<string>() }, 
+                { "ul", Enumerable.Empty<string>() }, 
+                { "li", Enumerable.Empty<string>() }, 
+                { "a", new List<string> { "href" } }, 
+                { "img", new List<string> { "src", "height", "width", "alt" } },
+                { "blockquote", new List<string> { "cite" } }, 
+                { "abbr", Enumerable.Empty<string>() },
+                { "acronym", Enumerable.Empty<string>() }
+            };
 
         /// <summary>
         /// Toes the safe HTML.
