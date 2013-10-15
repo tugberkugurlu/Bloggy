@@ -1,3 +1,4 @@
+using Bloggy.Client.Web.Infrastructure.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,10 @@ namespace Bloggy.Client.Web.Controllers
 {
     public class DefaultController : RavenController
     {
-        //
-        // GET: /Default/
+        public DefaultController(IMvcLogger logger) : base(logger)
+        {
+        }
+
         public ActionResult Index()
         {
             return View();

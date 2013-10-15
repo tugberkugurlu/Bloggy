@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using AutoMapper;
+using Bloggy.Client.Web.Infrastructure.Logging;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Extensions;
@@ -13,13 +14,14 @@ namespace Bloggy.Client.Web
     {
         public static void Initialize()
         {
-            var builder = new ContainerBuilder();
+            ContainerBuilder builder = new ContainerBuilder();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(RegisterServices(builder)));
         }
 
         private static IContainer RegisterServices(ContainerBuilder builder)
         {
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
+
             builder.Register(c =>
             {
                 const string DefaultDatabase = "Blog";
@@ -34,11 +36,9 @@ namespace Bloggy.Client.Web
 
             }).As<IDocumentStore>().SingleInstance();
 
-            builder.Register(c => c.Resolve<IDocumentStore>().OpenAsyncSession())
-                   .As<IAsyncDocumentSession>()
-                   .InstancePerHttpRequest();
-
             builder.Register(c => Mapper.Engine).As<IMappingEngine>().SingleInstance();
+            builder.RegisterType<NLogLogger>().As<IMvcLogger>().SingleInstance();
+            builder.Register(c => c.Resolve<IDocumentStore>().OpenAsyncSession()).As<IAsyncDocumentSession>().InstancePerHttpRequest();
 
             return builder.Build();
         }
