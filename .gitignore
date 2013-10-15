@@ -108,4 +108,5 @@ Backup*/
 UpgradeLog*.XML
 
 # Custom
-tests/*/App.config
+tests/*/[Aa]pp.config
+src/*/[Ww]eb.[Pp]rod.config

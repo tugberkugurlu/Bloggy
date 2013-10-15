@@ -38,9 +38,7 @@ namespace Bloggy.Client.Web
                    .As<IAsyncDocumentSession>()
                    .InstancePerHttpRequest();
 
-            builder.Register(c => Mapper.Engine)
-                   .As<IMappingEngine>()
-                   .SingleInstance();
+            builder.Register(c => Mapper.Engine).As<IMappingEngine>().SingleInstance();
 
             return builder.Build();
         }
