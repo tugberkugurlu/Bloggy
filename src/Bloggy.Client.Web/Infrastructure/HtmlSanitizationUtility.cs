@@ -9,7 +9,7 @@ namespace Bloggy.Client.Web
     /// <remarks>
     /// Thanks to Nick Berardi's awesome Sanitize HTML utility. Refer to http://refactormycode.com/codes/333-sanitize-html.
     /// </remarks>
-    public static class StringExtensions
+    public static class HtmlSanitizationUtility
     {
         private static readonly Regex HtmlTagExpression = new Regex(@"(?'tag_start'</?)(?'tag'\w+)((\s+(?'attr'(?'attr_name'\w+)(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+)))?)+\s*|\s*)(?'tag_end'/?>)", RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex WhiteSpaceBetweenHtmlTagsExpression = new Regex(@">(/w+)<", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -43,6 +43,13 @@ namespace Bloggy.Client.Web
         {
             return text.RemoveInvalidHtmlTags();
         }
+
+        public static IDictionary<string, IEnumerable<string>> GetValidHtmlTagsWithAttributes()
+        {
+            return ValidHtmlTags;
+        }
+
+        // private helpers
 
         /// <summary>
         /// Removes the invalid HTML tags.

@@ -241,7 +241,7 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\RavenController.cs" />
-    <Compile Include="Infrastructure\StringExtensions.cs" />
+    <Compile Include="Infrastructure\HtmlSanitizationUtility.cs" />
     <Compile Include="Models\AuthorModel.cs" />
     <Compile Include="Models\BlogPostModelLight.cs" />
     <Compile Include="Models\LanguageModel.cs" />
