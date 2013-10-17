@@ -5,7 +5,7 @@ namespace Bloggy.Wrappers.Akismet.RequestModels
 {
     internal static class CommentRequestModelExtensions
     {
-        internal static FormUrlEncodedContent ToFormUrlEncodedContent(this CommentRequestModel requestModel, string blog)
+        internal static FormUrlEncodedContent ToFormUrlEncodedContent(this AkismetCommentRequestModel requestModel, string blog)
         {
             FormUrlEncodedContent content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
             {

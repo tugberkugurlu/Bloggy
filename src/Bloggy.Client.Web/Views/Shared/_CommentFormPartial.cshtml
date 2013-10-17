@@ -1,0 +1,36 @@
+﻿@model CommentPostRequestModel
+
+@using (Html.BeginForm("Create", "Comment", new { id = ViewBag.Id, type = ViewBag.CommentType }, FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false)
+    
+    <div class="control-group">
+        @Html.LabelFor(model => model.CommentAuthorName, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.CommentAuthorName, new { style = "width: 80%;" })
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.CommentAuthorEmail, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.CommentAuthorEmail, new { style = "width: 80%;" })
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.CommentAuthorUrl, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.CommentAuthorUrl, new { style = "width: 80%;" })
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.CommentContent, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextAreaFor(model => model.CommentContent, new { style = "width: 90%; max-width: 90%; height: 150px;" })
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <button class="btn btn-info" type="submit">@StringResources.SendComment</button>
+    </div>
+}

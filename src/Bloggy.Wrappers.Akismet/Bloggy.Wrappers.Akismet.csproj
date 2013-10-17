@@ -65,7 +65,7 @@
     <Compile Include="AkismetClient.cs" />
     <Compile Include="CommentConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequestModels\CommentRequestModel.cs" />
+    <Compile Include="RequestModels\AkismetCommentRequestModel.cs" />
     <Compile Include="RequestModels\CommentRequestModelExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

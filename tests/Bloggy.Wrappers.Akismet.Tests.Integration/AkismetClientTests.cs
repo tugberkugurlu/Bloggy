@@ -16,7 +16,7 @@ namespace Bloggy.Wrappers.Akismet.Tests.Integration
             string blog = ConfigurationManager.AppSettings["akismet:blog"];
             using (AkismetClient akismetClient = new AkismetClient(apiKey, blog))
             {
-                CommentRequestModel requestModel = new CommentRequestModel
+                AkismetCommentRequestModel requestModel = new AkismetCommentRequestModel
                 {
                     UserIp = "127.0.0.1",
                     UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
@@ -46,7 +46,7 @@ namespace Bloggy.Wrappers.Akismet.Tests.Integration
             string blog = ConfigurationManager.AppSettings["akismet:blog"];
             using (AkismetClient akismetClient = new AkismetClient(apiKey, blog))
             {
-                CommentRequestModel requestModel = new CommentRequestModel
+                AkismetCommentRequestModel requestModel = new AkismetCommentRequestModel
                 {
                     UserIp = "127.0.0.1",
                     UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",

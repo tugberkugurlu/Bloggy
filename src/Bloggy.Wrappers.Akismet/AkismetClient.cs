@@ -27,7 +27,7 @@ namespace Bloggy.Wrappers.Akismet
             _blog = blog;
         }
 
-        public async Task<AkismetResponse<bool>> CheckCommentAsync(CommentRequestModel commentRequestModel)
+        public async Task<AkismetResponse<bool>> CheckCommentAsync(AkismetCommentRequestModel commentRequestModel)
         {
             if (commentRequestModel == null)
             {
@@ -63,7 +63,7 @@ namespace Bloggy.Wrappers.Akismet
             }
         }
 
-        public async Task<AkismetResponse> SubmitSpamAsync(CommentRequestModel commentRequestModel)
+        public async Task<AkismetResponse> SubmitSpamAsync(AkismetCommentRequestModel commentRequestModel)
         {
             if (commentRequestModel == null)
             {
@@ -92,7 +92,7 @@ namespace Bloggy.Wrappers.Akismet
             }
         }
 
-        public async Task<AkismetResponse> SubmitHamAsync(CommentRequestModel commentRequestModel)
+        public async Task<AkismetResponse> SubmitHamAsync(AkismetCommentRequestModel commentRequestModel)
         {
             if (commentRequestModel == null)
             {

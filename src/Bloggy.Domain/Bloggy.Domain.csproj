@@ -59,12 +59,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Author.cs" />
     <Compile Include="Entities\BlogPost.cs" />
     <Compile Include="Entities\BlogPostComment.cs" />
     <Compile Include="Entities\IComment.cs" />
     <Compile Include="Entities\ITrackable.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Indexes\Tags_Count.cs" />
+    <Compile Include="Managers\BlogManager.cs" />
+    <Compile Include="Managers\IBlogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

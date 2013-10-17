@@ -1,7 +1,7 @@
 ﻿
 namespace Bloggy.Wrappers.Akismet.RequestModels
 {
-    public class CommentRequestModel
+    public class AkismetCommentRequestModel
     {
         /// <summary>
         /// IP address of the comment submitter.
