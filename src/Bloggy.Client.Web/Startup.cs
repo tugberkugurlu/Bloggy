@@ -1,5 +1,5 @@
 ﻿using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Forms;
+using Microsoft.Owin.Security.Cookies;
 using Owin;
 using System;
 using System.Collections.Generic;
@@ -16,13 +16,13 @@ namespace Bloggy.Client.Web
         public void Configuration(IAppBuilder app)
         {
             // Enable the application to use a cookie to store information for the signed in user
-            app.UseFormsAuthentication(new FormsAuthenticationOptions {
+            app.UseCookieAuthentication(new CookieAuthenticationOptions {
 
-                AuthenticationType = FormsAuthenticationDefaults.ApplicationAuthenticationType,
+                AuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
                 AuthenticationMode = AuthenticationMode.Active,
-                CookieName = string.Concat(FormsAuthenticationDefaults.CookiePrefix, FormsAuthenticationDefaults.ApplicationAuthenticationType),
-                LoginPath = FormsAuthenticationDefaults.LoginPath,
-                LogoutPath = FormsAuthenticationDefaults.LogoutPath
+                CookieName = string.Concat(CookieAuthenticationDefaults.CookiePrefix, "Application"),
+                LoginPath = CookieAuthenticationDefaults.LoginPath,
+                LogoutPath = CookieAuthenticationDefaults.LogoutPath
             });
 
             // ASP.NET Specifics

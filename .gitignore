@@ -109,4 +109,4 @@ UpgradeLog*.XML
 
 # Custom
 tests/*/[Aa]pp.config
-src/*/[Ww]eb.[Pp]rod.config
+appSettings.web.*

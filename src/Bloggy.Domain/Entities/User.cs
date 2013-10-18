@@ -1,9 +1,9 @@
-﻿
+﻿using AspNet.Identity.RavenDB.Entities;
+
 namespace Bloggy.Domain.Entities
 {
-    public class User
+    public class User : RavenUser
     {
-        public string Id { get; set; }
         public Author Author { get; set; }
     }
 
