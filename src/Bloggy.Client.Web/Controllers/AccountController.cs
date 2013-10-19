@@ -1,3 +1,4 @@
+using Bloggy.Client.Web.Infrastructure;
 using Bloggy.Client.Web.Infrastructure.Logging;
 using System;
 using System.Collections.Generic;

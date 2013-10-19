@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Raven.Imports.Newtonsoft.Json;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Bloggy.Domain.Entities
 {
@@ -19,5 +22,14 @@ namespace Bloggy.Domain.Entities
         public string CreationIp { get; set; }
         public DateTimeOffset LastUpdatedOn { get; set; }
         public string LastUpdateIp { get; set; }
+
+        [JsonIgnore]
+        public string GravatarHash
+        {
+            get
+            {
+                return Email.ToGravatarHash();
+            }
+        }
     }
 }

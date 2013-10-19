@@ -1,10 +1,7 @@
 ﻿using Bloggy.Domain.Entities;
 using Raven.Client.Indexes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bloggy.Domain.Indexes
 {
@@ -13,6 +10,7 @@ namespace Bloggy.Domain.Indexes
         public class ReduceResult
         {
             public string Name { get; set; }
+            public string Slug { get; set; }
             public int Count { get; set; }
             public DateTimeOffset LastSeenAt { get; set; }
         }
@@ -23,17 +21,19 @@ namespace Bloggy.Domain.Indexes
                                from tag in blogPost.Tags
                                select new
                                {
-                                   Name = tag.ToLowerInvariant(),
+                                   Name = tag.Name.ToLowerInvariant(),
+                                   Slug = tag.Slug,
                                    Count = 1,
                                    LastSeenAt = blogPost.CreatedOn
                                };
 
             Reduce = results => from tagCount in results
-                                group tagCount by tagCount.Name
+                                group tagCount by new { tagCount.Name, tagCount.Slug }
                                 into groupedResult
                                 select new 
                                 {
-                                    Name = groupedResult.Key,
+                                    Name = groupedResult.Key.Name,
+                                    Slug = groupedResult.Key.Slug,
                                     Count = groupedResult.Sum(x => x.Count),
                                     LastSeenAt = groupedResult.Max(x => x.LastSeenAt)
                                 };

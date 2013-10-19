@@ -1,5 +1,7 @@
 ﻿@{
     ViewBag.Title = "View1";
+    ReCaptcha.PrivateKey = ConfigurationManager.AppSettings[Constants.RecaptchaPrivateKeyAppSettingsKey];
+    ReCaptcha.PublicKey = ConfigurationManager.AppSettings[Constants.RecaptchaPublicKeyAppSettingsKey];
 }
 
 <h2>@Request.RequestContext.RouteData.Values["slug"]</h2>
@@ -15,5 +17,9 @@
 
 <div>
     <h3>@StringResources.Comments</h3>
-    @Html.Partial("_CommentFormPartial", new ViewDataDictionary { { "Id", 123 }, { "CommentType", "post" } })
+    @using (Html.BeginForm("Index", "BlogPost", new { slug = Request.RequestContext.RouteData.Values["slug"] }, FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Partial("_CommentFormPartial", new ViewDataDictionary { { "Id", 123 }, { "CommentType", "post" } })
+    }
 </div>

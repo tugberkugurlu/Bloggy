@@ -1,7 +1,13 @@
 ﻿using AutoMapper;
+using Bloggy.Client.Web.Areas.Admin.Models;
+using Bloggy.Client.Web.Areas.Admin.RequestModels;
+using Bloggy.Client.Web.Infrastructure.Mapping;
 using Bloggy.Client.Web.RequestModels;
 using Bloggy.Domain.Entities;
 using Bloggy.Wrappers.Akismet.RequestModels;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Bloggy.Client.Web
 {
@@ -9,6 +15,10 @@ namespace Bloggy.Client.Web
     {
         public static void Configure()
         {
+            // For mapping ravendb string ids to integer
+            Mapper.CreateMap<string, int>().ConvertUsing(new IntTypeConverter());
+            Mapper.CreateMap<string, int?>().ConvertUsing(new NullIntTypeConverter());
+
             Mapper.CreateMap<CommentPostRequestModel, AkismetCommentRequestModel>()
                 .ForMember(dest => dest.CommentAuthor, opt => opt.MapFrom(src => src.CommentAuthorName))
                 .ForMember(dest => dest.CommentContent, opt => opt.MapFrom(src => src.SanitizedCommentContent));
@@ -18,6 +28,15 @@ namespace Bloggy.Client.Web
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.CommentAuthorEmail))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CommentAuthorName))
                 .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.CommentAuthorUrl));
+
+            Mapper.CreateMap<BlogPostRequestModel, BlogPost>()
+                .ForMember(dest => dest.AllowComments, opt => opt.MapFrom(src => true))
+                .ForMember(dest => dest.Slugs, opt => opt.MapFrom(src => new Collection<Slug>(new[] { new Slug { Path = src.Title.ToSlug(), CreatedOn = DateTimeOffset.Now } })))
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => new Tag { Name = tag, Slug = tag.ToSlug() })));
+
+            Mapper.CreateMap<BlogPost, BlogPostModel>()
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Name)))
+                .ForMember(dest => dest.Slugs, opt => opt.MapFrom(src => src.Slugs.Select(slug => slug.Path)));
         }
     }
 }

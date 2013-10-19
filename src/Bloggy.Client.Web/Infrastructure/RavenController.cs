@@ -3,7 +3,7 @@ using System;
 using System.Security.Claims;
 using System.Web.Mvc;
 
-namespace Bloggy.Client.Web.Controllers
+namespace Bloggy.Client.Web.Infrastructure
 {
     public abstract class RavenController : Controller
     {

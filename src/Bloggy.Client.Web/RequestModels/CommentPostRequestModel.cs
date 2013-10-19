@@ -17,8 +17,9 @@ namespace Bloggy.Client.Web.RequestModels
         public string CommentAuthorEmail { get; set; }
 
         [StringLength(300)]
-        [Display(ResourceType = typeof(AttributeResosurces), Name = "CommentPostRequestModel_CommentAuthorUrl")]
+        [RegularExpression(@"(http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?")]
         [DataType(DataType.Url)]
+        [Display(ResourceType = typeof(AttributeResosurces), Name = "CommentPostRequestModel_CommentAuthorUrl")]
         public string CommentAuthorUrl { get; set; }
 
         [Required]

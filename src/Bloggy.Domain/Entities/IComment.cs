@@ -10,6 +10,7 @@ namespace Bloggy.Domain.Entities
         string Url { get; set; }
         string AuthProvider { get; set; }
         string Content { get; set; }
+        string GravatarHash { get; }
         bool IsByAuthor { get; set; }
         bool IsSpam { get; set; }
         bool IsApproved { get; set; }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Bloggy.Client.Web.Infrastructure;
 using Bloggy.Client.Web.Infrastructure.Logging;
 using Bloggy.Client.Web.RequestModels;
 using Bloggy.Domain.Entities;

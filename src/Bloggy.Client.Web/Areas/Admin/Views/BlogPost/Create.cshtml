@@ -1,0 +1,66 @@
+﻿@model Bloggy.Client.Web.Areas.Admin.RequestModels.BlogPostRequestModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create New Blog Post</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false)
+
+    <div class="form-horizontal">
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Language, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.Language, new List<SelectListItem> { new SelectListItem { Text = "English", Value = "en-US" } })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Title, new { style = "width: 90%;" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.BriefInfo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextAreaFor(model => model.BriefInfo, new { style = "width: 90%; max-width: 90%; height: 50px;" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Tags, new { @class = "control-label col-md-2" })
+            <div class="controls">
+                <input type="text" name="Tags" /> <input type="text" name="Tags" /> <input type="text" name="Tags" />
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Content, new { @class = "control-label col-md-2" })
+            <div class="controls">
+                @Html.EditorFor(model => model.Content)
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.IsApproved, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.IsApproved)
+            </div>
+        </div>
+
+        <div class="control-group">
+            <input type="submit" value="Create" class="btn btn-info" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
