@@ -11,12 +11,12 @@ using System.Web.Mvc;
 
 namespace Bloggy.Client.Web.Areas.Admin.Controllers
 {
-    public class BlogPostController : RavenController
+    public class BlogPostAdminController : RavenController
     {
         private readonly IAsyncDocumentSession _documentSession;
         private readonly IMappingEngine _mapper;
 
-        public BlogPostController(IMvcLogger logger, IMappingEngine mapper, IAsyncDocumentSession documentSession) : base(logger)
+        public BlogPostAdminController(IMvcLogger logger, IMappingEngine mapper, IAsyncDocumentSession documentSession) : base(logger)
         {
             _mapper = mapper;
             _documentSession = documentSession;

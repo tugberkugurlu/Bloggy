@@ -261,9 +261,9 @@
     </Content>
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Admin\Views\BlogPost\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\BlogPostAdmin\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\tinymce_full.cshtml" />
-    <Content Include="Areas\Admin\Views\BlogPost\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\BlogPostAdmin\Details.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -444,7 +444,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\BlogPostController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BlogPostAdminController.cs" />
     <Compile Include="Areas\Admin\Models\BlogPostModel.cs" />
     <Compile Include="Areas\Admin\RequestModels\BlogPostRequestModel.cs" />
     <Compile Include="AttributeResosurces.Designer.cs">
@@ -469,6 +469,7 @@
     <Compile Include="Models\BlogPostCommentModel.cs" />
     <Compile Include="Models\BlogPostModelLight.cs" />
     <Compile Include="Models\LanguageModel.cs" />
+    <Compile Include="Models\TagModel.cs" />
     <Compile Include="RequestModels\CommentPostRequestModel.cs" />
     <Compile Include="RequestModels\LoginRequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -483,6 +484,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ValidationResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BlogPostPageViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -497,7 +499,6 @@
     <Content Include="Views\Shared\_TopHeaderPartial.cshtml" />
     <Content Include="Views\Default\_BlogPostListItemPartial.cshtml" />
     <Content Include="Views\Default\_SamplePostPartial.cshtml" />
-    <Content Include="Views\Blog\Index.cshtml" />
     <Content Include="Views\Shared\_CommentFormPartial.cshtml" />
     <Content Include="Views\BlogPost\Index.cshtml" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\readme.md" />

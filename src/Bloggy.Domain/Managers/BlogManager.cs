@@ -35,19 +35,5 @@ namespace Bloggy.Domain.Managers
 
             return blogPosts.FirstOrDefault();
         }
-
-        public Task AddCommentAsync(string blogPostId, BlogPostComment blogPostComment)
-        {
-            if (blogPostComment == null)
-            {
-                throw new ArgumentNullException("blogPostComment");
-            }
-
-            blogPostComment.BlogPostId = blogPostId;
-            blogPostComment.CreatedOn = DateTimeOffset.Now;
-            blogPostComment.LastUpdatedOn = DateTimeOffset.Now;
-
-            return _documentSession.StoreAsync(blogPostComment);
-        }
     }
 }

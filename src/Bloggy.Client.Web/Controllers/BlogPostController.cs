@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
 using Bloggy.Client.Web.Infrastructure;
 using Bloggy.Client.Web.Infrastructure.Logging;
+using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.RequestModels;
+using Bloggy.Client.Web.ViewModels;
 using Bloggy.Domain.Entities;
 using Bloggy.Domain.Managers;
 using Bloggy.Wrappers.Akismet;
 using Bloggy.Wrappers.Akismet.RequestModels;
 using Microsoft.Web.Helpers;
+using Raven.Client;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
@@ -18,21 +22,74 @@ namespace Bloggy.Client.Web.Controllers
 {
     public class BlogPostController : RavenController
     {
+        private readonly IAsyncDocumentSession _documentSession;
         private readonly IBlogManager _blogManager;
         private readonly AkismetClient _akismetClient;
         private readonly IMappingEngine _mapper;
 
-        public BlogPostController(IMvcLogger logger, IBlogManager blogManager, AkismetClient akismetClient, IMappingEngine mapper) : base(logger)
+        public BlogPostController(IMvcLogger logger, IAsyncDocumentSession documentSession, IBlogManager blogManager, AkismetClient akismetClient, IMappingEngine mapper) : base(logger)
         {
+            _documentSession = documentSession;
             _blogManager = blogManager;
             _akismetClient = akismetClient;
             _mapper = mapper;
         }
 
         // HTTP GET /archive/{slug}
-        public ActionResult Index(string slug)
+        public async Task<ActionResult> Index(string slug)
         {
-            return View();
+            // TODO: 1-) Try to retrieve the blog pots by the slug ( > Slugs.Contains(slug)).
+            //       2-) If not found, return Not Found.
+            //       3-) If found, look for the default slug.
+            //           3.0-) If the default slug is not found, log it and return NotFound.
+            //           3.1-) If it's the default slug, retrieve the comments and return the view model.
+            //           3.2-) If it's not the default slug, redirect to its default slug.
+            //       4-) If found by the alternative slug, redirect it to default slug.
+
+            // 1-) Try to retrieve the blog pots by the slug ( > Slugs.Contains(slug)).
+            BlogPost blogPost = await RetrieveBlogPostAsync(slug);
+            if (blogPost == null)
+            {
+                 // 2-) If not found, return Not Found.
+                Logger.Warn(string.Format("Blog post could not be found. Slug: {0}", slug));
+                return HttpNotFound();
+            }
+
+            // 3-) If found, look for the default slug.
+            Slug defaultSlug = blogPost.Slugs
+                .OrderByDescending(slugEntity => slugEntity.CreatedOn)
+                .FirstOrDefault(slugEntity => slugEntity.IsDefault == true);
+
+            if (defaultSlug == null)
+            {
+                // 3.0-) If the default slug is not found, log it and return NotFound.
+                Logger.Warn(string.Format("The default slug could not be found for the blog post. BlogPost Id: {0}, Slug Parameter: {1}", blogPost.Id.ToIntId(), slug));
+                return HttpNotFound();
+            }
+
+            if (defaultSlug.Path.Equals(slug, StringComparison.InvariantCultureIgnoreCase))
+            {
+                // 3.1-) If it's the default slug, retrieve the comments and return the view model.
+                IEnumerable<BlogPostComment> comments = await _documentSession.Query<BlogPostComment>()
+                    .Where(comment => comment.BlogPostId == blogPost.Id && comment.IsSpam == false && comment.IsApproved == true)
+                    .ToListAsync();
+
+                BlogPostPageViewModel viewModel = new BlogPostPageViewModel 
+                {
+                    BlogPost = _mapper.Map<BlogPost, BlogPostModelLight>(blogPost),
+                    Comments = _mapper.Map<IEnumerable<BlogPostComment>, IEnumerable<BlogPostCommentModel>>(comments)
+                };
+
+                viewModel.BlogPost.Slug = defaultSlug.Path;
+
+                return View(viewModel);
+            }
+            else
+            {
+                // 3.2-) If it's not the default slug, redirect to its default slug.
+                Logger.Warn(string.Format("Blog post is found for the slug '{0}' but it's not the default slug. Redirection to slug '{1}'. BlogPost Id: {2}", slug, defaultSlug.Path, blogPost.Id.ToIntId()));
+                return RedirectToActionPermanent("Index", new { slug = defaultSlug.Path });
+            }
         }
 
         [HttpPost]
@@ -78,8 +135,11 @@ namespace Bloggy.Client.Web.Controllers
                     }
 
                     BlogPostComment blogPostComment = ConstructBlogPostComment(blogPost, requestModel, isSpam);
-                    await _blogManager.AddCommentAsync(blogPost.Id, blogPostComment);
+                    await _documentSession.StoreAsync(blogPostComment);
+                    await _documentSession.SaveChangesAsync();
+
                     ViewBag.IsCommentSuccess = true;
+
                     return View();
                 }
             }
@@ -89,14 +149,28 @@ namespace Bloggy.Client.Web.Controllers
 
         // private helpers
 
+        private async Task<BlogPost> RetrieveBlogPostAsync(string slug)
+        {
+            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPost>()
+                .Where(post => post.Slugs.Any(slugEntity => slugEntity.Path == slug))
+                .Take(1)
+                .ToListAsync();
+
+            BlogPost blogPost = blogPosts.FirstOrDefault();
+            return blogPost;
+        }
+
         private BlogPostComment ConstructBlogPostComment(BlogPost blogPost, CommentPostRequestModel requestModel, bool isSpam)
         {
             BlogPostComment blogPostComment = _mapper.Map<CommentPostRequestModel, BlogPostComment>(requestModel);
+            blogPostComment.BlogPostId = blogPost.Id;
             blogPostComment.IsApproved = !isSpam;
             blogPostComment.IsSpam = isSpam;
             blogPostComment.IsByAuthor = false;
             blogPostComment.CreationIp = Request.UserHostAddress;
             blogPostComment.LastUpdateIp = Request.UserHostAddress;
+            blogPostComment.CreatedOn = DateTimeOffset.Now;
+            blogPostComment.LastUpdatedOn = DateTimeOffset.Now;
 
             if (Identity != null && Identity.IsAuthenticated)
             {

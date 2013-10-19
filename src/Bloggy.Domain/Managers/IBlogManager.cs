@@ -11,6 +11,5 @@ namespace Bloggy.Domain.Managers
     {
         Task<BlogPost> GetBlogPostAsync(string id);
         Task<BlogPost> GetBlogPostBySlugAsync(string slug);
-        Task AddCommentAsync(string blogPostId, BlogPostComment blogPostComment);
     }
 }

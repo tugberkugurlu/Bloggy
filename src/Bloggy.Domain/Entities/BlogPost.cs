@@ -6,6 +6,12 @@ namespace Bloggy.Domain.Entities
 {
     public class BlogPost : ITrackable
     {
+        public BlogPost()
+        {
+            Tags = new Collection<Tag>();
+            Slugs = new Collection<Slug>();
+        }
+
         public string Id { get; set; }
         public string AuthorId { get; set; }
         public string Language { get; set; }
@@ -35,6 +41,7 @@ namespace Bloggy.Domain.Entities
     public class Slug
     {
         public string Path { get; set; }
+        public bool IsDefault { get; set; }
         public DateTimeOffset CreatedOn { get; set; }
     }
 }

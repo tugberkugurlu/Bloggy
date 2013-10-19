@@ -1,25 +1,50 @@
-﻿@{
-    ViewBag.Title = "View1";
+﻿@model Bloggy.Client.Web.ViewModels.BlogPostPageViewModel
+@{
+    ViewBag.Title = Model.BlogPost.Title;
     ReCaptcha.PrivateKey = ConfigurationManager.AppSettings[Constants.RecaptchaPrivateKeyAppSettingsKey];
     ReCaptcha.PublicKey = ConfigurationManager.AppSettings[Constants.RecaptchaPublicKeyAppSettingsKey];
 }
 
-<h2>@Request.RequestContext.RouteData.Values["slug"]</h2>
-
-<div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.Lorem ipsum dolor sit amet, consectetur adipiscing elit fusce vel sapien elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.</p>
+<div class="row blog-post-list-item">
+    <div class="span9 item-header">
+        <h4 class="title">
+            <a href="#">
+                <strong>@Model.BlogPost.Title</strong>
+            </a>
+        </h4>
+        <div class="brief-info">
+            @Model.BlogPost.BriefInfo
+        </div>
+        <div class="misc">
+            <div class="row">
+                <div class="span2 misc-item">
+                    <span><i class="icon-calendar-empty"></i> @Model.BlogPost.CreatedOn.ToString("yyyy-MM-dd HH:mm")</span>
+                </div>
+                <div class="span2 misc-item">
+                    <span><i class="icon-user"></i> Tugberk Ugurlu</span>
+                </div>
+                <div class="span5 misc-item">
+                    @foreach (Bloggy.Client.Web.Models.TagModel tag in Model.BlogPost.Tags)
+                    {
+                        <span class="badge badge-info">@tag.Name</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span9 content">
+        @Html.Raw(Model.BlogPost.Content)
+    </div>
 </div>
 
-<div>
-    <h3>@StringResources.Comments</h3>
-    @using (Html.BeginForm("Index", "BlogPost", new { slug = Request.RequestContext.RouteData.Values["slug"] }, FormMethod.Post, new { @class = "form-horizontal" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.Partial("_CommentFormPartial", new ViewDataDictionary { { "Id", 123 }, { "CommentType", "post" } })
-    }
-</div>
+@if (Model.BlogPost.AllowComments)
+{
+    <div>
+        <h3>@StringResources.Comments</h3>
+        @using (Html.BeginForm("Index", "BlogPost", new { slug = Request.RequestContext.RouteData.Values["slug"] }, FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Partial("_CommentFormPartial", new ViewDataDictionary { { "Id", 123 }, { "CommentType", "post" } })
+        }
+    </div>
+}

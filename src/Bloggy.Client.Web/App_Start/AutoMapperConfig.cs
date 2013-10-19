@@ -2,6 +2,7 @@
 using Bloggy.Client.Web.Areas.Admin.Models;
 using Bloggy.Client.Web.Areas.Admin.RequestModels;
 using Bloggy.Client.Web.Infrastructure.Mapping;
+using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.RequestModels;
 using Bloggy.Domain.Entities;
 using Bloggy.Wrappers.Akismet.RequestModels;
@@ -31,12 +32,16 @@ namespace Bloggy.Client.Web
 
             Mapper.CreateMap<BlogPostRequestModel, BlogPost>()
                 .ForMember(dest => dest.AllowComments, opt => opt.MapFrom(src => true))
-                .ForMember(dest => dest.Slugs, opt => opt.MapFrom(src => new Collection<Slug>(new[] { new Slug { Path = src.Title.ToSlug(), CreatedOn = DateTimeOffset.Now } })))
+                .ForMember(dest => dest.Slugs, opt => opt.MapFrom(src => new[] { new Slug { Path = src.Title.ToSlug(), IsDefault = true, CreatedOn = DateTimeOffset.Now } }))
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => new Tag { Name = tag, Slug = tag.ToSlug() })));
 
             Mapper.CreateMap<BlogPost, BlogPostModel>()
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Name)))
                 .ForMember(dest => dest.Slugs, opt => opt.MapFrom(src => src.Slugs.Select(slug => slug.Path)));
+
+            Mapper.CreateMap<BlogPostComment, BlogPostCommentModel>();
+            Mapper.CreateMap<BlogPost, BlogPostModelLight>();
+            Mapper.CreateMap<Tag, TagModel>();
         }
     }
 }
