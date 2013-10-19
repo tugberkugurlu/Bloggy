@@ -5,7 +5,6 @@ using AutoMapper;
 using Bloggy.Client.Web.Infrastructure.Logging;
 using Bloggy.Domain.Entities;
 using Bloggy.Domain.Indexes;
-using Bloggy.Domain.Managers;
 using Bloggy.Wrappers.Akismet;
 using Microsoft.AspNet.Identity;
 using Raven.Client;
@@ -53,13 +52,10 @@ namespace Bloggy.Client.Web
 
             builder.RegisterType<NLogLogger>().As<IMvcLogger>().SingleInstance();
             builder.Register(c => Mapper.Engine).As<IMappingEngine>().SingleInstance();
+            builder.Register(c => new AkismetClient(akismetApiKey, akismetBlog)).SingleInstance();
 
             builder.Register(c => new RavenUserStore<User>(c.Resolve<IAsyncDocumentSession>(), false)).As<IUserStore<User>>().InstancePerHttpRequest();
             builder.RegisterType<UserManager<User>>().InstancePerHttpRequest();
-
-            builder.Register(c => new AkismetClient(akismetApiKey, akismetBlog)).SingleInstance();
-            builder.RegisterType<BlogManager>().As<IBlogManager>().InstancePerHttpRequest();
-            builder.RegisterType<DynamicPageManager>().As<IDynamicPageManager>().InstancePerHttpRequest();
 
             return builder.Build();
         }

@@ -5,7 +5,6 @@ using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.RequestModels;
 using Bloggy.Client.Web.ViewModels;
 using Bloggy.Domain.Entities;
-using Bloggy.Domain.Managers;
 using Bloggy.Wrappers.Akismet;
 using Bloggy.Wrappers.Akismet.RequestModels;
 using Microsoft.Web.Helpers;
@@ -23,14 +22,12 @@ namespace Bloggy.Client.Web.Controllers
     public class BlogPostController : RavenController
     {
         private readonly IAsyncDocumentSession _documentSession;
-        private readonly IBlogManager _blogManager;
         private readonly AkismetClient _akismetClient;
         private readonly IMappingEngine _mapper;
 
-        public BlogPostController(IMvcLogger logger, IAsyncDocumentSession documentSession, IBlogManager blogManager, AkismetClient akismetClient, IMappingEngine mapper) : base(logger)
+        public BlogPostController(IMvcLogger logger, IAsyncDocumentSession documentSession, AkismetClient akismetClient, IMappingEngine mapper) : base(logger)
         {
             _documentSession = documentSession;
-            _blogManager = blogManager;
             _akismetClient = akismetClient;
             _mapper = mapper;
         }
@@ -107,7 +104,7 @@ namespace Bloggy.Client.Web.Controllers
             //       5-) If not spam, write the comment as OK into the right place.
 
             // 1-) Check whether the post/dynamic-page exists and comments enabled for that.
-            BlogPost blogPost = await _blogManager.GetBlogPostBySlugAsync(slug);
+            BlogPost blogPost = await RetrieveBlogPostAsync(slug);
             if(blogPost == null)
             {
                 Logger.Warn(string.Format("Blog post could not be found for comment post. Slug: {0}", slug));
