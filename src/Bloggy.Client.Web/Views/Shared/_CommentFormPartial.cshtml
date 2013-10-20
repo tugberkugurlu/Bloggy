@@ -1,7 +1,5 @@
 ﻿@model CommentPostRequestModel
     
-@Html.ValidationSummary(false)
-    
 <div class="control-group">
     @Html.LabelFor(model => model.CommentAuthorName, new { @class = "control-label" })
     <div class="controls">
@@ -26,6 +24,15 @@
         @Html.TextAreaFor(model => model.CommentContent, new { style = "width: 90%; max-width: 90%; height: 150px;" })
     </div>
 </div>
+
+@if (bool.Parse(ConfigurationManager.AppSettings[Constants.RecaptchaActiveAppSettingsKey]))
+{
+    <div class="control-group">
+        <div class="controls">
+            @ReCaptcha.GetHtml(theme: "white")
+        </div>
+    </div>
+}
     
 <div class="control-group">
     <button class="btn btn-info" type="submit">@StringResources.SendComment</button>

@@ -32,7 +32,18 @@
             </div>
         </div>
     </div>
+
     <div class="span9 content">
+        @{
+            bool result;
+            if (ViewBag.IsCommentSuccess != null && bool.TryParse(ViewBag.IsCommentSuccess.ToString(), out result) && result)
+            {
+                <div class="alert alert-success">
+                    Gratz! Your comment has been posted successfully!
+                </div>
+            }
+        }
+        @Html.ValidationSummary(false)
         @Html.Raw(Model.BlogPost.Content)
     </div>
 </div>
@@ -44,7 +55,8 @@
         @using (Html.BeginForm("Index", "BlogPost", new { slug = Request.RequestContext.RouteData.Values["slug"] }, FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()
-            @Html.Partial("_CommentFormPartial", new ViewDataDictionary { { "Id", 123 }, { "CommentType", "post" } })
+
+            @Html.Partial("_CommentFormPartial", Model.CommentPostRequestModel, new ViewDataDictionary { { "Id", 123 }, { "CommentType", "post" } })
         }
     </div>
 }

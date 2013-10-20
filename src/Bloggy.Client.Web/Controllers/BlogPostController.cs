@@ -67,18 +67,7 @@ namespace Bloggy.Client.Web.Controllers
             if (defaultSlug.Path.Equals(slug, StringComparison.InvariantCultureIgnoreCase))
             {
                 // 3.1-) If it's the default slug, retrieve the comments and return the view model.
-                IEnumerable<BlogPostComment> comments = await _documentSession.Query<BlogPostComment>()
-                    .Where(comment => comment.BlogPostId == blogPost.Id && comment.IsSpam == false && comment.IsApproved == true)
-                    .ToListAsync();
-
-                BlogPostPageViewModel viewModel = new BlogPostPageViewModel 
-                {
-                    BlogPost = _mapper.Map<BlogPost, BlogPostModelLight>(blogPost),
-                    Comments = _mapper.Map<IEnumerable<BlogPostComment>, IEnumerable<BlogPostCommentModel>>(comments)
-                };
-
-                viewModel.BlogPost.Slug = defaultSlug.Path;
-
+                BlogPostPageViewModel viewModel = await ConstructBlogPostViewModelWithCommentsAsync(blogPost, defaultSlug.Path);
                 return View(viewModel);
             }
             else
@@ -111,6 +100,8 @@ namespace Bloggy.Client.Web.Controllers
                 return HttpNotFound();
             }
 
+            BlogPostPageViewModel viewModel = await ConstructBlogPostViewModelWithCommentsAsync(blogPost, slug);
+
             // 2-) Blog post exists. Check whether model state is valid.
             if (ModelState.IsValid)
             {
@@ -134,14 +125,14 @@ namespace Bloggy.Client.Web.Controllers
                     BlogPostComment blogPostComment = ConstructBlogPostComment(blogPost, requestModel, isSpam);
                     await _documentSession.StoreAsync(blogPostComment);
                     await _documentSession.SaveChangesAsync();
-
                     ViewBag.IsCommentSuccess = true;
 
-                    return View();
+                    return View(viewModel);
                 }
             }
 
-            return View(requestModel);
+            viewModel.CommentPostRequestModel = requestModel;
+            return View(viewModel);
         }
 
         // private helpers
@@ -155,6 +146,23 @@ namespace Bloggy.Client.Web.Controllers
 
             BlogPost blogPost = blogPosts.FirstOrDefault();
             return blogPost;
+        }
+
+        private async Task<BlogPostPageViewModel> ConstructBlogPostViewModelWithCommentsAsync(BlogPost blogPost, string defaultSlug)
+        {
+            IEnumerable<BlogPostComment> comments = await _documentSession.Query<BlogPostComment>()
+                .Where(comment => comment.BlogPostId == blogPost.Id && comment.IsSpam == false && comment.IsApproved == true)
+                .ToListAsync();
+
+            BlogPostPageViewModel viewModel = new BlogPostPageViewModel
+            {
+                BlogPost = _mapper.Map<BlogPost, BlogPostModelLight>(blogPost),
+                Comments = _mapper.Map<IEnumerable<BlogPostComment>, IEnumerable<BlogPostCommentModel>>(comments)
+            };
+
+            viewModel.BlogPost.Slug = defaultSlug;
+
+            return viewModel;
         }
 
         private BlogPostComment ConstructBlogPostComment(BlogPost blogPost, CommentPostRequestModel requestModel, bool isSpam)
