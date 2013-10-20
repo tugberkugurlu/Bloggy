@@ -53,9 +53,7 @@ namespace Bloggy.Client.Web.Controllers
             }
 
             // 3-) If found, look for the default slug.
-            Slug defaultSlug = blogPost.Slugs
-                .OrderByDescending(slugEntity => slugEntity.CreatedOn)
-                .FirstOrDefault(slugEntity => slugEntity.IsDefault == true);
+            Slug defaultSlug = blogPost.DefaultSlug;
 
             if (defaultSlug == null)
             {
