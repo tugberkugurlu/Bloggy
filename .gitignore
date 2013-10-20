@@ -109,4 +109,5 @@ UpgradeLog*.XML
 
 # Custom
 tests/*/[Aa]pp.config
+utils/*/[Aa]pp.config
 appSettings.web.*
