@@ -40,6 +40,7 @@ namespace Bloggy.Client.Web
         private static string GenerateSlug(string phrase)
         {
             string result = RemoveAccent(phrase).ToLowerInvariant();
+            result = result.Trim('-', '.');
             result = result.Replace('.', '-');
             result = result.Replace("#", "-sharp");
             result = Regex.Replace(result, @"[^a-z0-9\s-]", string.Empty); // remove invalid characters

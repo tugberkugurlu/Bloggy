@@ -197,7 +197,7 @@ namespace Bloggy.Client.Web.Controllers
                 AkismetResponse<bool> akismetResponse = await _akismetClient.CheckCommentAsync(akismetComment);
                 if (akismetResponse.IsSuccessStatusCode)
                 {
-                    isSpam = !akismetResponse.Entity;
+                    isSpam = akismetResponse.Entity;
                 }
                 else
                 {
