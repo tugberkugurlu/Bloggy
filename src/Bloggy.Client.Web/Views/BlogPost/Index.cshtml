@@ -55,7 +55,12 @@
         <div class="span9">
             <div class="comment-container blog-post-comment-container @if(comment.IsByAuthor){<text>comment-container-by-author</text>}">
                 <div class="comment-gravatar-container">
-                    <img src="@string.Format("http://www.gravatar.com/avatar/{0}?s=80&d=identicon", comment.GravatarHash)" alt="@comment.Name" />
+                    <div class="visible-desktop">
+                        <img src="@string.Format("http://www.gravatar.com/avatar/{0}?s={1}&d=identicon", comment.GravatarHash, 80)" alt="@comment.Name" />
+                    </div>
+                    <div class="visible-tablet visible-phone">
+                        <img src="@string.Format("http://www.gravatar.com/avatar/{0}?s={1}&d=identicon", comment.GravatarHash, 60)" alt="@comment.Name" />
+                    </div>
                 </div>
                 <div class="comment-content-container">
                     <div class="comment-content-header">
