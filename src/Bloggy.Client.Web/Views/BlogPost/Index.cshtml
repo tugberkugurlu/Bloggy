@@ -48,10 +48,41 @@
     </div>
 </div>
 
+<div class="row comment-list-container blog-post-comment-list-container">
+    <h3>@StringResources.Comments</h3>
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="span9">
+            <div class="comment-container blog-post-comment-container @if(comment.IsByAuthor){<text>comment-container-by-author</text>}">
+                <div class="comment-gravatar-container">
+                    <img src="@string.Format("http://www.gravatar.com/avatar/{0}?s=80&d=identicon", comment.GravatarHash)" alt="@comment.Name" />
+                </div>
+                <div class="comment-content-container">
+                    <div class="comment-content-header">
+                        @if (!string.IsNullOrWhiteSpace(comment.Url))
+                        {
+                            @:<strong>by</strong> <a href="@comment.Url">@comment.Name</a>
+                        }
+                        else
+                        {
+                            @:<strong>by</strong> @comment.Name
+                        }
+                        <strong>on</strong> @comment.CreatedOn.ToString("dddd, MMM dd yyyy HH:mm:ss zzz")
+                    </div>
+                    <div class="comment-content">
+                        @Html.Raw(comment.Content)
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    }
+</div>
+
 @if (Model.BlogPost.AllowComments)
 {
     <div>
-        <h3>@StringResources.Comments</h3>
+        <h3>@StringResources.PostNewComment</h3>
         @using (Html.BeginForm("Index", "BlogPost", new { slug = Request.RequestContext.RouteData.Values["slug"] }, FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()

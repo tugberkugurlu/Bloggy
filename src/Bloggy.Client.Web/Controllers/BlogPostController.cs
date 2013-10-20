@@ -151,6 +151,7 @@ namespace Bloggy.Client.Web.Controllers
         private async Task<BlogPostPageViewModel> ConstructBlogPostViewModelWithCommentsAsync(BlogPost blogPost, string defaultSlug)
         {
             IEnumerable<BlogPostComment> comments = await _documentSession.Query<BlogPostComment>()
+                .OrderBy(comment => comment.CreatedOn)
                 .Where(comment => comment.BlogPostId == blogPost.Id && comment.IsSpam == false && comment.IsApproved == true)
                 .ToListAsync();
 

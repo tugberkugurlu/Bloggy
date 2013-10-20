@@ -14,6 +14,7 @@ namespace Bloggy.Client.Web
         private static readonly Regex HtmlTagExpression = new Regex(@"(?'tag_start'</?)(?'tag'\w+)((\s+(?'attr'(?'attr_name'\w+)(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+)))?)+\s*|\s*)(?'tag_end'/?>)", RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex WhiteSpaceBetweenHtmlTagsExpression = new Regex(@">(/w+)<", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex HtmlLineBreakExpression = new Regex(@"<br(/s+)/>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex UrlExpression = new Regex(@"(http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?", RegexOptions.Compiled);
 
         private static readonly IDictionary<string, IEnumerable<string>> ValidHtmlTags = 
             new Dictionary<string, IEnumerable<string>>
@@ -67,10 +68,10 @@ namespace Bloggy.Client.Web
 
                 StringBuilder generatedTag = new StringBuilder(m.Length);
 
-                System.Text.RegularExpressions.Group tagStart = m.Groups["tag_start"];
-                System.Text.RegularExpressions.Group tagEnd = m.Groups["tag_end"];
-                System.Text.RegularExpressions.Group tag = m.Groups["tag"];
-                System.Text.RegularExpressions.Group tagAttributes = m.Groups["attr"];
+                Group tagStart = m.Groups["tag_start"];
+                Group tagEnd = m.Groups["tag_end"];
+                Group tag = m.Groups["tag"];
+                Group tagAttributes = m.Groups["attr"];
 
                 generatedTag.Append(tagStart.Success ? tagStart.Value : "<");
                 generatedTag.Append(tag.Value);
@@ -78,9 +79,10 @@ namespace Bloggy.Client.Web
                 foreach (Capture attr in tagAttributes.Captures)
                 {
                     int indexOfEquals = attr.Value.IndexOf('=');
+                    int indexOfJavaScript = attr.Value.IndexOf("javascript:", StringComparison.InvariantCultureIgnoreCase);
 
-                    // don't proceed any futurer if there is no equal sign or just an equal sign
-                    if (indexOfEquals < 1)
+                    // don't proceed any futurer if there is no equal sign or just an equal sign or 'javascript:'.
+                    if (indexOfEquals < 1 || indexOfJavaScript > -1)
                     {
                         continue;
                     }

@@ -70,6 +70,15 @@ namespace Bloggy.Client.Web {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Comment.
+        /// </summary>
+        public static string PostNewComment {
+            get {
+                return ResourceManager.GetString("PostNewComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send Comment.
         /// </summary>
         public static string SendComment {

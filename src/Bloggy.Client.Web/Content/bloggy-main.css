@@ -82,6 +82,25 @@
   padding-bottom: 0;
   margin-bottom: 0;
 }
+.comment-list-container .comment-container {
+  padding: 10px;
+  margin-bottom: 5px;
+  border: 1px solid #CCCCCC;
+  background-color: #E9F7FD;
+}
+.comment-list-container .comment-container .comment-gravatar-container {
+  float: left;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+.comment-list-container .comment-container .comment-content-container .comment-content-header {
+  padding-bottom: 10px;
+  font-style: italic;
+}
+.comment-list-container .comment-container-by-author {
+  border: 1px solid #E7D59C;
+  background-color: #FBFFD4;
+}
 .form-horizontal .control-label {
   text-align: left;
 }
