@@ -54,8 +54,8 @@ namespace Bloggy.Client.Web
             builder.Register(c => Mapper.Engine).As<IMappingEngine>().SingleInstance();
             builder.Register(c => new AkismetClient(akismetApiKey, akismetBlog)).SingleInstance();
 
-            builder.Register(c => new RavenUserStore<User>(c.Resolve<IAsyncDocumentSession>(), false)).As<IUserStore<User>>().InstancePerHttpRequest();
-            builder.RegisterType<UserManager<User>>().InstancePerHttpRequest();
+            builder.Register(c => new RavenUserStore<BlogUser>(c.Resolve<IAsyncDocumentSession>(), false)).As<IUserStore<BlogUser>>().InstancePerHttpRequest();
+            builder.RegisterType<UserManager<BlogUser>>().InstancePerHttpRequest();
 
             return builder.Build();
         }

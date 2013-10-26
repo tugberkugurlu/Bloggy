@@ -182,28 +182,6 @@ namespace Bloggy.Client.Web.Migrator
         }
     }
 
-    public class Comment 
-    {
-        public int Id { get; set; }
-        public int BlogID { get; set; }
-        public string CommentAuthorName { get; set; }
-        public string CommentAuthorEmail { get; set; }
-        public bool IsAuthor { get; set; }
-        public bool IsApproved { get; set; }
-    }
-
-    public class Blog
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string BriefInfo { get; set; }
-        public string Content { get; set; }
-        public string[] Tags { get; set; }
-        public bool IsApproved { get; set; }
-        public DateTimeOffset CreatedOn { get; set; }
-        public string CreationIp { get; set; }
-    }
-
     public static class Extensions
     {
         public static IEnumerable<T> Select<T>(this SqlDataReader reader, Func<SqlDataReader, T> projection)

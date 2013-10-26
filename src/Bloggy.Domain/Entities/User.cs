@@ -2,7 +2,7 @@
 
 namespace Bloggy.Domain.Entities
 {
-    public class User : RavenUser
+    public class BlogUser : RavenUser
     {
         public Author Author { get; set; }
     }

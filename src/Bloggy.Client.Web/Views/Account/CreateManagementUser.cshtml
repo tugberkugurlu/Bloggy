@@ -1,0 +1,60 @@
+﻿@model ManagementUserRequestModel
+@{
+    ViewBag.Title = "CreateManagementUser";
+}
+
+
+<h2>@StringResources.CreateManagementUserPageHeading</h2>
+
+<div class="alert alert-info">
+    <i class="icon-exclamation"></i> @StringResources.CreateManagementUserAllowedMessage
+</div>
+
+<div class="row">
+    <div class="span9">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(false)
+            
+            <div>
+                <div class="row">
+                    <div class="span2">
+                        @Html.DisplayNameFor(model => model.Username)
+                    </div>
+                    <div class="span7">
+                        @Html.EditorFor(model => model.Username)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        @Html.DisplayNameFor(model => model.Email)
+                    </div>
+                    <div class="span7">
+                        @Html.EditorFor(model => model.Email)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        @Html.DisplayNameFor(model => model.Password)
+                    </div>
+                    <div class="span7">
+                        @Html.EditorFor(model => model.Password)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        @Html.DisplayNameFor(model => model.PasswordConfirm)
+                    </div>
+                    <div class="span7">
+                        @Html.EditorFor(model => model.PasswordConfirm)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span9">
+                        <button type="submit" class="btn btn-info">@StringResources.CreateUserButtonLabel</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

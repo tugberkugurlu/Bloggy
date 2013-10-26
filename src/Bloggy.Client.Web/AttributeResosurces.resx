@@ -129,4 +129,16 @@
   <data name="CommentPostRequestModel_CommentContent" xml:space="preserve">
     <value>Comment Text</value>
   </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>E-mail Address</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordConfirm" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
 </root>

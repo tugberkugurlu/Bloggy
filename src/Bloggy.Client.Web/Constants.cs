@@ -14,4 +14,10 @@ namespace Bloggy.Client.Web
         public const string RavenDbUrlAppSettingsKey = "ravendb:url";
         public const string RavenDbDefaultDatabaseAppSettingsKey = "ravendb:defaultDatabase";
     }
+
+    public static class ApplicationRoles
+    {
+        public const string AdminRole = "Admin";
+        public const string AuthorRole = "Author";
+    }
 }

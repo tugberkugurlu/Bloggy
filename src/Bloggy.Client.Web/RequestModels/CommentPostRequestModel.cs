@@ -28,6 +28,7 @@ namespace Bloggy.Client.Web.RequestModels
         [Display(ResourceType = typeof(AttributeResosurces), Name = "CommentPostRequestModel_CommentContent")]
         public string CommentContent { get; set; }
 
+        [ScaffoldColumn(false)]
         public string SanitizedCommentContent 
         { 
             get 

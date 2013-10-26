@@ -43,8 +43,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AspNet.Identity.RavenDB">
-      <HintPath>..\..\packages\AspNet.Identity.RavenDB.1.0.0-pre03\lib\net45\AspNet.Identity.RavenDB.dll</HintPath>
+    <Reference Include="AspNet.Identity.RavenDB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AspNet.Identity.RavenDB.1.0.0-pre05\lib\net45\AspNet.Identity.RavenDB.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.1.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
