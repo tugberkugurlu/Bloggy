@@ -1,4 +1,4 @@
-@model Bloggy.Client.Web.Models.BlogPostModelLight
+﻿@model Bloggy.Client.Web.Models.BlogPostModelLight
 <div class="row blog-post-list-item">
     <div class="span9 item-header">
         <h4 class="title">
@@ -16,7 +16,9 @@
                     <div class="span5 misc-item" style="float:right;">
                         @foreach (var tag in Model.Tags)
                         {
-                            <span class="label label-default">@tag.Name</span>
+                            <span class="label label-default">
+                                <a href="tags/@tag.Slug" style="color:white">@tag.Name</a>
+                            </span>
                         }
                     </div>
                 </div>

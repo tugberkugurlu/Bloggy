@@ -492,7 +492,6 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_RightSidePartial.cshtml" />
     <Content Include="Views\Shared\_TopHeaderPartial.cshtml" />
-    <Content Include="Views\Default\_BlogPostListItemPartial.cshtml" />
     <Content Include="Views\Default\_SamplePostPartial.cshtml" />
     <Content Include="Views\Shared\_CommentFormPartial.cshtml" />
     <Content Include="Views\BlogPost\Index.cshtml" />
@@ -508,6 +507,8 @@
     <Content Include="Views\Tags\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Shared\_BlogPostListPartial.cshtml" />
+    <Content Include="Views\Shared\_BlogPostListItemPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

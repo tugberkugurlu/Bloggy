@@ -1,10 +1,6 @@
-@model Bloggy.Client.Web.ViewModels.TagsViewModel
+@model Bloggy.Client.Web.ViewModels.HomeViewModel
+@{
+    ViewBag.Title = "Index";
+}
 
-<div class="span5 misc-item">
-    @foreach (var tag in Model.Tags)
-    {
-        <span class="badge badge-info">
-            @tag.Name (@tag.Count) - (@tag.Slug) - (@tag.LastSeenAt)
-        </span>
-    }
-</div>
+@Html.Partial("_BlogPostListPartial", Model)

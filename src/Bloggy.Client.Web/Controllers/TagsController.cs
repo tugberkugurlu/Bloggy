@@ -19,6 +19,7 @@ namespace Bloggy.Client.Web.Controllers
     {
         private readonly IAsyncDocumentSession _documentSession;
         private readonly IMappingEngine _mapper;
+        private readonly int _defaultPageSize = 5;
 
         public TagsController(IMvcLogger logger, IAsyncDocumentSession documentSession, IMappingEngine mapper)
             : base(logger)
@@ -27,38 +28,60 @@ namespace Bloggy.Client.Web.Controllers
             _documentSession = documentSession;
             _mapper = mapper;
         }
-   
-        // HTTP GET /tags
-        public async Task<ActionResult> Index()
-        {
-            var tags = await RetrieveTagsAsync();
 
-            if (tags.Count() < 1)
+        public async Task<ActionResult> Index(string slug, int pageNumber = 1)
+        {
+            if (pageNumber < 1)
             {
-                return HttpNotFound();
+                return HttpNotFound("Given page number not found");
             }
 
-            TagsViewModel viewModel = await ConstructorTagsViewModelAsync(tags);
+            IList<BlogPost> blogPosts = await RetrieveBlogPostsByTagAsync(slug, pageNumber);
+            IList<BlogPostModelLight> lightBlogPosts = _mapper.Map<IList<BlogPost>, IList<BlogPostModelLight>>(blogPosts);
 
-            return View(viewModel);
-        }
-
-        private async Task<TagsViewModel> ConstructorTagsViewModelAsync(IEnumerable<Tags_Count.ReduceResult> tagsCount)
-        {
-            return new TagsViewModel()
+            PagerModel pagerModel = await InitializePagerAsync(slug, pageNumber);
+            HomeViewModel homeViewModel = new HomeViewModel()
             {
-                Tags = _mapper.Map<IEnumerable<Tags_Count.ReduceResult>, IEnumerable<TagModel>>(tagsCount)
+                BlogPosts = lightBlogPosts,
+                PagerModel = pagerModel
             };
+
+            return View(homeViewModel);
         }
 
-        private async Task<IEnumerable<Tags_Count.ReduceResult>> RetrieveTagsAsync()
+        private async Task<PagerModel> InitializePagerAsync(string tagSlug, int pageNumber)
         {
-            IList<Tags_Count.ReduceResult> tags= await _documentSession
-                .Query<Tags_Count.ReduceResult, Tags_Count>()
-                .OrderByDescending(tag => tag.Count)
-                .ToListAsync();
+            PagerModel pagerModel = new PagerModel();
 
-            return tags;
+            if (pageNumber == 1)
+            {
+                pagerModel.IsNewerDisabled = true;
+                pagerModel.IsOlderDisabled = await GetPostsByTagRavenQuery(tagSlug, pageNumber + 1).AnyAsync();
+            }
+            else
+            {
+                pagerModel.IsNewerDisabled = await GetPostsByTagRavenQuery(tagSlug, pageNumber - 1).AnyAsync();
+                pagerModel.IsOlderDisabled = await GetPostsByTagRavenQuery(tagSlug, pageNumber + 1).AnyAsync();
+            }
+
+            pagerModel.CurrentPage = pageNumber;
+            return pagerModel;
+        }
+
+        private IQueryable<BlogPost> GetPostsByTagRavenQuery(string tagSlug, int pageNumber)
+        {
+            return _documentSession.Query<BlogPost>()
+                            .Where(t => t.IsApproved == true && t.Tags.Any(tag => tag.Slug == tagSlug))
+                            .OrderByDescending(t => t.CreatedOn)
+                            .Skip((pageNumber - 1) * _defaultPageSize)
+                            .Take(_defaultPageSize);
+        }
+
+        private async Task<IList<BlogPost>> RetrieveBlogPostsByTagAsync(string tagSlug, int pageNumber)
+        {
+            IList<BlogPost> blogPosts = await GetPostsByTagRavenQuery(tagSlug, pageNumber).ToListAsync();
+
+            return blogPosts;
         }
     }
 }
