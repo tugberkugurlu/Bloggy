@@ -73,6 +73,7 @@
     <Compile Include="Entities\IComment.cs" />
     <Compile Include="Entities\ITrackable.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Indexes\BlogPosts_WithCommentsCount.cs" />
     <Compile Include="Indexes\Tags_Count.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtensions.cs" />
