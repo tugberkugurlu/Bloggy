@@ -39,5 +39,23 @@ namespace Bloggy.Client.Web.Controllers
 
             return new RssFeedResult(feed);
         }
+
+        [OutputCache(Duration = 900, VaryByParam = "tagSlug")]
+        public async Task<RssFeedResult> RssByTagSlug(string tagSlug)
+        {
+            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPost>()
+                .OrderByDescending(post => post.CreatedOn)
+                .Where(post => post.IsApproved == true)
+                .Where(post => post.Tags.Any(t=> t.Slug == tagSlug))
+                .Take(20) 
+                .ToListAsync();
+
+            IEnumerable<SyndicationItem> syndicationItems = blogPosts.Where(post => post.DefaultSlug != null).Select(post =>
+                new SyndicationItem(post.Title, post.Content, new Uri(string.Format(BlogPostUriFormat, post.DefaultSlug.Path)), post.Id, post.CreatedOn));
+
+            SyndicationFeed feed = new SyndicationFeed("Tugberk Ugurlu's Blog", null, new Uri(BlogPostHostUri), syndicationItems);
+
+            return new RssFeedResult(feed);
+        }
     }
 }
