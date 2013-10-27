@@ -7,26 +7,30 @@
             </a>
         </h4>
         <div class="brief-info">
-            Learn how easy to scale out SignalR with a Redis backplane and simulate a local web farm scenario with IIS Express
+            @Model.BriefInfo
         </div>
         <div class="misc">
             <div class="row">
                 <div class="span2 misc-item">
-                    <span><i class="icon-calendar-empty"></i> 2013-09-23 15:45</span>
+                    <span><i class="icon-calendar-empty"></i> @Model.CreatedOn.ToString("G")</span>
                 </div>
                 <div class="span2 misc-item">
                     <span><i class="icon-user"></i> Tugberk Ugurlu</span>
                 </div>
                 <div class="span5 misc-item">
-                    <span class="badge badge-info">SignalR</span>
-                    <span class="badge badge-info">Redis</span>
-                    <span class="badge badge-info">ASP.NET</span>
-                    <span class="badge badge-info">ASP.NET Web API</span>
+                    @foreach (Bloggy.Client.Web.Models.TagModel tag in Model.Tags)
+                    {
+                        <span class="badge badge-info">
+                            @*<a href="@tag.Slug">@tag.Name</a>*@
+                            @tag.Name
+                        </span>
+                    }
                 </div>
             </div>
         </div>
     </div>
     <div class="span9 content">
-        @Html.Partial("_SamplePostPartial")
+        @Html.Raw(Model.Content)
     </div>
+    <a href="#">Messages <span class="badge">3</span></a>
 </div>

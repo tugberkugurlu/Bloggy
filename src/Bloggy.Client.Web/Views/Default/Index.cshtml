@@ -1,6 +1,44 @@
+﻿@model Bloggy.Client.Web.ViewModels.HomeViewModel
 @{
     ViewBag.Title = "Index";
 }
 
-@Html.Partial("_BlogPostListItemPartial", new Bloggy.Client.Web.Models.BlogPostModelLight { Title = "Scaling out SignalR with a Redis Backplane and Testing It with IIS Express" })
-@Html.Partial("_BlogPostListItemPartial", new Bloggy.Client.Web.Models.BlogPostModelLight { Title = "Getting Started With OWIN and the Katana Stack" })
+@if (Model != null)
+{
+    foreach (Bloggy.Client.Web.Models.BlogPostModelLight post in Model.BlogPosts)
+    {
+        @Html.Partial("_BlogPostListItemPartial", post)
+    }
+}
+@if (Model.PagerModel != null)
+{
+    <ul class="pager">
+        @if (Model.PagerModel.IsOlderDisabled)
+        {
+            <li class="previous disabled">
+                <a href="#">← Older</a>
+            </li>
+        }
+        else
+        {
+            int olderPage = Model.PagerModel.CurrentPage + 1;
+            <li class="previous">
+                <a href="/@olderPage">← Older</a>
+            </li>
+        }
+
+        @if (Model.PagerModel.IsNewerDisabled)
+        {
+            <li class="next disabled">
+                <a href="#">Newer →</a>
+            </li>
+        }
+        else
+        {
+            int newerPage = Model.PagerModel.CurrentPage - 1;
+            <li class="next">
+                <a href="/@newerPage">Newer →</a>
+            </li>
+        }
+    </ul>
+}

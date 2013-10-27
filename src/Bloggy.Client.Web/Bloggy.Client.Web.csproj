@@ -474,6 +474,7 @@
     <Compile Include="Models\BlogPostCommentModel.cs" />
     <Compile Include="Models\BlogPostModelLight.cs" />
     <Compile Include="Models\LanguageModel.cs" />
+    <Compile Include="Models\PagerModel.cs" />
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="RequestModels\BaseUserRequestModel.cs" />
     <Compile Include="RequestModels\CommentPostRequestModel.cs" />

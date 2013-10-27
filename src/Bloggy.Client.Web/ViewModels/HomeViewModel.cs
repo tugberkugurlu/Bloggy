@@ -8,6 +8,7 @@ namespace Bloggy.Client.Web.ViewModels
 {
     public class HomeViewModel
     {
+        public PagerModel PagerModel { get; set; }
         public IEnumerable<BlogPostModelLight> BlogPosts { get; set; }
     }
 }
