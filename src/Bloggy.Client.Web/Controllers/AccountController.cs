@@ -58,6 +58,7 @@ namespace Bloggy.Client.Web.Controllers
 
         [HttpPost]
         [ActionName("CreateManagementUser")]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateManagementUserPost(ManagementUserRequestModel requestModel)
         {
@@ -82,6 +83,7 @@ namespace Bloggy.Client.Web.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(blogUser, isPersistent: false);
+                    return RedirectToAction("Index", "Default");
                 }
                 else
                 {
@@ -93,9 +95,12 @@ namespace Bloggy.Client.Web.Controllers
             return View(requestModel);
         }
 
-        public ActionResult ChangePassword()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
         {
-            return View();
+            AuthenticationManager.SignOut();
+            return RedirectToAction("Index", "Default");
         }
 
         // private helpers
