@@ -122,6 +122,12 @@
       <HintPath>..\..\packages\RavenDB.Client.2.5.2700\lib\net45\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -135,6 +141,14 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -201,6 +215,7 @@
     <Content Include="Content\font\glyphicons-halflings-regular.eot" />
     <Content Include="Content\font\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\font\glyphicons-halflings-regular.woff" />
+    <Content Include="wlwmanifest.xml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -397,16 +412,46 @@
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Infrastructure\ActionResults\FeedResult.cs" />
     <Compile Include="Infrastructure\ActionResults\RssFeedResult.cs" />
+    <Compile Include="Infrastructure\AtomPub\AtomExtensions.cs" />
+    <Compile Include="Infrastructure\AtomPub\Dispatchers\AtomPubServiceDocumentDispatcher.cs" />
+    <Compile Include="Infrastructure\AtomPub\Formatters\AtomPubCategoryMediaTypeFormatter.cs" />
+    <Compile Include="Infrastructure\AtomPub\Formatters\AtomPubMediaFormatter.cs" />
+    <Compile Include="Infrastructure\AtomPub\HttpConfiguartionAtomPubExtensions.cs" />
+    <Compile Include="Infrastructure\AtomPub\IPublication.cs" />
+    <Compile Include="Infrastructure\AtomPub\IPublicationCategoriesDocument.cs" />
+    <Compile Include="Infrastructure\AtomPub\IPublicationCategory.cs" />
+    <Compile Include="Infrastructure\AtomPub\IPublicationCommand.cs" />
+    <Compile Include="Infrastructure\AtomPub\IPublicationFeed.cs" />
+    <Compile Include="Infrastructure\AtomPub\IPublicationMedia.cs" />
+    <Compile Include="Infrastructure\AtomPub\Models\AddPostCommand.cs" />
+    <Compile Include="Infrastructure\AtomPub\Models\TagModel.cs" />
+    <Compile Include="Infrastructure\AtomPub\Models\UpdatePostCommand.cs" />
+    <Compile Include="Infrastructure\AtomPub\PublicationCategory.cs" />
     <Compile Include="Infrastructure\Extensions\NumericExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\StringExtensions.cs" />
+    <Compile Include="Infrastructure\Hypermedia\EditLink.cs" />
+    <Compile Include="Infrastructure\Hypermedia\HttpConfiguartionHypermediaExtensions.cs" />
+    <Compile Include="Infrastructure\Hypermedia\IResponseEnricher.cs" />
+    <Compile Include="Infrastructure\Hypermedia\Link.cs" />
+    <Compile Include="Infrastructure\AtomPub\Hypermedia\MediaResponseEnricher.cs" />
+    <Compile Include="Infrastructure\AtomPub\Hypermedia\PostResponseEnricher.cs" />
+    <Compile Include="Infrastructure\Hypermedia\MessageHandlers\EnrichingHandler.cs" />
+    <Compile Include="Infrastructure\Hypermedia\SelfLink.cs" />
     <Compile Include="Infrastructure\Identity\UserManagerRoleExtensions.cs" />
     <Compile Include="Infrastructure\Mapping\IntTypeConverter.cs" />
     <Compile Include="Infrastructure\Mapping\NullIntTypeConverter.cs" />
+    <Compile Include="Infrastructure\AtomPub\MessageHandlers\WlwMessageHandler.cs" />
     <Compile Include="Infrastructure\RavenController.cs" />
     <Compile Include="Infrastructure\HtmlSanitizationUtility.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Logging\NLogLogger.cs" />
+    <Compile Include="Infrastructure\SafeCollection.cs" />
     <Compile Include="Infrastructure\Validation\OptionsAttribute.cs" />
+    <Compile Include="Infrastructure\AtomPub\Models\MediaModel.cs" />
+    <Compile Include="Infrastructure\AtomPub\Models\Post.cs" />
+    <Compile Include="Infrastructure\AtomPub\Models\PostFeed.cs" />
+    <Compile Include="Infrastructure\AtomPub\Models\PostModel.cs" />
+    <Compile Include="Infrastructure\AtomPub\Models\Resource.cs" />
     <Compile Include="Models\AuthorModel.cs" />
     <Compile Include="Models\BlogPostCommentModel.cs" />
     <Compile Include="Models\BlogPostModelLight.cs" />

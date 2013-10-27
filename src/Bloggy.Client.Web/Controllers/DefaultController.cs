@@ -4,6 +4,7 @@ using Bloggy.Client.Web.Infrastructure.Logging;
 using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.ViewModels;
 using Bloggy.Domain.Entities;
+using Bloggy.Domain.Indexes;
 using Raven.Client;
 using System;
 using System.Collections;
