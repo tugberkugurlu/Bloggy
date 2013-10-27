@@ -18,7 +18,7 @@
                     <span><i class="icon-user"></i>Tugberk Ugurlu</span>
                 </div>
                 <div class="span5 misc-item">
-                    @foreach (Bloggy.Client.Web.Models.TagModel tag in Model.BlogPost.Tags)
+                    @foreach (Bloggy.Client.Web.Models.TagModel tag in Model.Tags)
                     {
                         <span class="badge badge-info">@Html.ActionLink(tag.Name, "Default", "GetByTag", new { tagName = tag.Name })</span>
                     }
