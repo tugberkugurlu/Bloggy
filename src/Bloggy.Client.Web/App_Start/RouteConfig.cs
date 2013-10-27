@@ -15,7 +15,7 @@ namespace Bloggy.Client.Web
 
             routes.MapRoute(
                 name: "ArchiveRoute",
-                url: "archive/{slug}",
+                url: "post/{slug}",
                 defaults: new { controller = "BlogPost", action = "Index" }
             );
 
