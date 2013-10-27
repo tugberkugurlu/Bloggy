@@ -40,7 +40,8 @@ namespace Bloggy.Client.Web
                 .ForMember(dest => dest.Slugs, opt => opt.MapFrom(src => src.Slugs.Select(slug => slug.Path)));
 
             Mapper.CreateMap<BlogPostComment, BlogPostCommentModel>();
-            Mapper.CreateMap<BlogPost, BlogPostModelLight>();
+            Mapper.CreateMap<BlogPost, BlogPostModelLight>()
+                .ForMember(dest => dest.Slug, opt => opt.MapFrom(src => src.Slugs.Select(slug => slug.Path).FirstOrDefault()));
             Mapper.CreateMap<Tag, TagModel>();
         }
     }

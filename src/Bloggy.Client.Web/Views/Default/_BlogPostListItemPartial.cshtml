@@ -2,35 +2,29 @@
 <div class="row blog-post-list-item">
     <div class="span9 item-header">
         <h4 class="title">
-            <a href="#">
+            <a href="/archive/@Model.Slug">
                 <strong>@Model.Title</strong>
             </a>
         </h4>
-        <div class="brief-info">
+        <div class="text-info text-info-custom">
             @Model.BriefInfo
         </div>
         <div class="misc">
             <div class="row">
-                <div class="span2 misc-item">
-                    <span><i class="icon-calendar-empty"></i> @Model.CreatedOn.ToString("G")</span>
-                </div>
-                <div class="span2 misc-item">
-                    <span><i class="icon-user"></i> Tugberk Ugurlu</span>
-                </div>
-                <div class="span5 misc-item">
-                    @foreach (Bloggy.Client.Web.Models.TagModel tag in Model.Tags)
-                    {
-                        <span class="badge badge-info">
-                            @*<a href="@tag.Slug">@tag.Name</a>*@
-                            @tag.Name
-                        </span>
-                    }
+                <div class="well well-sm well-sm-custom">
+                    @Model.CreatedOn.ToString("yyyy-MM-dd HH:mm"), Tugberk Ugurlu
+                    <div class="span5 misc-item" style="float:right;">
+                        @foreach (Bloggy.Client.Web.Models.TagModel tag in Model.Tags)
+                        {
+                            <span class="label label-default">@tag.Name</span>
+                        }
+                    </div>
                 </div>
             </div>
+            <div class="span9 content">
+                @Html.Raw(Model.Content)
+            </div>
+            <a href="/archive/@Model.Slug">Messages <span class="badge">3</span></a>
         </div>
     </div>
-    <div class="span9 content">
-        @Html.Raw(Model.Content)
-    </div>
-    <a href="#">Messages <span class="badge">3</span></a>
 </div>

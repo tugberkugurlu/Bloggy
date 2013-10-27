@@ -12,17 +12,23 @@
     @Html.Partial("_TopHeaderPartial")
     <div role="main" class="container" id="main">
         <div class="row">
-            <div id="content" class="span9">
+            <div id="content" class="col-xs-12 col-sm-9">
                 @RenderBody()
             </div>
-            <div id="side" class="span3">
+            <div id="side" class="col-xs-6 col-sm-3 sidebar-offcanvas" style="padding-left:25px;">
                 @Html.Partial("_RightSidePartial")
             </div>
         </div>
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Bloggy &copy;</p>
-        </footer>
+        <div class="navbar-collapse collapse navbar-inverse-collapse" style="">
+            <ul class="navbar-nav nav-custom">
+                <li><a href="#">&copy; @DateTime.Now.Year - XOMNI Inc. &copy;</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Creative Commons Licence</a></li>
+            </ul>
+            <ul class="nav-custom navbar-nav navbar-right">
+                <li><a href="#">&copy; @DateTime.Now.Year - Bloggy &copy;</a></li>
+            </ul>
+        </div>
     </div>
     @Scripts.Render("~/bundles/scripts")
     @RenderSection("scripts", required: false)
