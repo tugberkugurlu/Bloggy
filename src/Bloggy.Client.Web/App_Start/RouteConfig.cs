@@ -20,6 +20,12 @@ namespace Bloggy.Client.Web
             );
 
             routes.MapRoute(
+                name: "FeedsByTagRoute",
+                url: "tags/{tagSlug}/feeds",
+                defaults: new { controller = "Feeds", action = "RssByTagSlug" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Default", action = "Index", id = UrlParameter.Optional }
