@@ -5,6 +5,7 @@ using Bloggy.Client.Web.Infrastructure.Mapping;
 using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.RequestModels;
 using Bloggy.Domain.Entities;
+using Bloggy.Domain.Indexes;
 using Bloggy.Wrappers.Akismet.RequestModels;
 using System;
 using System.Collections.ObjectModel;
@@ -42,6 +43,9 @@ namespace Bloggy.Client.Web
             Mapper.CreateMap<BlogPostComment, BlogPostCommentModel>();
             Mapper.CreateMap<BlogPost, BlogPostModelLight>();
             Mapper.CreateMap<Tag, TagModel>();
+
+            Mapper.CreateMap<Tags_Count.ReduceResult, TagModel>();
+
         }
     }
 }
