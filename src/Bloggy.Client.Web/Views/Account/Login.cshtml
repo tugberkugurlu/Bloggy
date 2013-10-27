@@ -7,8 +7,9 @@
 
 <div class="row">
     <div class="span9">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
         {
+            @Html.AntiForgeryToken()
             @Html.ValidationSummary(false)
 
             <div>
@@ -26,6 +27,14 @@
                     </div>
                     <div class="span7">
                         @Html.PasswordFor(model => model.Password)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        @Html.DisplayNameFor(model => model.RememberMe)
+                    </div>
+                    <div class="span7">
+                        @Html.CheckBoxFor(m => m.RememberMe)
                     </div>
                 </div>
                 <div class="row">

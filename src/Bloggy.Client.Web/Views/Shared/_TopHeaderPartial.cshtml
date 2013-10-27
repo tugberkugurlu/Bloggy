@@ -7,6 +7,23 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#">XOMNI Blog</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="">
+                        <a href="@Url.Action("index", "default")">Blog</a>
+                    </li>
+                    <li class="">
+                        <a href="@Url.Action("index", "about")">About</a>
+                    </li>
+                    <li class="">
+                        <a href="@Url.Action("index", "contact")">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="pull-right">
+                @Html.Partial("_LoginPartial")
+            </div>
+            <div class="clearfix"></div>
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">

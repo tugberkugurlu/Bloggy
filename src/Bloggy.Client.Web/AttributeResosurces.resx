@@ -138,6 +138,9 @@
   <data name="PasswordConfirm" xml:space="preserve">
     <value>Confirm Password</value>
   </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me?</value>
+  </data>
   <data name="Username" xml:space="preserve">
     <value>Username</value>
   </data>
