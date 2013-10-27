@@ -6,22 +6,10 @@
                 <strong>@Model.Title</strong>
             </a>
         </h4>
-        <div class="text-info text-info-custom">
+        <div class="brief-info">
             Learn how easy to scale out SignalR with a Redis backplane and simulate a local web farm scenario with IIS Express
         </div>
         <div class="misc">
-<<<<<<< HEAD
-                <div class="well well-sm well-sm-custom">
-                    2013-09-23 15:45, Tugberk Ugurlu
-                    <div class="span5 misc-item" style="float:right;">
-                        <span class="label label-default">SignalR</span>
-                        <span class="label label-default">Redis</span>
-                        <span class="label label-default">ASP.NET</span>
-                        <span class="label label-default">ASP.NET Web API</span>
-                    </div>
-                </div>
-                
-=======
             <div class="row">
                 <div class="span2 misc-item">
                     <span><i class="icon-calendar-empty"></i>2013-09-23 15:45</span>
@@ -29,15 +17,13 @@
                 <div class="span2 misc-item">
                     <span><i class="icon-user"></i>Tugberk Ugurlu</span>
                 </div>
-
                 <div class="span5 misc-item">
                     @foreach (Bloggy.Client.Web.Models.TagModel tag in Model.BlogPost.Tags)
                     {
-                        <span class="badge badge-info">@tag.Name</span>
+                        <span class="badge badge-info">@Html.ActionLink(tag.Name, "Default", "GetByTag", new { tagName = tag.Name })</span>
                     }
                 </div>
             </div>
->>>>>>> Added tags page and related links.
         </div>
     </div>
     <div class="span9 content">
