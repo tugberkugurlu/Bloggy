@@ -406,6 +406,7 @@
     </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AtomPub\RavenApiController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\BlogPostController.cs" />
     <Compile Include="Controllers\FeedsController.cs" />
@@ -441,6 +442,7 @@
     <Compile Include="Infrastructure\Mapping\IntTypeConverter.cs" />
     <Compile Include="Infrastructure\Mapping\NullIntTypeConverter.cs" />
     <Compile Include="Infrastructure\AtomPub\MessageHandlers\WlwMessageHandler.cs" />
+    <Compile Include="Infrastructure\MessageHandlers\BasicAuthHandler.cs" />
     <Compile Include="Infrastructure\RavenController.cs" />
     <Compile Include="Infrastructure\HtmlSanitizationUtility.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
