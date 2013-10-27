@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Bloggy.Domain.Indexes
 {
-    public class BlogPosts_WithCommentsCount : AbstractTransformerCreationTask<BlogPostComment>
+    public class BlogPostsWithCommentsCountTransformer : AbstractTransformerCreationTask<BlogPostComment>
     {
         public class TransformeredResult
         {
@@ -12,7 +12,7 @@ namespace Bloggy.Domain.Indexes
             public int CommentsCount { get; set; }
         }
 
-        public BlogPosts_WithCommentsCount()
+        public BlogPostsWithCommentsCountTransformer()
         {
             TransformResults = blogPostComments => from comment in blogPostComments
                                                    where comment.IsSpam == false && comment.IsApproved == true
