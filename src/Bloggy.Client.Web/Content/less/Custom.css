@@ -1,0 +1,24 @@
+﻿.well-sm-custom
+{
+    margin-bottom: 3px; font-size: 14px; margin-top: 3px
+}
+.text-info-custom{
+    font-size: 16px;
+}
+.nav-custom 
+{
+    padding-left: 0;
+    margin-bottom: 0;
+    margin-top: 20px;
+    list-style: none;
+    background-color:#ffffff;
+}
+.nav-custom li a
+{
+    text-decoration:none;
+    padding-right:25px;
+}
+.nav-custom li a:hover
+{
+    color:#d2850b;
+}

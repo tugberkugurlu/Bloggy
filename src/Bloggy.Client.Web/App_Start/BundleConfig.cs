@@ -17,10 +17,10 @@ namespace Bloggy.Client.Web
                 .Include("~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/content/css")
-                .Include("~/Content/less/bootstrap.css")
-                .Include("~/Content/font-awesome.css")
-                .Include("~/Content/bloggy-main.css")
-                .Include("~/Content/less/responsive.css"));
+                .Include("~/Content/less/bootstrap.min.css")
+                .Include("~/Content/less/Custom.css"));
+                //.Include("~/Content/less/bootswatch.less")
+                //.Include("~/Content/less/variables.less"));
         }
     }
 }
