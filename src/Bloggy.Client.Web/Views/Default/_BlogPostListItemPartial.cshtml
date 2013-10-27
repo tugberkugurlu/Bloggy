@@ -2,7 +2,7 @@
 <div class="row blog-post-list-item">
     <div class="span9 item-header">
         <h4 class="title">
-            <a href="/archive/@Model.Slug">
+            <a href="/post/@Model.Slug">
                 <strong>@Model.Title</strong>
             </a>
         </h4>
@@ -14,7 +14,7 @@
                 <div class="well well-sm well-sm-custom">
                     @Model.CreatedOn.ToString("yyyy-MM-dd HH:mm"), Tugberk Ugurlu
                     <div class="span5 misc-item" style="float:right;">
-                        @foreach (Bloggy.Client.Web.Models.TagModel tag in Model.Tags)
+                        @foreach (var tag in Model.Tags)
                         {
                             <span class="label label-default">@tag.Name</span>
                         }
@@ -24,7 +24,7 @@
             <div class="span9 content">
                 @Html.Raw(Model.Content)
             </div>
-            <a href="/archive/@Model.Slug">Messages <span class="badge">3</span></a>
+            <a href="/post/@Model.Slug">Comments <span class="badge">0</span></a>
         </div>
     </div>
 </div>

@@ -6,9 +6,9 @@
 }
 
 <div class="row blog-post-list-item">
-    <div
+    <div>
         <h4 class="title">
-            <a href="/archive/@Model.BlogPost.Slug">
+            <a href="#">
                 <strong>@Model.BlogPost.Title</strong>
             </a>
         </h4>
@@ -43,6 +43,34 @@
         @Html.ValidationSummary(false)
         @Html.Raw(Model.BlogPost.Content)
     </div>
+    <div style="float: left;">
+        <div id="fb-root">
+        </div>
+        <script>
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) { return; }
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/<%=Facebook_LangRes %>/all.js#xfbml=1";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+        <fb:like href="http://blog.xomni.com/@Model.BlogPost.Slug" send="true" layout="button_count" width="160" show_faces="false"
+                 font="segoe ui"></fb:like>
+    </div>
+    <div style="float: left;">
+        &nbsp;&nbsp;
+    </div>
+    <div style="float: left;">
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://blog.xomni.com/@Model.BlogPost.Slug"
+           data-count="none" data-via="xomni_cloud" data-lang="en-us">Tweet</a>
+        <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+    </div>
+    <div style="float: left;">
+        &nbsp;&nbsp;
+    </div>
+    <a href="http://pinterest.com/pin/create/button/?url=http://blog.xomni.com/@Model.BlogPost.Slug&media=TODO:PHOTOURL&description=@Html.Encode(Model.BlogPost.BriefInfo)" class="pin-it-button" count-layout="none"><img border="0" src="http://assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+
+
 </div>
 
 <div class="row comment-list-container blog-post-comment-list-container">

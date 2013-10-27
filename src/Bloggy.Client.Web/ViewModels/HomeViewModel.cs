@@ -1,4 +1,5 @@
 ﻿using Bloggy.Client.Web.Models;
+using Bloggy.Domain.Indexes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
