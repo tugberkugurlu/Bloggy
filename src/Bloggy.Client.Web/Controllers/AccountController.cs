@@ -14,7 +14,6 @@ using System.Web.Mvc;
 
 namespace Bloggy.Client.Web.Controllers
 {
-    [Authorize]
     public class AccountController : RavenController
     {
         private readonly IAsyncDocumentSession _documentSession;
@@ -34,7 +33,6 @@ namespace Bloggy.Client.Web.Controllers
             _userManager = userManager;
         }
 
-        [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -42,7 +40,6 @@ namespace Bloggy.Client.Web.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ActionName("Login")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> LoginPost(LoginRequestModel requestModel, string returnUrl)
@@ -66,6 +63,7 @@ namespace Bloggy.Client.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
@@ -91,7 +89,6 @@ namespace Bloggy.Client.Web.Controllers
 
         [HttpPost]
         [ActionName("CreateManagementUser")]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateManagementUserPost(ManagementUserRequestModel requestModel)
         {
@@ -126,6 +123,12 @@ namespace Bloggy.Client.Web.Controllers
 
             // If we got this far, something failed, redisplay form.
             return View(requestModel);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Manage()
+        {
+            return View();
         }
 
         // private helpers
