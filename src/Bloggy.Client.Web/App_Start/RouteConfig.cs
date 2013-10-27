@@ -26,6 +26,12 @@ namespace Bloggy.Client.Web
             );
 
             routes.MapRoute(
+                name: "PostsByTag",
+                url: "tags/{slug}/{pageNumber}",
+                defaults: new { controller = "Tags", action = "Index", pageNumber = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Default", action = "Index", id = UrlParameter.Optional }

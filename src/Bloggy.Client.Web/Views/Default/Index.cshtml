@@ -3,42 +3,5 @@
     ViewBag.Title = "Index";
 }
 
-@if (Model != null)
-{
-    foreach (Bloggy.Client.Web.Models.BlogPostModelLight post in Model.BlogPosts)
-    {
-        @Html.Partial("_BlogPostListItemPartial", post)
-    }
-}
-@if (Model.PagerModel != null)
-{
-    <ul class="pager">
-        @if (Model.PagerModel.IsOlderDisabled)
-        {
-            <li class="previous disabled">
-                <a href="#">← Older</a>
-            </li>
-        }
-        else
-        {
-            int olderPage = Model.PagerModel.CurrentPage + 1;
-            <li class="previous">
-                <a href="/@olderPage">← Older</a>
-            </li>
-        }
+@Html.Partial("_BlogPostListPartial", Model)
 
-        @if (Model.PagerModel.IsNewerDisabled)
-        {
-            <li class="next disabled">
-                <a href="#">Newer →</a>
-            </li>
-        }
-        else
-        {
-            int newerPage = Model.PagerModel.CurrentPage - 1;
-            <li class="next">
-                <a href="/@newerPage">Newer →</a>
-            </li>
-        }
-    </ul>
-}
