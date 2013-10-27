@@ -35,9 +35,42 @@ namespace Bloggy.Client.Web.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ActionName("Login")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> LoginPost(LoginRequestModel requestModel, string returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                BlogUser user = await _userManager.FindAsync(requestModel.Username, requestModel.Password);
+                if (user != null)
+                {
+                    await SignInAsync(user, requestModel.RememberMe);
+                    return RedirectToLocal(returnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(requestModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut();
+            return RedirectToAction("Index", "Default");
         }
 
         [AllowAnonymous]
@@ -95,14 +128,6 @@ namespace Bloggy.Client.Web.Controllers
             return View(requestModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Default");
-        }
-
         // private helpers
 
         private void AddErrors(IdentityResult result)
@@ -121,7 +146,7 @@ namespace Bloggy.Client.Web.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Default");
             }
         }
 
