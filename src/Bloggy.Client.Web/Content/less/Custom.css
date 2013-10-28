@@ -22,3 +22,15 @@
 {
     color:#d2850b;
 }
+.linklabel
+{
+    margin-left:5px;
+}
+.linklabel:hover
+{
+    background-color:#f39c12;
+}
+.linklabel a:hover
+{
+    text-decoration:none;
+}
