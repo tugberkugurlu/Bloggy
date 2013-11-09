@@ -20,6 +20,16 @@ namespace Bloggy.Wrappers.Akismet
 
         public AkismetClient(string apiKey, string blog, HttpMessageHandler httpClientHandler)
         {
+            if (apiKey == null)
+            {
+                throw new ArgumentNullException("apiKey");
+            }
+
+            if (blog == null)
+            {
+                throw new ArgumentNullException("blog");
+            }
+
             HttpClient httpClient = new HttpClient(httpClientHandler);
             httpClient.BaseAddress = new Uri(string.Format("https://{0}.{1}", apiKey, BaseApiUri));
 

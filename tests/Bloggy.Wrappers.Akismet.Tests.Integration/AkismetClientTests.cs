@@ -1,6 +1,5 @@
 ﻿using Bloggy.Wrappers.Akismet.RequestModels;
 using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,16 +11,15 @@ namespace Bloggy.Wrappers.Akismet.Tests.Integration
         public async Task CheckCommentAsyncShouldReturnOkForTheComment()
         {
             // Arrange
-            string apiKey = ConfigurationManager.AppSettings["akismet:apiKey"];
-            string blog = ConfigurationManager.AppSettings["akismet:blog"];
-            using (AkismetClient akismetClient = new AkismetClient(apiKey, blog))
+            AkismetCredentials akismetCreds = RetrieveAkismetCredentials();
+            using (AkismetClient akismetClient = new AkismetClient(akismetCreds.ApiKey, akismetCreds.Blog))
             {
                 AkismetCommentRequestModel requestModel = new AkismetCommentRequestModel
                 {
                     UserIp = "127.0.0.1",
                     UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
                     Referrer = "http://www.google.com",
-                    Permalink = string.Concat(blog, "blog/post=1"),
+                    Permalink = string.Concat(akismetCreds.Blog, "blog/post=1"),
                     CommentType = "comment",
                     CommentAuthor = "Tugberk",
                     CommentAuthorEmail = "tugberk@tugberkugurlu.com",
@@ -42,16 +40,15 @@ namespace Bloggy.Wrappers.Akismet.Tests.Integration
         public async Task CheckCommentAsyncShouldReturnSpamForASpamComment()
         {
             // Arrange
-            string apiKey = ConfigurationManager.AppSettings["akismet:apiKey"];
-            string blog = ConfigurationManager.AppSettings["akismet:blog"];
-            using (AkismetClient akismetClient = new AkismetClient(apiKey, blog))
+            AkismetCredentials akismetCreds = RetrieveAkismetCredentials();
+            using (AkismetClient akismetClient = new AkismetClient(akismetCreds.ApiKey, akismetCreds.Blog))
             {
                 AkismetCommentRequestModel requestModel = new AkismetCommentRequestModel
                 {
                     UserIp = "127.0.0.1",
                     UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
                     Referrer = "http://www.google.com/",
-                    Permalink = string.Concat(blog, "blog/post=1"),
+                    Permalink = string.Concat(akismetCreds.Blog, "blog/post=1"),
                     CommentType = "comment",
                     CommentAuthor = "best viagra site",
                     CommentAuthorEmail = "theradkes@sbcglobal.net",
@@ -66,6 +63,33 @@ namespace Bloggy.Wrappers.Akismet.Tests.Integration
                 Assert.Equal(true, response.IsSuccessStatusCode);
                 Assert.Equal(true, response.Entity);
             }
+        }
+
+        // privates
+
+        private static AkismetCredentials RetrieveAkismetCredentials()
+        {
+            string apiKey = Environment.GetEnvironmentVariable("Bloggy:Akismet:ApiKey", EnvironmentVariableTarget.User);
+            string blog = Environment.GetEnvironmentVariable("Bloggy:Akismet:Blog", EnvironmentVariableTarget.User);
+
+            if (apiKey == null || blog == null)
+            {
+                throw new NotSupportedException("Either Bloggy:Akismet:ApiKey or Bloggy:Akismet:Blog user environment variable is not set.");
+            }
+
+            return new AkismetCredentials(apiKey, blog);
+        }
+
+        private struct AkismetCredentials
+        {
+            public AkismetCredentials(string apiKey, string blog) : this()
+            {
+                ApiKey = apiKey;
+                Blog = blog;
+            }
+
+            public string ApiKey { get; private set; }
+            public string Blog { get; private set; }
         }
     }
 }
