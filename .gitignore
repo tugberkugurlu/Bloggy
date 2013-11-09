@@ -111,3 +111,4 @@ UpgradeLog*.XML
 tests/*/[Aa]pp.config
 utils/*/[Aa]pp.config
 src/Bloggy.Client.Web/Config/appSettings.web.*
+PublishProfiles
