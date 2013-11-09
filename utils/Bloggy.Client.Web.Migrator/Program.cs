@@ -21,10 +21,8 @@ namespace Bloggy.Client.Web.Migrator
     {
         static void Main(string[] args)
         {
-            string akismetApiKey = ConfigurationManager.AppSettings[Constants.AkismetApiKeyAppSettingsKey];
-            string akismetBlog = ConfigurationManager.AppSettings[Constants.AkismetBlogAppSettingsKey];
-            AkismetClient akismetClient = new AkismetClient(akismetApiKey, akismetBlog);
-
+            AkismetCredentials akismetCreds = RetrieveAkismetCredentials();
+            AkismetClient akismetClient = new AkismetClient(akismetCreds.ApiKey, akismetCreds.Blog);
             Console.WriteLine("Retrieving old blog posts.");
             IEnumerable<BlogPost> blogs = RetrieveOldPosts();
 
@@ -82,9 +80,34 @@ namespace Bloggy.Client.Web.Migrator
             Console.ReadLine();
         }
 
+        private static AkismetCredentials RetrieveAkismetCredentials()
+        {
+            string apiKey = Environment.GetEnvironmentVariable("Bloggy:Akismet:ApiKey", EnvironmentVariableTarget.User);
+            string blog = Environment.GetEnvironmentVariable("Bloggy:Akismet:Blog", EnvironmentVariableTarget.User);
+
+            if (apiKey == null || blog == null)
+            {
+                throw new NotSupportedException("Either Bloggy:Akismet:ApiKey or Bloggy:Akismet:Blog user environment variable is not set.");
+            }
+
+            return new AkismetCredentials(apiKey, blog);
+        }
+
+        private static string RetrieveOldBlogConnectionString()
+        {
+            string connStr = Environment.GetEnvironmentVariable("Bloggy:OldBlog:ConnectionString", EnvironmentVariableTarget.User);
+            if (connStr == null)
+            {
+                throw new NotSupportedException("Bloggy:OldBlog:ConnectionString user environment variable is not set.");
+            }
+
+            return connStr;
+        }
+
         private static IEnumerable<BlogPost> RetrieveOldPosts()
         {
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["MvcBlog"].ConnectionString))
+            string connectionString = RetrieveOldBlogConnectionString();
+            using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.Blogs WHERE Published = 1", connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -100,7 +123,8 @@ namespace Bloggy.Client.Web.Migrator
 
         private static IEnumerable<BlogPostComment> RetrieveComments(int blogPostId)
         {
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["MvcBlog"].ConnectionString))
+            string connectionString = RetrieveOldBlogConnectionString();
+            using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.BlogsComments WHERE BLogID = " + blogPostId.ToString(CultureInfo.InvariantCulture), connection))
             {
                 cmd.CommandType = CommandType.Text;
@@ -179,6 +203,19 @@ namespace Bloggy.Client.Web.Migrator
             IndexCreation.CreateIndexes(typeof(Tags_Count).Assembly, store);
 
             return store;
+        }
+
+        private struct AkismetCredentials
+        {
+            public AkismetCredentials(string apiKey, string blog)
+                : this()
+            {
+                ApiKey = apiKey;
+                Blog = blog;
+            }
+
+            public string ApiKey { get; private set; }
+            public string Blog { get; private set; }
         }
     }
 

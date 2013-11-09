@@ -109,6 +109,5 @@ UpgradeLog*.XML
 
 # Custom
 init.me.ps1
-tests/*/[Aa]pp.config
 src/Bloggy.Client.Web/Config/appSettings.web.*
 PublishProfiles
