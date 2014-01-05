@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Optimization;
-using BundleTransformer.Core.Orderers;
-using BundleTransformer.Core.Transformers;
 using dotless.Core.Abstractions;
 using dotless.Core.Importers;
 using dotless.Core.Input;
@@ -28,21 +28,18 @@ namespace Bloggy.Client.Web
             //       http://stackoverflow.com/questions/13581620/bootstrap-theme-variables-less-bootswatch
             //       http://stackoverflow.com/questions/15252829/how-to-use-asp-net-mvc-4-to-bundle-less-files-in-release-mode
             //       http://ben.onfabrik.com/posts/adding-less-support-to-the-aspnet-optimization-framework
+            //       https://github.com/dotless/dotless/issues/211
+            //       https://groups.google.com/forum/?fromgroups=#!topic/dotless/j-8OP1dNjUY
 
-            //ThemeTransformer themeTransformer = new ThemeTransformer();
-            //CssTransformer cssTransformer = new CssTransformer();
-            //NullOrderer nullOrderer = new NullOrderer();
+            // Couldn't make bootswatch work.
+            //bundles.Add(new Bundle(
+            //    "~/Content/css",
+            //    new LessBundleTransform(),
+            //    new CssMinify()).Include("~/Content/bootstrap/bootstrap.less"));
 
-            //Bundle css = new Bundle("~/content/css").Include("~/Content/bootstrap/bootstrap.less");
-            //// css.Transforms.Add(themeTransformer);
-            //css.Transforms.Add(cssTransformer);
-            //css.Orderer = nullOrderer;
-            //bundles.Add(css);
-
-            bundles.Add(new Bundle(
-                "~/Content/css",
-                new LessBundleTransform(),
-                new CssMinify()).Include("~/Content/bootstrap/bootstrap.less"));
+            bundles.Add(new StyleBundle("~/content/css")
+                .Include("~/content/bootstrap/bootstrap.css")
+                .Include("~/content/bloggy.main.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/scripts")
                 .Include("~/Scripts/jquery-{version}.js")
@@ -203,7 +200,7 @@ namespace Bloggy.Client.Web
         private ILessEngine CreateLessEngine(Parser lessParser)
         {
             var logger = new AspNetTraceLogger(LogLevel.Debug, new Http());
-            return new LessEngine(lessParser, logger, true, false);
+            return new LessEngine(lessParser, logger, true, false, true);
         }
 
         /// <summary>
@@ -271,19 +268,15 @@ namespace Bloggy.Client.Web
         }
     }
 
+    /// <summary>
+    /// Currently, this is not in use.
+    /// </summary>
     public class ThemeTransformer : IBundleTransform
     {
         public void Process(BundleContext context, BundleResponse response)
         {
-            const string ThemeName = "cosmo";
-            const string VariablesAppendFormat = "@import \"{0}\variables.less\";\n";
-            const string BootswatchAppendFormat = "\n@import \"{0}\bootswatch.less\";";
-            string content = string.Concat(
-                string.Format(VariablesAppendFormat, ThemeName), 
-                response.Content, 
-                string.Format(BootswatchAppendFormat, ThemeName));
-
-            response.Content = content;
+            string themeName = ConfigurationManager.AppSettings["Bloggy:Theme:Name"].ToString(CultureInfo.InvariantCulture);
+            response.Content = response.Content.Replace("{themeName}", themeName);
         }
     }
 }

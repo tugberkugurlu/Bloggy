@@ -71,27 +71,8 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BundleTransformer.Core">
-      <HintPath>..\..\packages\BundleTransformer.Core.1.8.17\lib\net40\BundleTransformer.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="BundleTransformer.Less">
-      <HintPath>..\..\packages\BundleTransformer.Less.1.8.14\lib\net40\BundleTransformer.Less.dll</HintPath>
-    </Reference>
-    <Reference Include="ClearScript">
-      <HintPath>..\..\packages\JavaScriptEngineSwitcher.V8.1.0.0\lib\net40\ClearScript.dll</HintPath>
-    </Reference>
     <Reference Include="dotless.Core">
       <HintPath>..\..\packages\dotless.1.4.0.0\lib\dotless.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="JavaScriptEngineSwitcher.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\JavaScriptEngineSwitcher.Core.1.0.0\lib\net40\JavaScriptEngineSwitcher.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="JavaScriptEngineSwitcher.Msie">
-      <HintPath>..\..\packages\JavaScriptEngineSwitcher.Msie.1.0.0\lib\net40\JavaScriptEngineSwitcher.Msie.dll</HintPath>
-    </Reference>
-    <Reference Include="JavaScriptEngineSwitcher.V8">
-      <HintPath>..\..\packages\JavaScriptEngineSwitcher.V8.1.0.0\lib\net40\JavaScriptEngineSwitcher.V8.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -127,9 +108,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="MsieJavaScriptEngine">
-      <HintPath>..\..\packages\MsieJavaScriptEngine.1.2.0\lib\net40\MsieJavaScriptEngine.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -221,18 +199,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClearScript.V8\ClearScriptV8-32.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="ClearScript.V8\ClearScriptV8-64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="ClearScript.V8\v8-ia32.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="ClearScript.V8\v8-x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Content Include="Content\bloggy.main.css">
+      <DependentUpon>bloggy.main.less</DependentUpon>
+    </Content>
+    <Content Include="Content\bloggy.main.min.css">
+      <DependentUpon>bloggy.main.less</DependentUpon>
+    </Content>
+    <Content Include="Content\bootstrap\bootstrap.css">
+      <DependentUpon>bootstrap.less</DependentUpon>
+    </Content>
+    <Content Include="Content\bootstrap\bootstrap.min.css">
+      <DependentUpon>bootstrap.less</DependentUpon>
+    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\MVP_Horizontal_BlueOnly9.png" />
     <Content Include="Content\img\raven_badge1.png" />
@@ -293,11 +271,9 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\bootstrap\cosmo\bootswatch.less" />
     <Content Include="Content\bootstrap\cosmo\variables.less" />
-    <None Include="BundleTransformer.Configuration.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Content\bootstrap\flatly\bootswatch.less" />
     <Content Include="Content\bootstrap\flatly\variables.less" />
+    <None Include="Content\bloggy.main.less" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
