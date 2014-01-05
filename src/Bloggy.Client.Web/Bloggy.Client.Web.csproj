@@ -564,6 +564,8 @@
     <Content Include="Views\Shared\_RightSidePartial.cshtml" />
     <Content Include="Views\Shared\_BlogPostListPartial.cshtml" />
     <Content Include="Views\Shared\_BlogPostListItemPartial.cshtml" />
+    <Content Include="Views\BlogPost\Index.cshtml" />
+    <Content Include="Views\Shared\_CommentFormPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,44 @@
+﻿@using Bloggy.Client.Web.Infrastructure.Managers
+@using Microsoft.Web.Helpers
+@model CommentPostRequestModel
+@{
+    IConfigurationManager configManager = DependencyResolver.Current.GetService<IConfigurationManager>();
+    ReCaptcha.PrivateKey = configManager.RecaptchaPrivateKey;
+    ReCaptcha.PublicKey = configManager.RecaptchaPublicKey;
+}
+    
+<div class="form-group">
+    @Html.LabelFor(model => model.CommentAuthorName, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(model => model.CommentAuthorName, new { style = "width: 80%;", @class = "form-control input-sm" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.CommentAuthorEmail, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(model => model.CommentAuthorEmail, new { style = "width: 80%;", @class = "form-control input-sm" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.CommentAuthorUrl, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(model => model.CommentAuthorUrl, new { style = "width: 80%;", @class = "form-control input-sm" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.CommentContent, new { @class = "control-label" })
+    <div>
+        @Html.TextAreaFor(model => model.CommentContent, new { style = "width: 90%; max-width: 90%; height: 150px;", @class = "form-control input-sm" })
+    </div>
+</div>
+
+@if (configManager.IsRecaptchaEnabled)
+{
+    <div class="form-group">
+        @ReCaptcha.GetHtml(theme: "white")
+    </div>
+}
+    
+<div class="form-group">
+    <button class="btn btn-info" type="submit" style="margin-top:10px;">@StringResources.SendComment</button>
+</div>

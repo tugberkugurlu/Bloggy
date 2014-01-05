@@ -40,6 +40,38 @@ div.blog-post-item {
     }
 }
 
+div.single-blog-post {
+}
+
+.comment-list-container {
+
+    .comment-container {
+        padding: 10px;
+        margin-bottom: 5px;
+        border: 1px solid #CCCCCC;
+        background-color: #E9F7FD;
+
+        .comment-gravatar-container {
+            float: left;
+            margin-bottom: 5px;
+            margin-right: 10px;
+        }
+
+        .comment-content-container {
+
+            .comment-content-header {
+                padding-bottom: 10px;
+                font-style: italic;
+            }
+        }
+    }
+
+    .comment-container-by-author {
+        border: 1px solid #E7D59C;
+        background-color: #FBFFD4;
+    }
+}
+
 .validation-summary-errors {
     color: #fff;
     background-color: #ff0039;
@@ -68,6 +100,13 @@ input[type=password].input-validation-error {
     input[type=password].input-validation-error:focus {
         border-color: #bbbbbb;
     }
+
+footer {
+    background-color: #9954bb;
+    color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+}
 
 @media (max-width: 767px) {
 
@@ -101,11 +140,4 @@ input[type=password].input-validation-error {
         div.content {
         }
     }
-}
-
-footer {
-
-    background-color: #9954bb;
-    color: #fff;
-    padding: 20px;
 }
