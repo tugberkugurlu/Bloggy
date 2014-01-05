@@ -20,7 +20,7 @@ namespace Bloggy.Client.Web.Controllers
     {
         private readonly IAsyncDocumentSession _documentSession;
         private readonly IMappingEngine _mapper;
-        private const int _defaultPageSize = 5;
+        private const int DefaultPageSize = 5;
 
         public DefaultController(IMvcLogger logger, IAsyncDocumentSession documentSession, IMappingEngine mapper)
             : base(logger)
@@ -29,18 +29,18 @@ namespace Bloggy.Client.Web.Controllers
             _mapper = mapper;
         }
 
-        public async Task<ActionResult> Index(int pageNumber = 1)
+        public async Task<ActionResult> Index(int page = 1)
         {
-            if (pageNumber < 1)
+            if (page < 1)
             {
                 return HttpNotFound("Given page number not found");
             }
 
-            IList<BlogPost> blogPosts = await RetrieveBlogPostsAsync(pageNumber);
+            IList<BlogPost> blogPosts = await RetrieveBlogPostsAsync(page);
             IList<BlogPostModelLight> lightBlogPosts = _mapper.Map<IList<BlogPost>, IList<BlogPostModelLight>>(blogPosts);
 
-            PagerModel pagerModel = await InitializePagerAsync(pageNumber);
-            HomeViewModel homeViewModel = new HomeViewModel()
+            PagerModel pagerModel = await InitializePagerAsync(page);
+            HomeViewModel homeViewModel = new HomeViewModel
             {
                 BlogPosts = lightBlogPosts,
                 PagerModel = pagerModel
@@ -73,8 +73,8 @@ namespace Bloggy.Client.Web.Controllers
             return _documentSession.Query<BlogPost>()
                             .Where(t => t.IsApproved == true)
                             .OrderByDescending(t => t.CreatedOn)
-                            .Skip((pageNumber - 1) * _defaultPageSize)
-                            .Take(_defaultPageSize);
+                            .Skip((pageNumber - 1) * DefaultPageSize)
+                            .Take(DefaultPageSize);
         }
 
         private async Task<IList<BlogPost>> RetrieveBlogPostsAsync(int pageNumber)

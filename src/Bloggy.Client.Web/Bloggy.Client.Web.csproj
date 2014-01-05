@@ -558,6 +558,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Default\Index.cshtml" />
+    <Content Include="Views\Shared\_TopHeaderPartial.cshtml" />
+    <Content Include="Views\Shared\_RightSidePartial.cshtml" />
+    <Content Include="Views\Shared\_BlogPostListPartial.cshtml" />
+    <Content Include="Views\Shared\_BlogPostListItemPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
