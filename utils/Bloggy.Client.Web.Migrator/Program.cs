@@ -26,7 +26,62 @@ namespace Bloggy.Client.Web.Migrator
             Console.WriteLine("Retrieving old blog posts.");
             IEnumerable<BlogPost> blogs = RetrieveOldPosts();
 
-            using (IDocumentStore store = RetrieveDocumentStore())
+            foreach (var blogPost in blogs)
+            {
+                Console.WriteLine("Retrieving comments for blog post '{0}'.", blogPost.SecondaryId.Value);
+                IEnumerable<BlogPostComment> comments = RetrieveComments(blogPost.SecondaryId.Value);
+
+                foreach (BlogPostComment comment in comments)
+                {
+                    bool isSpam = false;
+                    try
+                    {
+                        Console.WriteLine("Checing comment '{0}' against spam.", comment.Name);
+                        AkismetResponse<bool> akismetResponse = akismetClient.CheckCommentAsync(new AkismetCommentRequestModel
+                        {
+                            CommentAuthor = comment.Name,
+                            CommentAuthorEmail = comment.Email,
+                            CommentAuthorUrl = comment.Url,
+                            CommentContent = comment.Content,
+                            CommentType = "Comment",
+                            Permalink = "http://www.tugberkugurlu/archive/" + blogPost.DefaultSlug.Path,
+                            UserIp = comment.CreationIp,
+                            UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
+
+                        }).Result;
+
+                        if (akismetResponse.IsSuccessStatusCode)
+                        {
+                            isSpam = akismetResponse.Entity;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+
+                    comment.IsSpam = isSpam;
+                    comment.IsApproved = !isSpam;
+                    comment.BlogPostId = blogPost.Id;
+
+                    if (comment.IsSpam)
+                    {
+                        Console.WriteLine("Marking as spam: {0}-{1}={2}", comment.Id, comment.Name, comment.Content);
+                        string connectionString = RetrieveOldBlogConnectionString();
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        using (SqlCommand cmd = new SqlCommand("UPDATE dbo.BlogsComments SET Approved = 0  WHERE CommentID = @commentId", connection))
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@commentId", SqlDbType.Int) { Value = int.Parse(comment.Id) });
+
+                            cmd.CommandType = CommandType.Text;
+                            connection.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+
+            /* using (IDocumentStore store = RetrieveDocumentStore())
             using (IDocumentSession ses = store.OpenSession())
             {
                 foreach (BlogPost blogPost in blogs)
@@ -74,7 +129,7 @@ namespace Bloggy.Client.Web.Migrator
 
                 Console.WriteLine("Saving all changes...");
                 ses.SaveChanges();
-            }
+            }*/
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -175,6 +230,7 @@ namespace Bloggy.Client.Web.Migrator
         {
             return new BlogPostComment
             {
+                Id = reader["CommentID"].ToString(),
                 Content = reader["CommentText"].ToString(),
                 CreatedOn = DateTimeOffset.Parse(reader["CommentDate"].ToString()),
                 CreationIp = reader["CreationIp"].ToString(),
