@@ -41,7 +41,7 @@ namespace Bloggy.Client.Web.Controllers
 
             HomeViewModel homeViewModel = new HomeViewModel()
             {
-                BlogPosts = lightBlogPosts
+                BlogPosts = null
             };
 
             return View(homeViewModel);

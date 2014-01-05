@@ -3,6 +3,7 @@ using Bloggy.Client.Web.Infrastructure;
 using Bloggy.Client.Web.Infrastructure.Logging;
 using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.ViewModels;
+using Bloggy.Domain;
 using Bloggy.Domain.Entities;
 using Raven.Client;
 using System.Collections.Generic;
@@ -42,9 +43,10 @@ namespace Bloggy.Client.Web.Controllers
                 .Take(DefaultPageSize)
                 .ToListAsync();
 
+            IEnumerable<BlogPostModelLight> blogPostModels = _mapper.Map<IEnumerable<BlogPost>, IEnumerable<BlogPostModelLight>>(blogPosts).ToArray();
             return View(new HomeViewModel
             {
-                BlogPosts = _mapper.Map<IEnumerable<BlogPost>, IEnumerable<BlogPostModelLight>>(blogPosts)
+                BlogPosts = new PaginatedList<BlogPostModelLight>(blogPostModels, page, blogPostModels.Count(), stats.TotalResults)
             });
         }
     }

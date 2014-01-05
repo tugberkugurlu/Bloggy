@@ -1,20 +1,53 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Bloggy.Domain
 {
-    public class PaginatedList<T> : List<T>, IPaginatedList<T> where T : IEntity
+    /// <summary>
+    /// List object to represent the paginated collection.
+    /// </summary>
+    /// <typeparam name="T">Type of the Entity</typeparam>
+    public class PaginatedList<T> : List<T>, IPaginatedList<T>
     {
-        public int Skipped { get; private set; }
-        public int Taken { get; private set; }
+        public int PageIndex { get; private set; }
+        public int PageSize { get; private set; }
         public int TotalCount { get; private set; }
+        public int TotalPageCount { get; private set; }
 
-        public PaginatedList(IEnumerable<T> source, int skipped, int taken, int totalCount)
+        public bool HasPreviousPage
         {
+
+            get
+            {
+                return (PageIndex > 1);
+            }
+        }
+
+        public bool HasNextPage
+        {
+
+            get
+            {
+                return ((PageIndex * PageSize) < TotalPageCount);
+            }
+        }
+
+        public PaginatedList(IEnumerable<T> source, int pageIndex, int pageSize, int totalCount)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            // Check: Do we need to check if pageSize > totalCount.
+            // Check: Do we need to check if int parameters < 0.
+
             AddRange(source);
 
-            Taken = taken;
-            Skipped = skipped;
+            PageIndex = pageIndex;
+            PageSize = pageSize;
             TotalCount = totalCount;
+            TotalPageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
         }
     }
 }

@@ -1,0 +1,44 @@
+﻿﻿@inherits Bloggy.Client.Web.Infrastructure.HelperPage
+@using System.Globalization
+@using System.Web.Mvc;
+@using System.Web.Mvc.Html;
+@using System.Web.Routing;
+@using Bloggy.Client.Web.Models
+@using Bloggy.Domain
+
+@helper Pager(IPaginatedList<IModel> paginatedDto)
+{
+    var routeDictionary = RouteData.Values;
+    if (Url.RequestContext.HttpContext.Request.QueryString.AllKeys.Any())
+    {
+        foreach (var key in Url.RequestContext.HttpContext.Request.QueryString.AllKeys)
+        {
+            routeDictionary.Add(key, Url.RequestContext.HttpContext.Request.QueryString[key]);
+        }
+    }
+
+    <ul class="pager">
+        @if (paginatedDto.HasPreviousPage)
+        {
+
+            var tempRouteDataDictionary = new RouteValueDictionary(routeDictionary);
+            tempRouteDataDictionary.Remove("page");
+            tempRouteDataDictionary.Add("page", (paginatedDto.PageIndex - 1).ToString(CultureInfo.InvariantCulture));
+
+            <li class="previous">
+                <a href="@Url.RouteUrl(tempRouteDataDictionary)">&larr; Previous</a>
+            </li>
+        }
+
+        @if (paginatedDto.HasNextPage)
+        {
+            var tempRouteDataDictionary = new RouteValueDictionary(routeDictionary);
+            tempRouteDataDictionary.Remove("page");
+            tempRouteDataDictionary.Add("page", (paginatedDto.PageIndex + 1).ToString(CultureInfo.InvariantCulture));
+
+            <li class="next">
+                <a href="@Url.RouteUrl(tempRouteDataDictionary)">Next &rarr;</a>
+            </li>
+        }
+    </ul>
+}

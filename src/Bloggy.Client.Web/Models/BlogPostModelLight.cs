@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Bloggy.Client.Web.Models
 {
-    public class BlogPostModelLight
+    public class BlogPostModelLight : IModel
     {
         public int Id { get; set; }
         public string Title { get; set; }

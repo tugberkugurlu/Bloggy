@@ -1,10 +1,10 @@
 ﻿using Bloggy.Client.Web.Models;
-using System.Collections.Generic;
+using Bloggy.Domain;
 
 namespace Bloggy.Client.Web.ViewModels
 {
     public class HomeViewModel
     {
-        public IEnumerable<BlogPostModelLight> BlogPosts { get; set; }
+        public PaginatedList<BlogPostModelLight> BlogPosts { get; set; }
     }
 }

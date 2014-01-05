@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Bloggy.Domain.Entities
 {
-    public class BlogPost : ITrackable
+    public class BlogPost : IEntity, ITrackable
     {
         public BlogPost()
         {

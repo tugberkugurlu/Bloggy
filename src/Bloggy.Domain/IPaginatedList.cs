@@ -1,11 +1,13 @@
-using System.Collections.Generic;
-
 namespace Bloggy.Domain
 {
-    public interface IPaginatedList<TEntity> : IList<TEntity> where TEntity : IEntity
+    public interface IPaginatedList<out T>
     {
-        int Skipped { get; }
-        int Taken { get; }
+        int PageIndex { get; }
+        int PageSize { get; }
         int TotalCount { get; }
+        int TotalPageCount { get; }
+
+        bool HasPreviousPage { get; }
+        bool HasNextPage { get; }
     }
 }

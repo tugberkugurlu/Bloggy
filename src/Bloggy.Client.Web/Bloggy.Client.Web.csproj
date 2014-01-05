@@ -273,6 +273,7 @@
     <Content Include="Content\bootstrap\cosmo\variables.less" />
     <Content Include="Content\bootstrap\flatly\bootswatch.less" />
     <Content Include="Content\bootstrap\flatly\variables.less" />
+    <Content Include="App_Code\CustomHelpers.cshtml" />
     <None Include="Content\bloggy.main.less" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
@@ -488,6 +489,7 @@
     <Compile Include="Infrastructure\AtomPub\PublicationCategory.cs" />
     <Compile Include="Infrastructure\Extensions\NumericExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\StringExtensions.cs" />
+    <Compile Include="Infrastructure\HelperPage.cs" />
     <Compile Include="Infrastructure\Hypermedia\EditLink.cs" />
     <Compile Include="Infrastructure\Hypermedia\HttpConfiguartionHypermediaExtensions.cs" />
     <Compile Include="Infrastructure\Hypermedia\IResponseEnricher.cs" />
@@ -518,6 +520,7 @@
     <Compile Include="Models\AuthorModel.cs" />
     <Compile Include="Models\BlogPostCommentModel.cs" />
     <Compile Include="Models\BlogPostModelLight.cs" />
+    <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\LanguageModel.cs" />
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="RequestModels\BaseUserRequestModel.cs" />
