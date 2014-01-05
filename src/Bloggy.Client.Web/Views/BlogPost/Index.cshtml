@@ -1,0 +1,6 @@
+﻿@model Bloggy.Client.Web.ViewModels.BlogPostPageViewModel
+@{
+    ViewBag.Title = Model.BlogPost.Title;
+}
+
+@Html.Partial("_BlogPostListItemPartial", Model.BlogPost)

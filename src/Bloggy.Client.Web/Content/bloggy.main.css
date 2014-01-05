@@ -77,3 +77,9 @@ input[type=password].input-validation-error:focus {
         text-align: center;
     }
 }
+
+footer {
+    background-color: #9954bb;
+    color: #fff;
+    padding: 20px;
+}

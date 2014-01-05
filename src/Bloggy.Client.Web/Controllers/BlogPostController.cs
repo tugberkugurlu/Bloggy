@@ -217,8 +217,8 @@ namespace Bloggy.Client.Web.Controllers
         {
             AkismetCommentRequestModel akismetComment = _mapper.Map<CommentPostRequestModel, AkismetCommentRequestModel>(requestModel);
             akismetComment.CommentType = "Comment";
-            akismetComment.Permalink = Request.Url.ToString();
-            akismetComment.Referrer = Request.UrlReferrer.ToString();
+            if (Request.Url != null) akismetComment.Permalink = Request.Url.ToString();
+            if (Request.UrlReferrer != null) akismetComment.Referrer = Request.UrlReferrer.ToString();
             akismetComment.UserAgent = Request.UserAgent;
             akismetComment.UserIp = Request.UserHostName;
 
