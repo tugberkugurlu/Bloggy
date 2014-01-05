@@ -1,0 +1,32 @@
+﻿@model Bloggy.Client.Web.Models.BlogPostModelLight
+<div class="row blog-post-list-item">
+    <div class="col-md-12 item-header">
+        <h4 class="title">
+            <a href="/post/@Model.Slug">
+                <strong>@Model.Title</strong>
+            </a>
+        </h4>
+        <div class="text-info text-info-custom">
+            @Model.BriefInfo
+        </div>
+        <div class="misc">
+            <div class="row">
+                <div class="well well-sm well-sm-custom">
+                    @Model.CreatedOn.ToString("yyyy-MM-dd HH:mm"), Tugberk Ugurlu
+                    <div class="span5 misc-item" style="float:right;">
+                        @foreach (var tag in Model.Tags)
+                        {
+                            <span class="label label-default linklabel">
+                                <a href="tags/@tag.Slug" style="color:white">@tag.Name</a>
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 content">
+                @Html.Raw(Model.Content)
+            </div>
+            <a href="/post/@Model.Slug">Comments <span class="badge">0</span></a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@model Bloggy.Client.Web.ViewModels.HomeViewModel
+@if (Model != null && Model.BlogPosts != null)
+{
+    if (Model.BlogPosts.Any())
+    {
+        foreach (Bloggy.Client.Web.Models.BlogPostModelLight post in Model.BlogPosts)
+        {
+            @Html.Partial("_BlogPostListItemPartial", post)
+        }
+    }
+    else
+    {
+        <p>No posts found.</p>
+    }
+}
+
+@if (Model != null && Model.PagerModel != null && Model.BlogPosts != null && Model.BlogPosts.Any() == true)
+{
+    <ul class="pager">
+        @if (Model.PagerModel.IsOlderDisabled)
+        {
+            <li class="previous disabled">
+                <a href="#">← Older</a>
+            </li>
+        }
+        else
+        {
+            int olderPage = Model.PagerModel.CurrentPage + 1;
+            <li class="previous">
+                <a href="/@olderPage">← Older</a>
+            </li>
+        }
+
+        @if (Model.PagerModel.IsNewerDisabled)
+        {
+            <li class="next disabled">
+                <a href="#">Newer →</a>
+            </li>
+        }
+        else
+        {
+            int newerPage = Model.PagerModel.CurrentPage - 1;
+            <li class="next">
+                <a href="/@newerPage">Newer →</a>
+            </li>
+        }
+    </ul>
+}

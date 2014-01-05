@@ -6,11 +6,26 @@
         <title>@ViewBag.Title</title>
         @Styles.Render("~/Content/css")
     </head>
-<body itemscope itemtype="http://schema.org/WebPage">
-    <div>
-        @RenderBody()
-    </div>
-    @Scripts.Render("~/bundles/scripts")
-    @RenderSection("scripts", required: false)
+    <body itemscope itemtype="http://schema.org/WebPage">
+        @Html.Partial("_TopHeaderPartial")
+        <div class="container" role="main">
+            <div class="row">
+                <div class="col-md-8">
+                    <hr />
+                    @RenderBody()
+                </div>
+                <div class="col-md-4">
+                    <hr />
+                    @Html.Partial("_RightSidePartial")
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="container">
+                <p>&copy; @DateTime.Now.Year - Bloggy &copy;</p>
+            </div>
+        </footer>
+        @Scripts.Render("~/bundles/scripts")
+        @RenderSection("scripts", required: false)
 </body>
 </html>
