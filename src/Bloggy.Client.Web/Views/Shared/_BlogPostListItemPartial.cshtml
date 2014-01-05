@@ -9,13 +9,18 @@
                 @Model.BriefInfo
             </div>
             <div class="row misc">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <i class="glyphicon glyphicon-calendar"></i> @Model.CreatedOn.ToString("yyyy-MM-dd HH:mm")
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <i class="glyphicon glyphicon-user"></i> Tugberk Ugurlu
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
+                    @* Comments Count *@
+                </div>
+            </div>
+            <div class="row tags">
+                <div class="col-sm-12">
                     @foreach (var tag in Model.Tags)
                     {
                         <span class="label label-info tag-label">

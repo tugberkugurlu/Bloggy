@@ -4,14 +4,10 @@ using Bloggy.Client.Web.Infrastructure.Logging;
 using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.ViewModels;
 using Bloggy.Domain.Entities;
-using Bloggy.Domain.Indexes;
 using Raven.Client;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Bloggy.Client.Web.Controllers
@@ -33,55 +29,23 @@ namespace Bloggy.Client.Web.Controllers
         {
             if (page < 1)
             {
-                return HttpNotFound("Given page number not found");
+                Logger.Error(string.Format("The page number is smaller than 1. Value: {0}", page));
+                return HttpNotFound();
             }
 
-            IList<BlogPost> blogPosts = await RetrieveBlogPostsAsync(page);
-            IList<BlogPostModelLight> lightBlogPosts = _mapper.Map<IList<BlogPost>, IList<BlogPostModelLight>>(blogPosts);
+            RavenQueryStatistics stats;
+            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPost>()
+                .Statistics(out stats)
+                .Where(post => post.IsApproved == true)
+                .OrderByDescending(post => post.CreatedOn)
+                .Skip((page - 1) * DefaultPageSize)
+                .Take(DefaultPageSize)
+                .ToListAsync();
 
-            PagerModel pagerModel = await InitializePagerAsync(page);
-            HomeViewModel homeViewModel = new HomeViewModel
+            return View(new HomeViewModel
             {
-                BlogPosts = lightBlogPosts,
-                PagerModel = pagerModel
-            };
-
-            return View(homeViewModel);
-        }
-
-        private async Task<PagerModel> InitializePagerAsync(int pageNumber)
-        {
-            PagerModel pagerModel = new PagerModel();
-
-            if (pageNumber == 1)
-            {
-                pagerModel.IsNewerDisabled = true;
-                pagerModel.IsOlderDisabled = await GetPostsRavenQuery(pageNumber + 1).AnyAsync();
-            }
-            else
-            {
-                pagerModel.IsNewerDisabled = await GetPostsRavenQuery(pageNumber - 1).AnyAsync();
-                pagerModel.IsOlderDisabled = await GetPostsRavenQuery(pageNumber + 1).AnyAsync();
-            }
-
-            pagerModel.CurrentPage = pageNumber;
-            return pagerModel;
-        }
-
-        private IQueryable<BlogPost> GetPostsRavenQuery(int pageNumber)
-        {
-            return _documentSession.Query<BlogPost>()
-                            .Where(t => t.IsApproved == true)
-                            .OrderByDescending(t => t.CreatedOn)
-                            .Skip((pageNumber - 1) * DefaultPageSize)
-                            .Take(DefaultPageSize);
-        }
-
-        private async Task<IList<BlogPost>> RetrieveBlogPostsAsync(int pageNumber)
-        {
-            IList<BlogPost> blogPosts = await GetPostsRavenQuery(pageNumber).ToListAsync();
-
-            return blogPosts;
+                BlogPosts = _mapper.Map<IEnumerable<BlogPost>, IEnumerable<BlogPostModelLight>>(blogPosts)
+            });
         }
     }
 }

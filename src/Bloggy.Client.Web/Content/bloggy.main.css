@@ -6,14 +6,18 @@ div.blog-post-item div.head .text-info-custom {
     margin-bottom: 10px;
 }
 
-div.blog-post-item div.head .misc span.tag-label {
+div.blog-post-item div.head .misc {
+    margin-bottom: 10px;
+}
+
+div.blog-post-item div.head .tags span.tag-label {
     margin-right: 5px;
 }
 
-div.blog-post-item div.head .misc span.tag-label:last-of-type {
+div.blog-post-item div.head .tags span.tag-label:last-of-type {
     margin-right: 0;
 }
 
-div.blog-post-item div.head .misc span.tag-label a {
+div.blog-post-item div.head .tags span.tag-label a {
     color: #fff;
 }
