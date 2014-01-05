@@ -39,33 +39,12 @@ namespace Bloggy.Client.Web.Controllers
             IList<BlogPost> blogPosts = await RetrieveBlogPostsByTagAsync(slug, pageNumber);
             IList<BlogPostModelLight> lightBlogPosts = _mapper.Map<IList<BlogPost>, IList<BlogPostModelLight>>(blogPosts);
 
-            PagerModel pagerModel = await InitializePagerAsync(slug, pageNumber);
             HomeViewModel homeViewModel = new HomeViewModel()
             {
-                BlogPosts = lightBlogPosts,
-                PagerModel = pagerModel
+                BlogPosts = lightBlogPosts
             };
 
             return View(homeViewModel);
-        }
-
-        private async Task<PagerModel> InitializePagerAsync(string tagSlug, int pageNumber)
-        {
-            PagerModel pagerModel = new PagerModel();
-
-            if (pageNumber == 1)
-            {
-                pagerModel.IsNewerDisabled = true;
-                pagerModel.IsOlderDisabled = await GetPostsByTagRavenQuery(tagSlug, pageNumber + 1).AnyAsync();
-            }
-            else
-            {
-                pagerModel.IsNewerDisabled = await GetPostsByTagRavenQuery(tagSlug, pageNumber - 1).AnyAsync();
-                pagerModel.IsOlderDisabled = await GetPostsByTagRavenQuery(tagSlug, pageNumber + 1).AnyAsync();
-            }
-
-            pagerModel.CurrentPage = pageNumber;
-            return pagerModel;
         }
 
         private IQueryable<BlogPost> GetPostsByTagRavenQuery(string tagSlug, int pageNumber)
