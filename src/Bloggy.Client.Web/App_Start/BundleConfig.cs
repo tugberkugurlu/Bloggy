@@ -14,6 +14,7 @@ using dotless.Core.Parser;
 using dotless.Core;
 using System.Text;
 using System.Collections.Generic;
+using Raven.Client.Linq;
 
 namespace Bloggy.Client.Web
 {
@@ -39,6 +40,7 @@ namespace Bloggy.Client.Web
 
             bundles.Add(new StyleBundle("~/content/css")
                 .Include("~/content/bootstrap/bootstrap.css")
+                .Include("~/content/font-awesome.css")
                 .Include("~/content/bloggy.main.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/scripts")

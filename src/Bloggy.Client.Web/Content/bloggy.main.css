@@ -1,11 +1,36 @@
 ﻿img {
     max-width: 100% !important;
     height: auto;
-    display: block;
+    /*display:block;*/
 }
 
-div[role="main"] {
-    margin-top: 60px;
+#side div.row {
+    margin-bottom: 10px;
+}
+
+#side div.row:last-of-type {
+    margin-bottom: 0;
+}
+
+#badge-list {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#badge-list li {
+    padding: 0;
+    list-style-type: none;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.big-badge-holder {
+    text-align: center;
+}
+
+.big-badge-holder a img {
+    border: none;
 }
 
 div.blog-post-item div.head .text-info-custom {

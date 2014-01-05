@@ -211,10 +211,13 @@
     <Content Include="Content\bootstrap\bootstrap.min.css">
       <DependentUpon>bootstrap.less</DependentUpon>
     </Content>
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\img\MVP_Horizontal_BlueOnly9.png" />
     <Content Include="Content\img\raven_badge1.png" />
     <Content Include="Content\img\raven_badge2.png" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -275,6 +278,10 @@
     <Content Include="Content\bootstrap\flatly\variables.less" />
     <Content Include="App_Code\CustomHelpers.cshtml" />
     <None Include="Content\bloggy.main.less" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
