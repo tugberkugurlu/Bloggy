@@ -1,8 +1,6 @@
 ﻿@model Bloggy.Client.Web.ViewModels.BlogPostPageViewModel
 @{
     ViewBag.Title = Model.BlogPost.Title;
-    ReCaptcha.PrivateKey = ConfigurationManager.AppSettings[Constants.RecaptchaPrivateKeyAppSettingsKey];
-    ReCaptcha.PublicKey = ConfigurationManager.AppSettings[Constants.RecaptchaPublicKeyAppSettingsKey];
 }
 
 <div class="row blog-post-list-item">

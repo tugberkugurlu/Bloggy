@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Bloggy.Client.Web.Infrastructure;
 using Bloggy.Client.Web.Infrastructure.Logging;
+using Bloggy.Client.Web.Infrastructure.Managers;
 using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.RequestModels;
 using Bloggy.Client.Web.ViewModels;
@@ -22,12 +23,14 @@ namespace Bloggy.Client.Web.Controllers
     public class BlogPostController : RavenController
     {
         private readonly IAsyncDocumentSession _documentSession;
+        private readonly IConfigurationManager _configManager;
         private readonly AkismetClient _akismetClient;
         private readonly IMappingEngine _mapper;
 
-        public BlogPostController(IMvcLogger logger, IAsyncDocumentSession documentSession, AkismetClient akismetClient, IMappingEngine mapper) : base(logger)
+        public BlogPostController(IMvcLogger logger, IAsyncDocumentSession documentSession, IConfigurationManager configManager, AkismetClient akismetClient, IMappingEngine mapper) : base(logger)
         {
             _documentSession = documentSession;
+            _configManager = configManager;
             _akismetClient = akismetClient;
             _mapper = mapper;
         }
@@ -104,8 +107,7 @@ namespace Bloggy.Client.Web.Controllers
             if (ModelState.IsValid)
             {
                 // 3-) Model State is valid. Check  whether captcha is valid.
-                bool isCaptchaActive = bool.Parse(ConfigurationManager.AppSettings[Constants.RecaptchaActiveAppSettingsKey]);
-                if (isCaptchaActive && !ReCaptcha.Validate(ConfigurationManager.AppSettings[Constants.RecaptchaPrivateKeyAppSettingsKey]))
+                if (_configManager.IsRecaptchaEnabled && !ReCaptcha.Validate(_configManager.RecaptchaPrivateKey))
                 {
                     ModelState.AddModelError(string.Empty, ValidationResources.Captcha);
                 }
@@ -113,8 +115,7 @@ namespace Bloggy.Client.Web.Controllers
                 {
                     // 4-) Check whether the spam check is enabled or not. If enabled, check against spam.
                     bool isSpam = false;
-                    bool isSpamCheckEnabled = bool.Parse(ConfigurationManager.AppSettings[Constants.AkismetActiveAppSettingsKey]);
-                    if (isSpamCheckEnabled)
+                    if (_configManager.IsAkismetEnabled)
                     {
                         // Spam check enabled. Check against spam.
                         isSpam = await CheckCommentIfSpamAsync(slug, requestModel);

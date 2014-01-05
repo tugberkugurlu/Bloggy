@@ -1,4 +1,11 @@
-﻿@model CommentPostRequestModel
+﻿@using Bloggy.Client.Web.Infrastructure.Managers
+@using Microsoft.Web.Helpers
+@model CommentPostRequestModel
+@{
+    IConfigurationManager configManager = DependencyResolver.Current.GetService<IConfigurationManager>();
+    ReCaptcha.PrivateKey = configManager.RecaptchaPrivateKey;
+    ReCaptcha.PublicKey = configManager.RecaptchaPublicKey;
+}
     
 <div class="control-group">
     @Html.LabelFor(model => model.CommentAuthorName, new { @class = "control-label" })
@@ -25,7 +32,7 @@
     </div>
 </div>
 
-@if (bool.Parse(ConfigurationManager.AppSettings[Constants.RecaptchaActiveAppSettingsKey]))
+@if (configManager.IsRecaptchaEnabled)
 {
     <div class="control-group">
         <div class="controls">

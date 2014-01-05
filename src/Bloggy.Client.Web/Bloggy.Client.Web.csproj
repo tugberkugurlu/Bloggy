@@ -203,10 +203,6 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Config\appSettings.web.config" />
-    <Content Include="Config\appSettings.web.Prod.config">
-      <DependentUpon>appSettings.web.config</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\BlogPostAdmin\Create.cshtml" />
@@ -439,6 +435,9 @@
     <Compile Include="Infrastructure\Hypermedia\MessageHandlers\EnrichingHandler.cs" />
     <Compile Include="Infrastructure\Hypermedia\SelfLink.cs" />
     <Compile Include="Infrastructure\Identity\UserManagerRoleExtensions.cs" />
+    <Compile Include="Infrastructure\Managers\DefaultConfigurationManager.cs" />
+    <Compile Include="Infrastructure\Managers\FallbackEnabledDefaultConfigurationManager.cs" />
+    <Compile Include="Infrastructure\Managers\IConfigurationManager.cs" />
     <Compile Include="Infrastructure\Mapping\IntTypeConverter.cs" />
     <Compile Include="Infrastructure\Mapping\NullIntTypeConverter.cs" />
     <Compile Include="Infrastructure\AtomPub\MessageHandlers\WlwMessageHandler.cs" />

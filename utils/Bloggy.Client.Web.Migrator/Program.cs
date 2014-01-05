@@ -1,4 +1,5 @@
-﻿using Bloggy.Domain.Entities;
+﻿using Bloggy.Client.Web.Infrastructure.Managers;
+using Bloggy.Domain.Entities;
 using Bloggy.Domain.Indexes;
 using Bloggy.Wrappers.Akismet;
 using Bloggy.Wrappers.Akismet.RequestModels;
@@ -9,7 +10,6 @@ using Raven.Client.Indexes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -19,6 +19,8 @@ namespace Bloggy.Client.Web.Migrator
 {
     class Program
     {
+        private static readonly IConfigurationManager ConfigManager = new FallbackEnabledDefaultConfigurationManager();
+
         static void Main(string[] args)
         {
             AkismetCredentials akismetCreds = RetrieveAkismetCredentials();
@@ -82,13 +84,8 @@ namespace Bloggy.Client.Web.Migrator
 
         private static AkismetCredentials RetrieveAkismetCredentials()
         {
-            string apiKey = Environment.GetEnvironmentVariable("Bloggy:Akismet:ApiKey", EnvironmentVariableTarget.User);
-            string blog = Environment.GetEnvironmentVariable("Bloggy:Akismet:Blog", EnvironmentVariableTarget.User);
-
-            if (apiKey == null || blog == null)
-            {
-                throw new NotSupportedException("Either Bloggy:Akismet:ApiKey or Bloggy:Akismet:Blog user environment variable is not set.");
-            }
+            string apiKey = ConfigManager.AkismetApiKey;
+            string blog = ConfigManager.AkismetBlog;
 
             return new AkismetCredentials(apiKey, blog);
         }
@@ -190,16 +187,13 @@ namespace Bloggy.Client.Web.Migrator
 
         private static IDocumentStore RetrieveDocumentStore()
         {
-            string ravenDbUrl = ConfigurationManager.AppSettings[Constants.RavenDbUrlAppSettingsKey];
-            string ravenDefaultDatabase = ConfigurationManager.AppSettings[Constants.RavenDbDefaultDatabaseAppSettingsKey];
-
             IDocumentStore store = new DocumentStore
             {
-                Url = ravenDbUrl,
-                DefaultDatabase = ravenDefaultDatabase
+                Url = ConfigManager.RavenDbUrl,
+                DefaultDatabase = ConfigManager.RavenDbDefaultDatabase
             }.Initialize();
 
-            store.DatabaseCommands.EnsureDatabaseExists(ravenDefaultDatabase);
+            store.DatabaseCommands.EnsureDatabaseExists(ConfigManager.RavenDbDefaultDatabase);
             IndexCreation.CreateIndexes(typeof(Tags_Count).Assembly, store);
 
             return store;
