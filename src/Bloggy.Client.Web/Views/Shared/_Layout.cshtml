@@ -25,5 +25,17 @@
         </footer>
         @Scripts.Render("~/bundles/scripts")
         @RenderSection("scripts", required: false)
+        <script>
+            (function() {
+                $('form').submit(function () {
+                    var $this = $(this),
+                        $buttons = $this.find('input[type=submit], button[type=submit]');
+
+                    if ($this.valid()) {
+                        $buttons.prop('disabled', true);
+                    }
+                });
+            }());
+        </script>
 </body>
 </html>

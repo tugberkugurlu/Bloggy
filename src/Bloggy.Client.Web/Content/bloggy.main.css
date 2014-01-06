@@ -113,10 +113,9 @@ footer {
 }
 
 @media (max-width: 767px) {
-    div[role="main"] {
+    #content {
         border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
 
     .blog-post-item .head .misc div.misc-item {
