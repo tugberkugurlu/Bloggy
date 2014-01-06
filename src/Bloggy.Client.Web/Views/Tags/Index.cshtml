@@ -1,0 +1,7 @@
+﻿@model Bloggy.Client.Web.ViewModels.TagsHomeViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.Partial("_BlogPostListPartial", Model.BlogPosts)
+@CustomHelpers.Pager(Model.BlogPosts)

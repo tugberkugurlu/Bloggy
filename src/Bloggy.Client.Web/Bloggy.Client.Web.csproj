@@ -549,6 +549,7 @@
     </Compile>
     <Compile Include="ViewModels\BlogPostPageViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\TagsHomeViewModel.cs" />
     <Compile Include="ViewModels\TagsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -573,6 +574,8 @@
     <Content Include="Views\Shared\_BlogPostListItemPartial.cshtml" />
     <Content Include="Views\BlogPost\Index.cshtml" />
     <Content Include="Views\Shared\_CommentFormPartial.cshtml" />
+    <Content Include="Views\Tags\Index.cshtml" />
+    <Content Include="Views\Tags\List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
