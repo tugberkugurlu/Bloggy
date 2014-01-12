@@ -15,6 +15,7 @@ namespace Bloggy.Domain.Indexes
             public string BriefInfo { get; set; }
             public string Content { get; set; }
             public Tag[] Tags { get; set; }
+            public Slug[] Slugs { get; set; }
             public DateTimeOffset CreatedOn { get; set; }
 
             public int CommentsCount { get; set; }
@@ -31,6 +32,7 @@ namespace Bloggy.Domain.Indexes
                                    BriefInfo = blogPost.BriefInfo,
                                    Content = blogPost.Content,
                                    Tags = blogPost.Tags,
+                                   Slugs = blogPost.Slugs,
                                    CreatedOn = blogPost.CreatedOn,
                                    CommentsCount = comments.Count(comment => comment.IsApproved && !comment.IsSpam)
                                };
@@ -39,6 +41,7 @@ namespace Bloggy.Domain.Indexes
             Store(x => x.BriefInfo, FieldStorage.Yes);
             Store(x => x.Content, FieldStorage.Yes);
             Store(x => x.Tags, FieldStorage.Yes);
+            Store(x => x.Slugs, FieldStorage.Yes);
             Store(x => x.CreatedOn, FieldStorage.Yes);
             Store(x => x.CommentsCount, FieldStorage.Yes);
 
