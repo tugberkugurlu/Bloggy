@@ -19,7 +19,7 @@ namespace Bloggy.Client.Web.Migrator
 {
     class Program
     {
-        private static readonly IConfigurationManager ConfigManager = new FallbackEnabledDefaultConfigurationManager();
+        private static readonly IConfigurationManager ConfigManager = new FallbackEnabledConfigurationManager();
 
         static void Main(string[] args)
         {

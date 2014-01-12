@@ -511,7 +511,7 @@
     <Compile Include="Infrastructure\Hypermedia\SelfLink.cs" />
     <Compile Include="Infrastructure\Identity\UserManagerRoleExtensions.cs" />
     <Compile Include="Infrastructure\Managers\DefaultConfigurationManager.cs" />
-    <Compile Include="Infrastructure\Managers\FallbackEnabledDefaultConfigurationManager.cs" />
+    <Compile Include="Infrastructure\Managers\FallbackEnabledConfigurationManager.cs" />
     <Compile Include="Infrastructure\Managers\IConfigurationManager.cs" />
     <Compile Include="Infrastructure\Mapping\IntTypeConverter.cs" />
     <Compile Include="Infrastructure\Mapping\NullIntTypeConverter.cs" />

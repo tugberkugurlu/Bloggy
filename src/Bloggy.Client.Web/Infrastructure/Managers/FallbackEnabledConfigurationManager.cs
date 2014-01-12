@@ -2,13 +2,13 @@ using System;
 
 namespace Bloggy.Client.Web.Infrastructure.Managers
 {
-    public sealed class FallbackEnabledDefaultConfigurationManager : DefaultConfigurationManager
+    public sealed class FallbackEnabledConfigurationManager : DefaultConfigurationManager
     {
         private const string NeedsToBeDefinedErrorFormat = "'{0}' value needs to be defined either inside the config file or as a user environment variable.";
         private readonly string _akismetApiKey;
         private readonly string _akismetBlog;
 
-        public FallbackEnabledDefaultConfigurationManager()
+        public FallbackEnabledConfigurationManager()
         {
             _akismetApiKey = GetValue(AkismetApiKeyConfigKey, base.AkismetApiKey);
             _akismetBlog = GetValue(AkismetBlogConfigKey, base.AkismetBlog);
