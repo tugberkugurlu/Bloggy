@@ -1,4 +1,5 @@
 ﻿using Bloggy.Domain.Entities;
+using Raven.Abstractions.Indexing;
 using Raven.Client.Indexes;
 using System;
 using System.Linq;
@@ -37,6 +38,8 @@ namespace Bloggy.Domain.Indexes
                                     Count = groupedResult.Sum(x => x.Count),
                                     LastSeenAt = groupedResult.Max(x => x.LastSeenAt)
                                 };
+
+            Sort(x => x.Count, SortOptions.Int);
         }
     }
 }
