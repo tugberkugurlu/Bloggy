@@ -12,6 +12,7 @@ namespace Bloggy.Domain.Entities
         {
             Tags = new Collection<Tag>();
             Slugs = new Collection<Slug>();
+            CommentIds = new Collection<string>();
         }
 
         public string Id { get; set; }
@@ -24,6 +25,7 @@ namespace Bloggy.Domain.Entities
         public string Content { get; set; }
         public ICollection<Tag> Tags { get; set; }
         public ICollection<Slug> Slugs { get; set; }
+        public ICollection<string> CommentIds { get; set; }
 
         public bool AllowComments { get; set; }
         public bool IsApproved { get; set; }
