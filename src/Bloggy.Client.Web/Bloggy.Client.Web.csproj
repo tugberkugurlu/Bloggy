@@ -483,6 +483,7 @@
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Infrastructure\ActionResults\FeedResult.cs" />
     <Compile Include="Infrastructure\ActionResults\RssFeedResult.cs" />
+    <Compile Include="Infrastructure\AsyncHelper.cs" />
     <Compile Include="Infrastructure\AtomPub\AtomExtensions.cs" />
     <Compile Include="Infrastructure\AtomPub\Dispatchers\AtomPubServiceDocumentDispatcher.cs" />
     <Compile Include="Infrastructure\AtomPub\Formatters\AtomPubCategoryMediaTypeFormatter.cs" />

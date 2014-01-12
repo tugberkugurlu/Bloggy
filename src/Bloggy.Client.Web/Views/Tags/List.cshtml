@@ -1,8 +1,16 @@
 ﻿@using Bloggy.Client.Web.Models
-@model IEnumerable<Bloggy.Client.Web.Models.TagModel>
+@model IEnumerable<TagModel>
+@{
+    Layout = null;
+}
+
 <ul>
     @foreach (TagModel tag in Model)
     {
-        <li></li>
+        <li>
+            <a href="#">
+                @tag.Name (@tag.Count)
+            </a>
+        </li>
     }
 </ul>

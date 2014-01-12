@@ -7,7 +7,6 @@ using Bloggy.Domain;
 using Bloggy.Domain.Entities;
 using Bloggy.Domain.Indexes;
 using Raven.Client;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,7 +56,10 @@ namespace Bloggy.Client.Web.Controllers
         [ChildActionOnly]
         public ActionResult List()
         {
-            IEnumerable<Tags_Count.ReduceResult> tags = _documentSession.Query<Tags_Count.ReduceResult, Tags_Count>().ToList();
+            IEnumerable<Tags_Count.ReduceResult> tags = AsyncHelper.RunSync(() => _documentSession
+                .Query<Tags_Count.ReduceResult, Tags_Count>()
+                .ToListAsync());
+
             return View(tags.Select(tag => new TagModel
             {
                 Name = tag.Name,
