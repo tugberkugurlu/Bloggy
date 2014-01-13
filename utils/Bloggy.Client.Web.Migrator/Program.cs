@@ -1,4 +1,5 @@
-﻿using Bloggy.Client.Web.Infrastructure.Managers;
+﻿using System.Threading.Tasks;
+using Bloggy.Client.Web.Infrastructure.Managers;
 using Bloggy.Domain.Entities;
 using Bloggy.Domain.Indexes;
 using Bloggy.Wrappers.Akismet;
@@ -25,7 +26,7 @@ namespace Bloggy.Client.Web.Migrator
         {
             AkismetCredentials akismetCreds = RetrieveAkismetCredentials();
             AkismetClient akismetClient = new AkismetClient(akismetCreds.ApiKey, akismetCreds.Blog);
-            Console.WriteLine("Retrieving old blog posts.");
+            Console.WriteLine(@"Retrieving old blog posts.");
             IEnumerable<BlogPost> blogs = RetrieveOldPosts();
 
             using (IDocumentStore store = RetrieveDocumentStore())
@@ -35,50 +36,27 @@ namespace Bloggy.Client.Web.Migrator
                 {
                     ses.Store(blogPost);
 
-                    Console.WriteLine("Retrieving comments for blog post '{0}'.", blogPost.SecondaryId.Value);
+                    Console.WriteLine(@"Retrieving comments for blog post '{0}'.", blogPost.SecondaryId.Value);
                     IEnumerable<BlogPostComment> comments = RetrieveComments(blogPost.SecondaryId.Value);
 
                     foreach (BlogPostComment comment in comments)
                     {
-                        bool isSpam = true;
-                        try
-                        {
-                            Console.WriteLine("Checing comment '{0}' against spam.", comment.Name);
-                            AkismetResponse<bool> akismetResponse = akismetClient.CheckCommentAsync(new AkismetCommentRequestModel
-                            {
-                                CommentAuthor = comment.Name,
-                                CommentAuthorEmail = comment.Email,
-                                CommentAuthorUrl = comment.Url,
-                                CommentContent = comment.Content,
-                                CommentType = "Comment",
-                                Permalink = "http://www.tugberkugurlu/archive/" + blogPost.DefaultSlug.Path,
-                                UserIp = comment.CreationIp,
-                                UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
-
-                            }).Result;
-
-                            if (akismetResponse.IsSuccessStatusCode)
-                            {
-                                isSpam = akismetResponse.Entity;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.ToString());
-                        }
-
+                        bool isSpam = CheckAgainstSpamAsync(akismetClient, comment).Result;
                         comment.IsSpam = isSpam;
                         comment.IsApproved = !isSpam;
                         comment.BlogPostId = blogPost.Id;
                         ses.Store(comment);
+
+                        // add CommentId to blogPost CommentIds list
+                        blogPost.CommentIds.Add(comment.Id);
                     }
                 }
 
-                Console.WriteLine("Saving all changes...");
+                Console.WriteLine(@"Saving all changes...");
                 ses.SaveChanges();
             }
 
-            Console.WriteLine("Done");
+            Console.WriteLine(@"Done");
             Console.ReadLine();
         }
 
@@ -133,6 +111,38 @@ namespace Bloggy.Client.Web.Migrator
                     return comments;
                 }
             }
+        }
+
+        private static async Task<bool> CheckAgainstSpamAsync(AkismetClient akismetClient, BlogPostComment comment)
+        {
+            bool isSpam = true;
+            try
+            {
+                Console.WriteLine(@"Checing comment '{0}' against spam.", comment.Name);
+                AkismetResponse<bool> akismetResponse = await akismetClient.CheckCommentAsync(new AkismetCommentRequestModel
+                {
+                    CommentAuthor = comment.Name,
+                    CommentAuthorEmail = comment.Email,
+                    CommentAuthorUrl = comment.Url,
+                    CommentContent = comment.Content,
+                    CommentType = "Comment",
+                    Permalink = "http://www.tugberkugurlu/archive/" + blogPost.DefaultSlug.Path,
+                    UserIp = comment.CreationIp,
+                    UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
+
+                });
+
+                if (akismetResponse.IsSuccessStatusCode)
+                {
+                    isSpam = akismetResponse.Entity;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return isSpam;
         }
 
         private static BlogPost BlogBuilder(SqlDataReader reader)
