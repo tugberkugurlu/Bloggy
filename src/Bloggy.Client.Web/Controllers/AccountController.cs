@@ -16,7 +16,6 @@ namespace Bloggy.Client.Web.Controllers
 {
     public class AccountController : RavenController
     {
-        private readonly IAsyncDocumentSession _documentSession;
         private readonly UserManager<BlogUser> _userManager;
 
         private IAuthenticationManager AuthenticationManager
@@ -27,9 +26,8 @@ namespace Bloggy.Client.Web.Controllers
             }
         }
 
-        public AccountController(IMvcLogger logger, IAsyncDocumentSession documentSession, UserManager<BlogUser> userManager) : base(logger)
+        public AccountController(IMvcLogger logger, IAsyncDocumentSession documentSession, UserManager<BlogUser> userManager) : base(logger, documentSession)
         {
-            _documentSession = documentSession;
             _userManager = userManager;
         }
 
@@ -78,7 +76,7 @@ namespace Bloggy.Client.Web.Controllers
             //       2-) If exists, return 404.
             //       3-) If not exists, return the view.
 
-            bool anyUserExists = await _documentSession.Query<BlogUser>().AnyAsync();
+            bool anyUserExists = await DocumentSession.Query<BlogUser>().AnyAsync();
             if (anyUserExists)
             {
                 return HttpNotFound();
@@ -93,7 +91,7 @@ namespace Bloggy.Client.Web.Controllers
         public async Task<ActionResult> CreateManagementUserPost(ManagementUserRequestModel requestModel)
         {
             // NOTE: Not a 100% safe way but will work out fine for the purpose of this action.
-            bool anyUserExists = await _documentSession.Query<BlogUser>().AnyAsync();
+            bool anyUserExists = await DocumentSession.Query<BlogUser>().AnyAsync();
             if (anyUserExists)
             {
                 return HttpNotFound();

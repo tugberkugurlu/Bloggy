@@ -17,15 +17,11 @@ namespace Bloggy.Client.Web.Controllers
 {
     public class TagsController : RavenController
     {
-        private readonly IAsyncDocumentSession _documentSession;
         private readonly IMappingEngine _mapper;
-        private const int DefaultPageSize = 5;
 
         public TagsController(IMvcLogger logger, IAsyncDocumentSession documentSession, IMappingEngine mapper)
-            : base(logger)
+            : base(logger, documentSession)
         {
-
-            _documentSession = documentSession;
             _mapper = mapper;
         }
 
@@ -37,26 +33,17 @@ namespace Bloggy.Client.Web.Controllers
                 return HttpNotFound();
             }
 
-            RavenQueryStatistics stats;
-            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPost>()
-                .Statistics(out stats)
-                .Where(post => post.IsApproved == true && post.Tags.Any(tag => tag.Slug == slug))
-                .OrderByDescending(post => post.CreatedOn)
-                .Skip((page - 1) * DefaultPageSize)
-                .Take(DefaultPageSize)
-                .ToListAsync();
-
-            IEnumerable<BlogPostModelLight> blogPostModels = _mapper.Map<IEnumerable<BlogPost>, IEnumerable<BlogPostModelLight>>(blogPosts).ToArray();
+            PaginatedList<BlogPostModelLight> blogPosts = await GetBlogPostsByTagAsync(page, slug);
             return View(new TagsHomeViewModel
             {
-                BlogPosts = new PaginatedList<BlogPostModelLight>(blogPostModels, page, blogPostModels.Count(), stats.TotalResults)
+                BlogPosts = blogPosts
             });
         }
 
         [ChildActionOnly]
         public ActionResult List()
         {
-            IEnumerable<Tags_Count.ReduceResult> tags = AsyncHelper.RunSync(() => _documentSession
+            IEnumerable<Tags_Count.ReduceResult> tags = AsyncHelper.RunSync(() => DocumentSession
                 .Query<Tags_Count.ReduceResult, Tags_Count>()
                 .ToListAsync());
 
@@ -67,6 +54,24 @@ namespace Bloggy.Client.Web.Controllers
                 Count = tag.Count,
                 LastSeenAt = tag.LastSeenAt
             }));
+        }
+
+        // privates
+
+        private async Task<PaginatedList<BlogPostModelLight>> GetBlogPostsByTagAsync(int page, string tagSlug)
+        {
+            RavenQueryStatistics stats;
+            IEnumerable<MaterializedBlogPostIndex.ReduceResult> results = await DocumentSession
+                .Query<MaterializedBlogPostIndex.ReduceResult, MaterializedBlogPostIndex>().Statistics(out stats)
+                .Search(post => post.TagSlugsSearch, tagSlug)
+                .OrderByDescending(post => post.CreatedOn)
+                .Skip((page - 1) * DefaultPageSize)
+                .Take(DefaultPageSize)
+                .AsProjection<MaterializedBlogPostIndex.ReduceResult>()
+                .ToListAsync();
+
+            IEnumerable<BlogPostModelLight> blogPosts = results.Select(result => ToBlogPostModelLight(result)).ToList();
+            return new PaginatedList<BlogPostModelLight>(blogPosts, page, blogPosts.Count(), stats.TotalResults, DefaultPageSize);
         }
     }
 }

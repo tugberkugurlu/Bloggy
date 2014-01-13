@@ -5,19 +5,14 @@ namespace Bloggy.Client.Web.Models
 {
     public class BlogPostModelLight : IModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Language { get; set; }
         public string BriefInfo { get; set; }
         public string Content { get; set; }
-        public List<TagModel> Tags { get; set; }
+        public IEnumerable<TagModel> Tags { get; set; }
         public string Slug { get; set; }
         public bool AllowComments { get; set; }
         public DateTimeOffset CreatedOn { get; set; }
-
-        public BlogPostModelLight()
-        {
-            Tags = new List<TagModel>();
-        }
     }
 }

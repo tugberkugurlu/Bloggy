@@ -23,14 +23,13 @@ namespace Bloggy.Client.Web.Controllers
 {
     public class BlogPostController : RavenController
     {
-        private readonly IAsyncDocumentSession _documentSession;
         private readonly IConfigurationManager _configManager;
         private readonly AkismetClient _akismetClient;
         private readonly IMappingEngine _mapper;
 
-        public BlogPostController(IMvcLogger logger, IAsyncDocumentSession documentSession, IConfigurationManager configManager, AkismetClient akismetClient, IMappingEngine mapper) : base(logger)
+        public BlogPostController(IMvcLogger logger, IAsyncDocumentSession documentSession, IConfigurationManager configManager, AkismetClient akismetClient, IMappingEngine mapper)
+            : base(logger, documentSession)
         {
-            _documentSession = documentSession;
             _configManager = configManager;
             _akismetClient = akismetClient;
             _mapper = mapper;
@@ -123,8 +122,8 @@ namespace Bloggy.Client.Web.Controllers
                     }
 
                     BlogPostComment blogPostComment = ConstructBlogPostComment(blogPost, requestModel, isSpam);
-                    await _documentSession.StoreAsync(blogPostComment);
-                    await _documentSession.SaveChangesAsync();
+                    await DocumentSession.StoreAsync(blogPostComment);
+                    await DocumentSession.SaveChangesAsync();
                     ViewBag.IsCommentSuccess = true;
 
                     return View(viewModel);
@@ -139,7 +138,7 @@ namespace Bloggy.Client.Web.Controllers
 
         private async Task<BlogPost> RetrieveBlogPostAsync(string slug)
         {
-            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPostBySlugPath.Result, BlogPostBySlugPath>()
+            IEnumerable<BlogPost> blogPosts = await DocumentSession.Query<BlogPostBySlugPath.Result, BlogPostBySlugPath>()
                 .Where(post => post.SlugPathes.Any(path => path == slug))
                 .OfType<BlogPost>()
                 .Take(1)
@@ -151,7 +150,7 @@ namespace Bloggy.Client.Web.Controllers
 
         private async Task<BlogPostPageViewModel> ConstructBlogPostViewModelWithCommentsAsync(BlogPost blogPost, string defaultSlug)
         {
-            IEnumerable<BlogPostComment> comments = await _documentSession.Query<BlogPostComment>()
+            IEnumerable<BlogPostComment> comments = await DocumentSession.Query<BlogPostComment>()
                 .OrderBy(comment => comment.CreatedOn)
                 .Where(comment => comment.BlogPostId == blogPost.Id && comment.IsSpam == false && comment.IsApproved == true)
                 .ToListAsync();

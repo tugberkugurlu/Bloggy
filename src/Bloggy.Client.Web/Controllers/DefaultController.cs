@@ -16,14 +16,11 @@ namespace Bloggy.Client.Web.Controllers
 {
     public class DefaultController : RavenController
     {
-        private readonly IAsyncDocumentSession _documentSession;
         private readonly IMappingEngine _mapper;
-        private const int DefaultPageSize = 5;
 
         public DefaultController(IMvcLogger logger, IAsyncDocumentSession documentSession, IMappingEngine mapper)
-            : base(logger)
+            : base(logger, documentSession)
         {
-            _documentSession = documentSession;
             _mapper = mapper;
         }
 
@@ -35,19 +32,10 @@ namespace Bloggy.Client.Web.Controllers
                 return HttpNotFound();
             }
 
-            RavenQueryStatistics stats;
-            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPost>()
-                .Statistics(out stats)
-                .Where(post => post.IsApproved == true)
-                .OrderByDescending(post => post.CreatedOn)
-                .Skip((page - 1) * DefaultPageSize)
-                .Take(DefaultPageSize)
-                .ToListAsync();
-
-            IEnumerable<BlogPostModelLight> blogPostModels = _mapper.Map<IEnumerable<BlogPost>, IEnumerable<BlogPostModelLight>>(blogPosts).ToArray();
+            PaginatedList<BlogPostModelLight> blogPosts = await GetBlogPostsAsync(page);
             return View(new HomeViewModel
             {
-                BlogPosts = new PaginatedList<BlogPostModelLight>(blogPostModels, page, blogPostModels.Count(), stats.TotalResults)
+                BlogPosts = blogPosts
             });
         }
     }

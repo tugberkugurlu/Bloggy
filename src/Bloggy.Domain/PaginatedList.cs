@@ -28,11 +28,11 @@ namespace Bloggy.Domain
 
             get
             {
-                return ((PageIndex * PageSize) < TotalPageCount);
+                return (PageIndex < TotalPageCount);
             }
         }
 
-        public PaginatedList(IEnumerable<T> source, int pageIndex, int pageSize, int totalCount)
+        public PaginatedList(IEnumerable<T> source, int pageIndex, int pageSize, int totalCount, int taken)
         {
             if (source == null)
             {
@@ -47,7 +47,7 @@ namespace Bloggy.Domain
             PageIndex = pageIndex;
             PageSize = pageSize;
             TotalCount = totalCount;
-            TotalPageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
+            TotalPageCount = (int)Math.Ceiling(totalCount / (double)taken);
         }
     }
 }

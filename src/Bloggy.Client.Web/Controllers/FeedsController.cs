@@ -16,17 +16,15 @@ namespace Bloggy.Client.Web.Controllers
     {
         private const string BlogPostHostUri = "http://www.tugberkugurlu.com/";
         private const string BlogPostUriFormat = BlogPostHostUri + "archive/{0}";
-        private readonly IAsyncDocumentSession _documentSession;
 
-        public FeedsController(IMvcLogger logger, IAsyncDocumentSession documentSession) : base(logger)
+        public FeedsController(IMvcLogger logger, IAsyncDocumentSession documentSession) : base(logger, documentSession)
         {
-            _documentSession = documentSession;
         }
 
         [OutputCache(Duration = 900, VaryByParam = "none")]
         public async Task<RssFeedResult> Rss()
         {
-            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPost>()
+            IEnumerable<BlogPost> blogPosts = await DocumentSession.Query<BlogPost>()
                 .OrderByDescending(post => post.CreatedOn)
                 .Where(post => post.IsApproved == true)
                 .Take(20)
@@ -43,7 +41,7 @@ namespace Bloggy.Client.Web.Controllers
         [OutputCache(Duration = 900, VaryByParam = "tagSlug")]
         public async Task<RssFeedResult> RssByTagSlug(string tagSlug)
         {
-            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPost>()
+            IEnumerable<BlogPost> blogPosts = await DocumentSession.Query<BlogPost>()
                 .OrderByDescending(post => post.CreatedOn)
                 .Where(post => post.IsApproved == true)
                 .Where(post => post.Tags.Any(t=> t.Slug == tagSlug))

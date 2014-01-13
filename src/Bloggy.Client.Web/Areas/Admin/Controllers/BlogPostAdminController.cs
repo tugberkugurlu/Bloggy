@@ -13,18 +13,16 @@ namespace Bloggy.Client.Web.Areas.Admin.Controllers
 {
     public class BlogPostAdminController : RavenController
     {
-        private readonly IAsyncDocumentSession _documentSession;
         private readonly IMappingEngine _mapper;
 
-        public BlogPostAdminController(IMvcLogger logger, IMappingEngine mapper, IAsyncDocumentSession documentSession) : base(logger)
+        public BlogPostAdminController(IMvcLogger logger, IMappingEngine mapper, IAsyncDocumentSession documentSession) : base(logger, documentSession)
         {
             _mapper = mapper;
-            _documentSession = documentSession;
         }
 
         public async Task<ActionResult> Details(int id)
         {
-            BlogPost blogPost = await _documentSession.LoadAsync<BlogPost>(id);
+            BlogPost blogPost = await DocumentSession.LoadAsync<BlogPost>(id);
             if (blogPost == null)
             {
                 return HttpNotFound();
@@ -45,8 +43,8 @@ namespace Bloggy.Client.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 BlogPost blogPost = ConstructBlogPost(requestModel);
-                await _documentSession.StoreAsync(blogPost);
-                await _documentSession.SaveChangesAsync();
+                await DocumentSession.StoreAsync(blogPost);
+                await DocumentSession.SaveChangesAsync();
 
                 return RedirectToAction("Details", new { id = blogPost.Id.ToIntId() });
             }
