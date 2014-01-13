@@ -6,6 +6,7 @@ using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.RequestModels;
 using Bloggy.Client.Web.ViewModels;
 using Bloggy.Domain.Entities;
+using Bloggy.Domain.Indexes;
 using Bloggy.Wrappers.Akismet;
 using Bloggy.Wrappers.Akismet.RequestModels;
 using Microsoft.Web.Helpers;
@@ -138,8 +139,9 @@ namespace Bloggy.Client.Web.Controllers
 
         private async Task<BlogPost> RetrieveBlogPostAsync(string slug)
         {
-            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPost>()
-                .Where(post => post.Slugs.Any(slugEntity => slugEntity.Path == slug))
+            IEnumerable<BlogPost> blogPosts = await _documentSession.Query<BlogPostBySlugPath.Result, BlogPostBySlugPath>()
+                .Where(post => post.SlugPathes.Any(path => path == slug))
+                .OfType<BlogPost>()
                 .Take(1)
                 .ToListAsync();
 

@@ -41,7 +41,7 @@ namespace Bloggy.Client.Web.Migrator
 
                     foreach (BlogPostComment comment in comments)
                     {
-                        bool isSpam = CheckAgainstSpamAsync(akismetClient, comment).Result;
+                        bool isSpam = CheckAgainstSpamAsync(akismetClient, comment, blogPost.DefaultSlug.Path).Result;
                         comment.IsSpam = isSpam;
                         comment.IsApproved = !isSpam;
                         comment.BlogPostId = blogPost.Id;
@@ -113,7 +113,7 @@ namespace Bloggy.Client.Web.Migrator
             }
         }
 
-        private static async Task<bool> CheckAgainstSpamAsync(AkismetClient akismetClient, BlogPostComment comment)
+        private static async Task<bool> CheckAgainstSpamAsync(AkismetClient akismetClient, BlogPostComment comment, string slug)
         {
             bool isSpam = true;
             try
@@ -126,7 +126,7 @@ namespace Bloggy.Client.Web.Migrator
                     CommentAuthorUrl = comment.Url,
                     CommentContent = comment.Content,
                     CommentType = "Comment",
-                    Permalink = "http://www.tugberkugurlu/archive/" + blogPost.DefaultSlug.Path,
+                    Permalink = "http://www.tugberkugurlu/archive/" + slug,
                     UserIp = comment.CreationIp,
                     UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
 
