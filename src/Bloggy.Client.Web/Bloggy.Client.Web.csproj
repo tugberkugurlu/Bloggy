@@ -476,6 +476,7 @@
     </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ArchiveController.cs" />
     <Compile Include="Controllers\AtomPub\RavenApiController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\BlogPostController.cs" />
@@ -529,6 +530,7 @@
     <Compile Include="Infrastructure\AtomPub\Models\PostFeed.cs" />
     <Compile Include="Infrastructure\AtomPub\Models\PostModel.cs" />
     <Compile Include="Infrastructure\AtomPub\Models\Resource.cs" />
+    <Compile Include="Models\ArchiveItemModel.cs" />
     <Compile Include="Models\AuthorModel.cs" />
     <Compile Include="Models\BlogPostCommentModel.cs" />
     <Compile Include="Models\BlogPostModelLight.cs" />
@@ -581,6 +583,7 @@
     <Content Include="Views\Shared\_CommentFormPartial.cshtml" />
     <Content Include="Views\Tags\Index.cshtml" />
     <Content Include="Views\Tags\List.cshtml" />
+    <Content Include="Views\Archive\List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

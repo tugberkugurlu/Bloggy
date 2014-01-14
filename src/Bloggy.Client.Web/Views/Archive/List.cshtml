@@ -1,0 +1,16 @@
+﻿@using Bloggy.Client.Web.Models
+@model IEnumerable<Bloggy.Client.Web.Models.ArchiveItemModel>
+@{
+    Layout = null;
+}
+
+<ul>
+    @foreach (ArchiveItemModel archiveItem in Model)
+    {
+        <li>
+            <a href="#">
+                @archiveItem.Label
+            </a>
+        </li>
+    }
+</ul>
