@@ -4,6 +4,10 @@
     /*display:block;*/
 }
 
+div[role="main"] {
+    margin-top: 70px;
+}
+
 #side div.row {
     margin-bottom: 10px;
 }
