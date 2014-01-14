@@ -3,5 +3,9 @@
     ViewBag.Title = "Index";
 }
 
+<div class="alert alert-info">
+    <strong>Sorted By: </strong> Tag (@Url.RequestContext.RouteData.Values["slug"].ToString())
+</div>
+
 @Html.Partial("_BlogPostListPartial", Model.BlogPosts)
 @CustomHelpers.Pager(Model.BlogPosts)

@@ -24,7 +24,9 @@
                     @foreach (var tag in Model.Tags)
                     {
                         <span class="label label-info tag-label">
-                            <a href="#">@tag.Name</a>
+                            <a href="@Url.Action("index", "tags", new { slug = tag.Slug })">
+                                @tag.Name
+                            </a>
                         </span>
                     }
                 </div>
