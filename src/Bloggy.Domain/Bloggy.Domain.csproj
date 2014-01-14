@@ -74,6 +74,7 @@
     <Compile Include="Entities\ITrackable.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="IEntity.cs" />
+    <Compile Include="Indexes\BlogPostArchiveIndex.cs" />
     <Compile Include="Indexes\BlogPostBySlugPath.cs" />
     <Compile Include="Indexes\MaterializedBlogPostIndex.cs" />
     <Compile Include="Indexes\Tags_Count.cs" />
