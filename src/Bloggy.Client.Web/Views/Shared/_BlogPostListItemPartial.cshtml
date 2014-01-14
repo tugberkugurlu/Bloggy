@@ -21,14 +21,18 @@
             </div>
             <div class="row tags">
                 <div class="col-sm-12">
-                    @foreach (var tag in Model.Tags)
-                    {
-                        <span class="label label-info tag-label">
-                            <a href="@Url.Action("index", "tags", new { slug = tag.Slug })">
-                                @tag.Name
-                            </a>
-                        </span>
-                    }
+                    <ul class="none-style-list inline-list">
+                        @foreach (var tag in Model.Tags)
+                        {
+                            <li>
+                                <span class="label label-info tag-label">
+                                    <a href="@Url.Action("index", "tags", new { slug = tag.Slug })">
+                                        @tag.Name
+                                    </a>
+                                </span>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </div>

@@ -4,12 +4,12 @@
     Layout = null;
 }
 
-<ul>
+<ul class="none-style-list labeled-list">
     @foreach (ArchiveItemModel archiveItem in Model)
     {
         <li>
             <a href="#">
-                @archiveItem.Label
+                <i class="fa fa-calendar-o"></i>&nbsp; @archiveItem.Label
             </a>
         </li>
     }

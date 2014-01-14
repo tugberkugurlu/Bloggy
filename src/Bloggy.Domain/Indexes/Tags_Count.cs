@@ -29,7 +29,7 @@ namespace Bloggy.Domain.Indexes
                                };
 
             Reduce = results => from tagCount in results
-                                group tagCount by new { tagCount.Name, tagCount.Slug }
+                                group tagCount by new { Name = tagCount.Name, Slug = tagCount.Slug }
                                 into groupedResult
                                 select new 
                                 {
