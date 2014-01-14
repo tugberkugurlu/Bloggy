@@ -24,6 +24,18 @@
     @* Comment Post *@
     @Html.Partial("_BlogPostListItemPartial", Model.BlogPost)
     
+    @* Social Buttons *@
+    <div>
+        <ul class="none-style-list inline-list social-share-list">
+            <li>
+                <div class="fb-share-button" data-href="http://developers.facebook.com/docs/plugins/" data-type="button_count"></div>
+            </li>
+            <li>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-via="tourismgeek" data-related="tourismgeek">Tweet</a>
+            </li>
+        </ul>
+    </div>
+
     @* Comments List *@
     @if (Model.Comments.Any())
     {

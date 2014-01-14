@@ -42,6 +42,14 @@ div[role="main"] {
     margin-top: 70px;
 }
 
+ul.social-share-list li a {
+    vertical-align: text-bottom !important;
+}
+
+.twitter-share-button[style] {
+    vertical-align: text-bottom !important;
+}
+
 #side div.row {
     margin-bottom: 10px;
 }
