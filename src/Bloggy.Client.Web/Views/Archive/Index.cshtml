@@ -1,0 +1,10 @@
+﻿@model Bloggy.Client.Web.ViewModels.ArchiveHomeViewModel
+@{
+}
+
+<div class="alert alert-info">
+    <strong>Sorted By: </strong> Month (@Url.RequestContext.RouteData.Values["month"].ToString()) and Year (@Url.RequestContext.RouteData.Values["year"].ToString())
+</div>
+
+@Html.Partial("_BlogPostListPartial", Model.BlogPosts)
+@CustomHelpers.Pager(Model.BlogPosts)

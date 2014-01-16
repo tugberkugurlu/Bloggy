@@ -14,7 +14,7 @@ namespace Bloggy.Client.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "ArchiveRoute",
+                name: "BlogPostRoute",
                 url: "post/{slug}",
                 defaults: new { controller = "BlogPost", action = "Index" }
             );
@@ -26,9 +26,15 @@ namespace Bloggy.Client.Web
             );
 
             routes.MapRoute(
-                name: "PostsByTag",
-                url: "tags/{slug}/{pageNumber}",
-                defaults: new { controller = "Tags", action = "Index", pageNumber = UrlParameter.Optional }
+                name: "TagsRoute",
+                url: "tags/{slug}",
+                defaults: new { controller = "tags", action = "index" }
+            );
+
+            routes.MapRoute(
+                name: "ArchiveListRoute",
+                url: "archive/{month}/{year}",
+                defaults: new { controller = "archive", action = "index" }
             );
 
             routes.MapRoute(

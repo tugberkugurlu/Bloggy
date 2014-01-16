@@ -8,7 +8,7 @@
     @foreach (ArchiveItemModel archiveItem in Model)
     {
         <li>
-            <a href="#">
+            <a href="@Url.Action("index",  "archive", new { month = archiveItem.Month, year = archiveItem.Year })">
                 <i class="fa fa-calendar-o"></i>&nbsp; @archiveItem.Label
             </a>
         </li>

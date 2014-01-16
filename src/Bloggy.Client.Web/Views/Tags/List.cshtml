@@ -9,7 +9,7 @@
     {
         <li>
             <a href="@Url.Action("index", "tags", new { slug = tag.Slug })">
-                @tag.Name (@tag.Count)
+                <i class="fa fa-tag"></i>&nbsp; @tag.Name (@tag.Count)
             </a>
         </li>
     }

@@ -554,6 +554,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ValidationResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ArchiveHomeViewModel.cs" />
     <Compile Include="ViewModels\BlogPostPageViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\TagsHomeViewModel.cs" />
@@ -584,6 +585,7 @@
     <Content Include="Views\Tags\Index.cshtml" />
     <Content Include="Views\Tags\List.cshtml" />
     <Content Include="Views\Archive\List.cshtml" />
+    <Content Include="Views\Archive\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

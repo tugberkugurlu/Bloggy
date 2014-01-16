@@ -11,6 +11,8 @@ namespace Bloggy.Domain.Indexes
         public class ReduceResult : ProjectionResult
         {
             public string TagSlugsSearch { get; set; }
+            public int Month { get; set; }
+            public int Year { get; set; }
         }
 
         public class ProjectionResult
@@ -42,7 +44,11 @@ namespace Bloggy.Domain.Indexes
                                    AllowComments = blogPost.AllowComments,
                                    CommentsCount = comments.Count(comment => comment.IsApproved && !comment.IsSpam),
                                    Slug = blogPost.Slugs.OrderByDescending(slugEntity => slugEntity.CreatedOn).First(slugEntity => slugEntity.IsDefault).Path,
-                                   TagSlugsSearch = blogPost.Tags.Select(tag => tag.Slug)
+
+                                   // For search and query purposes
+                                   TagSlugsSearch = blogPost.Tags.Select(tag => tag.Slug),
+                                   Month = blogPost.CreatedOn.Month,
+                                   Year = blogPost.CreatedOn.Year
                                };
 
             Store(x => x.Title, FieldStorage.Yes);
@@ -55,6 +61,8 @@ namespace Bloggy.Domain.Indexes
             Store(x => x.CommentsCount, FieldStorage.Yes);
 
             Sort(x => x.CommentsCount, SortOptions.Int);
+            Sort(x => x.Month, SortOptions.Int);
+            Sort(x => x.Year, SortOptions.Int);
 
             // ref: http://stackoverflow.com/questions/14835172/ravendb-static-index-query-on-child-collection-objects
             // Any field you are going to use .Search() on should be analyzed.
