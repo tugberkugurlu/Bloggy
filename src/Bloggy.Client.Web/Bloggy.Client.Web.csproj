@@ -587,6 +587,8 @@
     <Content Include="Views\Tags\List.cshtml" />
     <Content Include="Views\Archive\List.cshtml" />
     <Content Include="Views\Archive\Index.cshtml" />
+    <Content Include="Views\Default\About.cshtml" />
+    <Content Include="Views\Default\Contact.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

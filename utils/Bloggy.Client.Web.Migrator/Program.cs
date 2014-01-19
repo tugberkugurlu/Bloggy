@@ -20,6 +20,7 @@ namespace Bloggy.Client.Web.Migrator
 {
     class Program
     {
+        private const bool CheckComments = true;
         private static readonly IConfigurationManager ConfigManager = new FallbackEnabledConfigurationManager();
 
         static void Main(string[] args)
@@ -36,12 +37,15 @@ namespace Bloggy.Client.Web.Migrator
                 {
                     ses.Store(blogPost);
 
-                    Console.WriteLine(@"Retrieving comments for blog post '{0}'.", blogPost.SecondaryId.Value);
+                    Console.WriteLine(@"Retrieving comments for blog post '{0}'.", blogPost.SecondaryId);
                     IEnumerable<BlogPostComment> comments = RetrieveComments(blogPost.SecondaryId.Value);
 
                     foreach (BlogPostComment comment in comments)
                     {
-                        bool isSpam = CheckAgainstSpamAsync(akismetClient, comment, blogPost.DefaultSlug.Path).Result;
+                        bool isSpam = (CheckComments == true)
+                            ? CheckAgainstSpamAsync(akismetClient, comment, blogPost.DefaultSlug.Path).Result
+                            : false;
+
                         comment.IsSpam = isSpam;
                         comment.IsApproved = !isSpam;
                         comment.BlogPostId = blogPost.Id;

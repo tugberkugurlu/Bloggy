@@ -93,7 +93,7 @@ namespace Bloggy.Client.Web.Infrastructure.Managers
         {
             Nullable<TValue> returnValue = null;
             string valueAsString = GetValue(key);
-            if (string.IsNullOrWhiteSpace(valueAsString))
+            if (string.IsNullOrWhiteSpace(valueAsString) == false)
             {
                 returnValue = (TValue)Convert.ChangeType(valueAsString, typeof(TValue));
             }

@@ -164,10 +164,11 @@ footer {
     margin-top: 20px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 992px) {
     #content {
         border-bottom: 1px solid #eee;
         margin-bottom: 20px;
+        padding-bottom: 20px;
     }
 
     .blog-post-item .head .misc div.misc-item {

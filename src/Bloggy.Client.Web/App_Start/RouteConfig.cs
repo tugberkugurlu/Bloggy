@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace Bloggy.Client.Web
@@ -12,12 +8,6 @@ namespace Bloggy.Client.Web
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute(
-                name: "BlogPostRoute",
-                url: "post/{slug}",
-                defaults: new { controller = "BlogPost", action = "Index" }
-            );
 
             routes.MapRoute(
                 name: "FeedsByTagRoute",
@@ -40,7 +30,26 @@ namespace Bloggy.Client.Web
             routes.MapRoute(
                 name: "ArchiveListRoute",
                 url: "archive/{month}/{year}",
-                defaults: new { controller = "archive", action = "index" }
+                defaults: new { controller = "archive", action = "index" },
+                constraints: new { month = new System.Web.Mvc.Routing.Constraints.IntRouteConstraint(), year = new System.Web.Mvc.Routing.Constraints.IntRouteConstraint() }
+            );
+
+            routes.MapRoute(
+                name: "BlogPostRoute",
+                url: "archive/{slug}",
+                defaults: new { controller = "BlogPost", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "AboutRoute",
+                url: "about",
+                defaults: new { controller = "default", action = "about" }
+            );
+
+            routes.MapRoute(
+                name: "ContactRoute",
+                url: "contact",
+                defaults: new { controller = "default", action = "contact" }
             );
 
             routes.MapRoute(
