@@ -5,14 +5,12 @@ using Bloggy.Client.Web.Infrastructure.Logging;
 using Bloggy.Client.Web.Models;
 using Bloggy.Client.Web.ViewModels;
 using Bloggy.Domain;
-using Bloggy.Domain.Entities;
 using Bloggy.Domain.Indexes;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Bloggy.Client.Web.Controllers
