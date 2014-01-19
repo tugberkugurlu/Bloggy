@@ -1,6 +1,9 @@
 ﻿@model Bloggy.Client.Web.ViewModels.BlogPostPageViewModel
 @{
     ViewBag.Title = Model.BlogPost.Title;
+    ViewBag.Tags = Model.BlogPost.Tags.Select(tag => tag.Name).ToArray();
+    ViewBag.MetaDescription = Model.BlogPost.BriefInfo;
+    ViewBag.MetaKeyword = string.Join(", ", Model.BlogPost.Tags.Select(tag => tag.Name));
 }
 
 <div class="single-blog-post">

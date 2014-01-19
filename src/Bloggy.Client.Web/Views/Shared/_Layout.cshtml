@@ -6,7 +6,10 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
-        <title>@ViewBag.Title</title>
+        <title>@((!string.IsNullOrEmpty(ViewBag.Title)) ? ViewBag.Title + " - " + ConfigurationManager.AppSettings["Bloggy:Title"] : ConfigurationManager.AppSettings["Bloggy:Title"])</title>
+        @if (!string.IsNullOrEmpty(ViewBag.MetaDescription)){<text><meta name="description" content="@ViewBag.MetaDescription"></text>}
+        @if (!string.IsNullOrEmpty(ViewBag.MetaKeyword)){<text><meta name="keyword" content="@ViewBag.MetaKeyword"></text>}
+        @if (!string.IsNullOrEmpty(ViewBag.Canonical)){<text><link rel="canonical" href="@ViewBag.Canonical"></text>}
         @Styles.Render("~/Content/css")
     </head>
     <body itemscope itemtype="http://schema.org/WebPage">

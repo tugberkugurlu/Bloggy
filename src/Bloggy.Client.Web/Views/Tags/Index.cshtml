@@ -1,6 +1,6 @@
 ﻿@model Bloggy.Client.Web.ViewModels.TagsHomeViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Url.RequestContext.RouteData.Values["slug"].ToString() + " Blog Posts";
 }
 
 <div class="alert alert-info">
