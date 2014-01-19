@@ -112,3 +112,4 @@ init.me.ps1
 src/Bloggy.Client.Web/Config/appSettings.web.*
 PublishProfiles
 artifacts
+Web.Prod.config
