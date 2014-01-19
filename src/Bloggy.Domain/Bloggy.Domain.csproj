@@ -77,7 +77,9 @@
     <Compile Include="Indexes\BlogPostArchiveIndex.cs" />
     <Compile Include="Indexes\BlogPostBySlugPath.cs" />
     <Compile Include="Indexes\BlogPost_ByYearAndMonth.cs" />
+    <Compile Include="Indexes\FacetTags.cs" />
     <Compile Include="Indexes\MaterializedBlogPostIndex.cs" />
+    <Compile Include="Indexes\RecentPopularTagsMapOnly.cs" />
     <Compile Include="Indexes\Tags_Count.cs" />
     <Compile Include="IPaginatedList.cs" />
     <Compile Include="PaginatedList.cs" />

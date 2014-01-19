@@ -40,6 +40,9 @@ namespace Bloggy.Client.Web
                 store.DatabaseCommands.EnsureDatabaseExists(configManager.RavenDbDefaultDatabase);
                 IndexCreation.CreateIndexes(typeof(Tags_Count).Assembly, store);
 
+                // Create any Facets.
+                FacetTags.CreateFacets(store);
+
                 return store;
 
             }).As<IDocumentStore>().SingleInstance();

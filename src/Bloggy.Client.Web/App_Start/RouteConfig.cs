@@ -26,6 +26,12 @@ namespace Bloggy.Client.Web
             );
 
             routes.MapRoute(
+                name: "TagsFacetRoute",
+                url: "tags/facets",
+                defaults: new { controller = "tags", action = "facets" }
+            );
+
+            routes.MapRoute(
                 name: "TagsRoute",
                 url: "tags/{slug}",
                 defaults: new { controller = "tags", action = "index" }

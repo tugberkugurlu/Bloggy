@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Bloggy.Client.Web.Infrastructure;
 using Bloggy.Client.Web.Infrastructure.Logging;
 using Bloggy.Client.Web.Models;
@@ -6,6 +7,7 @@ using Bloggy.Client.Web.ViewModels;
 using Bloggy.Domain;
 using Bloggy.Domain.Entities;
 using Bloggy.Domain.Indexes;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +56,19 @@ namespace Bloggy.Client.Web.Controllers
                 Count = tag.Count,
                 LastSeenAt = tag.LastSeenAt
             }));
+        }
+
+        [ChildActionOnly]
+        public async Task<ActionResult> Facets()
+        {
+            // NOTE: Currently, not in use.
+
+            FacetResults facets = await DocumentSession.Query
+                <RecentPopularTagsMapOnly.ReduceResult, RecentPopularTagsMapOnly>()
+                                        .Where(x => x.LastSeen > DateTime.UtcNow.AddMonths(-5).ToUtcToday())
+                                        .ToFacetsAsync("Raven/Facets/Tags");
+
+            return View(facets);
         }
 
         // privates

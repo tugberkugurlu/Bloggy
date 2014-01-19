@@ -500,6 +500,7 @@
     <Compile Include="Infrastructure\AtomPub\Models\TagModel.cs" />
     <Compile Include="Infrastructure\AtomPub\Models\UpdatePostCommand.cs" />
     <Compile Include="Infrastructure\AtomPub\PublicationCategory.cs" />
+    <Compile Include="Infrastructure\CommonExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\NumericExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\StringExtensions.cs" />
     <Compile Include="Infrastructure\HelperPage.cs" />
