@@ -144,7 +144,7 @@ div.blog-post-item div.head .tags span.tag-label a {
 
 .validation-summary-errors ul {
     margin: 0;
-    list-style-type: none;
+    padding-left: 25px;
 }
 
 input[type=text].input-validation-error,

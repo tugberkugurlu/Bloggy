@@ -99,8 +99,11 @@ namespace Bloggy.Client.Web.Controllers
 
             if (ModelState.IsValid)
             {
+                // refer to: https://groups.google.com/forum/#!searchin/ravendb/tugberk/ravendb/_7r5TcfJwx4/h5j7p4XQgeQJ
+                DocumentSession.Advanced.UseOptimisticConcurrency = true;
                 BlogUser blogUser = new BlogUser
                 {
+                    Id = string.Concat("BlogUsers/", requestModel.Username),
                     UserName = requestModel.Username,
                     SecurityStamp = Guid.NewGuid().ToString()
                 };

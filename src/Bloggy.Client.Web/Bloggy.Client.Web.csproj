@@ -589,6 +589,7 @@
     <Content Include="Views\Archive\Index.cshtml" />
     <Content Include="Views\Default\About.cshtml" />
     <Content Include="Views\Default\Contact.cshtml" />
+    <Content Include="Views\Account\CreateManagementUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
