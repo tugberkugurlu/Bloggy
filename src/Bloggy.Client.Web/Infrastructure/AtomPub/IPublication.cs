@@ -37,12 +37,12 @@ namespace Bloggy.Client.Web.Infrastructure.AtomPub
         /// <summary>
         /// The most recent instant in time when the publication was modified.
         /// </summary>
-        DateTime LastUpdated { get; }
+        DateTimeOffset LastUpdated { get; }
 
         /// <summary>
         /// The initial creation or first availability of the publication.
         /// </summary>
-        DateTime? PublishDate { get; }
+        DateTimeOffset? PublishDate { get; }
 
         /// <summary>
         /// A collection of categories associated with the publication.

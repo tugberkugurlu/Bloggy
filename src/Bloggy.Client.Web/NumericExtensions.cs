@@ -1,4 +1,4 @@
-﻿
+
 namespace Bloggy.Client.Web
 {
     public static class NumericExtensions

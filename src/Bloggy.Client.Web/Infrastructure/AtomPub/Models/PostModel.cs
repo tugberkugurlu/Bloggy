@@ -1,8 +1,8 @@
-﻿using Bloggy.Client.Web.Infrastructure.AtomPub;
-using Bloggy.Client.Web.Infrastructure.Hypermedia;
+﻿using Bloggy.Client.Web.Infrastructure.Hypermedia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bloggy.Domain.Entities;
 
 namespace Bloggy.Client.Web.Infrastructure.AtomPub.Models
 {
@@ -15,8 +15,8 @@ namespace Bloggy.Client.Web.Infrastructure.AtomPub.Models
         public string ContentType { get; set; }
         public string Content { get; set; }
         public string[] Tags { get; set; }
-        public DateTime PublishDate { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public DateTimeOffset PublishDate { get; set; }
+        public DateTimeOffset LastUpdated { get; set; }
         public string CategoriesScheme { get; set; }
 
         public PostModel()
@@ -24,33 +24,34 @@ namespace Bloggy.Client.Web.Infrastructure.AtomPub.Models
             PublishDate = DateTime.UtcNow;
         }
 
-        public PostModel(Post post, string categoriesScheme)
+        public PostModel(BlogPost post, string categoriesScheme)
         {
-            Id = post.Id;
+            Id = post.Id.ToIntId();
             Title = post.Title;
-            Slug = post.Slug;
-            Summary = post.Summary;
-            ContentType = post.ContentType;
+            Slug = post.DefaultSlug.Path;
+            Summary = post.BriefInfo;
+            ContentType = "text/html";
             Content = post.Content;
-            Tags = post.Tags;
-            PublishDate = post.PublishDate;
-            LastUpdated = post.LastUpdated;
+            Tags = post.Tags.Select(tag => tag.Name).ToArray();
+            PublishDate = post.CreatedOn;
+            LastUpdated = post.LastUpdatedOn;
             CategoriesScheme = categoriesScheme;
         }
 
         string IPublication.Id
         {
-            get 
-            { 
-                return Links.FirstOrDefault(link => link is SelfLink).Href; 
+            get
+            {
+                Link firstLink = Links.FirstOrDefault(link => link is SelfLink);
+                return (firstLink != null) ? firstLink.Href : null;
             }
         }
 
-        DateTime? IPublication.PublishDate
+        DateTimeOffset? IPublication.PublishDate
         {
-            get 
-            { 
-                return PublishDate; 
+            get
+            {
+                return PublishDate;
             }
         }
 
