@@ -8,11 +8,13 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Bloggy.Client.Web.Controllers.AtomPub
 {
+    [Authorize(Roles = ApplicationRoles.AdminRole)]
     public class PostsController : RavenApiController
     {
         public PostsController(IAsyncDocumentSession documentSession)
@@ -54,32 +56,44 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
         // POST api/posts
         public async Task<HttpResponseMessage> Post(AddPostCommand command)
         {
-            BlogPost post = new BlogPost
+            HttpResponseMessage result;
+            ClaimsPrincipal user = User as ClaimsPrincipal;
+            Claim userIdClaim = user.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
             {
-                AuthorId = "BlogUsers/1",
-                Language = "en-US",
-                Title = command.Title,
-                BriefInfo = command.Summary,
-                Content = command.Content,
-                Tags = new Collection<Tag>(command.Tags.Select(tag => new Tag { Name =  tag, Slug = tag.ToSlug() }).ToList()),
-                CreatedOn = command.PublishDate ?? DateTimeOffset.Now,
-                LastUpdatedOn = command.PublishDate ?? DateTimeOffset.Now,
-                AllowComments = true,
-                IsApproved = true
-            };
-
-            post.Slugs.Add(new Slug 
+                result = Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+            else
             {
-                IsDefault = true,
-                Path = command.Slug ?? command.Title.ToSlug(), 
-                CreatedOn = command.PublishDate ?? DateTimeOffset.Now
-            });
+                BlogPost post = new BlogPost
+                {
+                    AuthorId = userIdClaim.Value,
+                    Language = "en-US",
+                    Title = command.Title,
+                    BriefInfo = command.Summary,
+                    Content = command.Content,
+                    Tags = new Collection<Tag>(command.Tags.Select(tag => new Tag { Name = tag, Slug = tag.ToSlug() }).ToList()),
+                    CreatedOn = command.PublishDate ?? DateTimeOffset.Now,
+                    LastUpdatedOn = command.PublishDate ?? DateTimeOffset.Now,
+                    AllowComments = true,
+                    IsApproved = true
+                };
 
-            await RavenSession.StoreAsync(post);
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, new PostModel(post, GetCategoryScheme()));
-            response.Headers.Location = new Uri(Url.Link("DefaultApi", new { controller = "posts", id = post.Id }));
+                post.Slugs.Add(new Slug
+                {
+                    IsDefault = true,
+                    Path = command.Slug ?? command.Title.ToSlug(),
+                    CreatedOn = command.PublishDate ?? DateTimeOffset.Now
+                });
 
-            return response;
+                await RavenSession.StoreAsync(post);
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, new PostModel(post, GetCategoryScheme()));
+                response.Headers.Location = new Uri(Url.Link("DefaultApi", new { controller = "posts", id = post.Id }));
+                result = response;
+            }
+
+            return result;
         }
 
         // DELETE api/posts/5

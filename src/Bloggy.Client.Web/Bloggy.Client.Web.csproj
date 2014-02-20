@@ -530,6 +530,7 @@
     <Compile Include="Infrastructure\Mapping\IntTypeConverter.cs" />
     <Compile Include="Infrastructure\Mapping\NullIntTypeConverter.cs" />
     <Compile Include="Infrastructure\AtomPub\MessageHandlers\WlwMessageHandler.cs" />
+    <Compile Include="Infrastructure\MessageHandlers\BasicAuthFilter.cs" />
     <Compile Include="Infrastructure\MessageHandlers\BloggyBasicAuthHandler.cs" />
     <Compile Include="Infrastructure\RavenController.cs" />
     <Compile Include="Infrastructure\HtmlSanitizationUtility.cs" />

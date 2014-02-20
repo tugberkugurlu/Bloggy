@@ -20,13 +20,14 @@ namespace Bloggy.Client.Web
 
         internal static void RegisterFilters(this HttpConfiguration config)
         {
+            config.Filters.Add(new BloggyBasicAuthenticationFilter());
             config.Filters.Add(new InvalidModelStateFilterAttribute());
         }
 
         internal static void RegisterMessageHandlers(this HttpConfiguration config)
         {
             config.MessageHandlers.Add(new WlwMessageHandler());
-            config.MessageHandlers.Add(new BloggyBasicAuthHandler());
+            // config.MessageHandlers.Add(new BloggyBasicAuthHandler());
             config.MessageHandlers.Add(new EnrichingHandler());
         }
 
