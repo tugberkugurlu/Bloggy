@@ -12,11 +12,11 @@ namespace Bloggy.Client.Web.Infrastructure.AtomPub.Models
         public string ContentType { get; set; }
         public string Content { get; set; }
         public string[] Tags { get; set; }
-        public DateTime? PublishDate { get; set; }
+        public DateTimeOffset? PublishDate { get; set; }
 
         public UpdatePostCommand()
         {
-            PublishDate = DateTime.UtcNow;
+            PublishDate = DateTimeOffset.Now;
             Tags = new string[0];
         }
 

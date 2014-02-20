@@ -6,6 +6,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
+        <link rel="service" type="application/atomsvc+xml" href="@string.Format("{0}://{1}:{2}/{3}", Request.Url.Scheme, Request.Url.Host, Request.Url.Port, "api/services")" class="preferred" />
         <title>@((!string.IsNullOrEmpty(ViewBag.Title)) ? ViewBag.Title + " - " + ConfigurationManager.AppSettings["Bloggy:Title"] : ConfigurationManager.AppSettings["Bloggy:Title"])</title>
         @if (!string.IsNullOrEmpty(ViewBag.MetaDescription)){<text><meta name="description" content="@ViewBag.MetaDescription"></text>}
         @if (!string.IsNullOrEmpty(ViewBag.MetaKeyword)){<text><meta name="keyword" content="@ViewBag.MetaKeyword"></text>}

@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Bloggy.Client.Web.Infrastructure.AtomPub.Models;
+using Bloggy.Domain.Entities;
+using Raven.Client;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Bloggy.Client.Web.Infrastructure.AtomPub.Models;
 using System.Web.Http;
-using Bloggy.Domain.Entities;
-using Raven.Client;
-using System.Configuration;
 
 namespace Bloggy.Client.Web.Controllers.AtomPub
 {
@@ -47,6 +49,37 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
             }
 
             return new PostModel(blogPost, GetCategoryScheme());
+        }
+
+        // POST api/posts
+        public async Task<HttpResponseMessage> Post(AddPostCommand command)
+        {
+            BlogPost post = new BlogPost
+            {
+                AuthorId = "BlogUsers/1",
+                Language = "en-US",
+                Title = command.Title,
+                BriefInfo = command.Summary,
+                Content = command.Content,
+                Tags = new Collection<Tag>(command.Tags.Select(tag => new Tag { Name =  tag, Slug = tag.ToSlug() }).ToList()),
+                CreatedOn = command.PublishDate ?? DateTimeOffset.Now,
+                LastUpdatedOn = command.PublishDate ?? DateTimeOffset.Now,
+                AllowComments = true,
+                IsApproved = true
+            };
+
+            post.Slugs.Add(new Slug 
+            {
+                IsDefault = true,
+                Path = command.Slug ?? command.Title.ToSlug(), 
+                CreatedOn = command.PublishDate ?? DateTimeOffset.Now
+            });
+
+            await RavenSession.StoreAsync(post);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, new PostModel(post, GetCategoryScheme()));
+            response.Headers.Location = new Uri(Url.Link("DefaultApi", new { controller = "posts", id = post.Id }));
+
+            return response;
         }
 
         // DELETE api/posts/5

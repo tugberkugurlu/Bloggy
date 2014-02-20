@@ -30,7 +30,7 @@ namespace Bloggy.Client.Web.Infrastructure.AtomPub
         /// <summary>
         /// An optional publish date for the entry.
         /// </summary>
-        DateTime? PublishDate { get; set; }
+        DateTimeOffset? PublishDate { get; set; }
 
         /// <summary>
         /// A string array of categories related to the content.

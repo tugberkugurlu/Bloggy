@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using System.Web.Http;
-using AspNet.Identity.RavenDB.Stores;
+﻿using AspNet.Identity.RavenDB.Stores;
 using Autofac;
 using Autofac.Integration.WebApi;
 using AutoMapper;
@@ -13,13 +11,15 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Extensions;
 using Raven.Client.Indexes;
+using System.Reflection;
+using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Optimization;
+using System.Web.Routing;
 
 namespace Bloggy.Client.Web
 {
