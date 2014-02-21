@@ -49,6 +49,10 @@ namespace Bloggy.Client.Web
             config.RegisterMessageHandlers();
             config.ConfigureFormatters();
 
+#if DEBUG
+            config.EnableSystemDiagnosticsTracing();
+#endif
+
             // ASP.NET Specifics
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);

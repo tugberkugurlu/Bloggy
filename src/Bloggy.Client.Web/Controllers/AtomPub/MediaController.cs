@@ -80,7 +80,7 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
             return result;
         }
 
-        public async Task<HttpResponseMessage> PostMedia() 
+        public async Task<HttpResponseMessage> PostMedia()
         {
             // TODO: Try to solve the retrieval problem with a custom Parameter Binding impl.
 
@@ -107,7 +107,8 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
                     else
                     {
                         string pictureUrl = null;
-                        string fileName = string.Concat(Guid.NewGuid().ToString(), extension);
+                        string imageId = Guid.NewGuid().ToString();
+                        string fileName = string.Concat(imageId, extension);
                         using (Stream contentStream = await Request.Content.ReadAsStreamAsync())
                         {
                             contentStream.Seek(0, SeekOrigin.Begin);
@@ -129,7 +130,7 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
                         {
                             BlogMedia blogMedia = new BlogMedia
                             {
-                                Id = string.Concat(BlogMediaRavenCollectionName, "/", fileName),
+                                Id = string.Concat(BlogMediaRavenCollectionName, "/", imageId),
                                 AuthorId = userIdClaim.Value,
                                 ContentType = contentType,
                                 MediaUrl = pictureUrl,
@@ -139,7 +140,7 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
 
                             MediaModel mediaModel = new MediaModel
                             {
-                                Id = fileName,
+                                Id = imageId,
                                 AuthorName = user.Identity.Name,
                                 ImageUrl = new Uri(pictureUrl, UriKind.Absolute),
                                 ContentType = contentType,
@@ -150,6 +151,9 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
 
                             await RavenSession.StoreAsync(blogMedia);
                             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, mediaModel);
+                            Uri selfLink = new Uri(Url.Link("DefaultApi", new { controller = "media", id = imageId }));
+                            response.Headers.Location = selfLink;
+
                             result = response;
                         }
                     }
