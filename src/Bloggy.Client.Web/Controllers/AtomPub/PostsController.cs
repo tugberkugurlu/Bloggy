@@ -89,8 +89,68 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
 
                 await RavenSession.StoreAsync(post);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, new PostModel(post, GetCategoryScheme()));
-                response.Headers.Location = new Uri(Url.Link("DefaultApi", new { controller = "posts", id = post.Id }));
+                response.Headers.Location = new Uri(Url.Link("DefaultApi", new { controller = "posts", id = post.Id.ToIntId() }));
                 result = response;
+            }
+
+            return result;
+        }
+
+        // PUT api/posts/5
+        public async Task<HttpResponseMessage> Put(int id, UpdatePostCommand command) 
+        {
+            HttpResponseMessage result;
+            ClaimsPrincipal user = User as ClaimsPrincipal;
+            Claim userIdClaim = user.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
+            {
+                result = Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                BlogPost blogPost = await RavenSession.LoadAsync<BlogPost>(id);
+                if (blogPost == null)
+                {
+                    result = Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+                else
+                {
+                    if (blogPost.AuthorId.Equals(userIdClaim.Value, StringComparison.InvariantCultureIgnoreCase) == false)
+                    {
+                        // Basically, the blogPost author is not the one who has been authenticated.
+                        // return 404 for security reasons.
+                        result = Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
+                    else
+                    {
+                        string newSlugPath = command.Slug ?? command.Title.ToSlug();
+                        Slug existingSlug = blogPost.Slugs.FirstOrDefault(slug => slug.Path.Equals(newSlugPath, StringComparison.InvariantCultureIgnoreCase));
+                        IList<Tag> tagsToSave = (command.Tags != null && command.Tags.Any())
+                            ? command.Tags.Distinct(StringComparer.InvariantCultureIgnoreCase).Select(tag => new Tag { Name = tag, Slug = tag.ToSlug() }).ToList()
+                            : blogPost.Tags.ToList();
+
+                        blogPost.Title = command.Title;
+                        blogPost.BriefInfo = command.Summary;
+                        blogPost.Content = command.Content;
+                        blogPost.Tags = new Collection<Tag>(tagsToSave);
+                        blogPost.LastUpdatedOn = DateTimeOffset.Now;
+
+                        if (existingSlug == null)
+                        {
+                            foreach (Slug slug in blogPost.Slugs) { slug.IsDefault = false; }
+                            blogPost.Slugs.Add(new Slug
+                            {
+                                IsDefault = true,
+                                Path = newSlugPath,
+                                CreatedOn = DateTimeOffset.Now
+                            });
+                        }
+
+                        HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, new PostModel(blogPost, GetCategoryScheme()));
+                        result = response;
+                    }
+                }
             }
 
             return result;
