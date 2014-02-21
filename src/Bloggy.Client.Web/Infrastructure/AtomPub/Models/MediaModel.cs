@@ -11,6 +11,6 @@ namespace Bloggy.Client.Web.Infrastructure.AtomPub.Models
         public string Summary { get; set; }
         public Uri ImageUrl { get; set; }
         public string ContentType { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public DateTimeOffset LastUpdated { get; set; }
     }
 }

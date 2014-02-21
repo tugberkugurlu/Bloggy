@@ -12,7 +12,7 @@ namespace Bloggy.Client.Web.Infrastructure.AtomPub
         string Summary { get; }
         Uri ImageUrl { get; }
         string ContentType { get; }
-        DateTime LastUpdated { get; }
+        DateTimeOffset LastUpdated { get; }
         IEnumerable<Link> Links { get; }
     }
 }

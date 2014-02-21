@@ -23,34 +23,73 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
         }
 
         // GET api/posts
-        public async Task<PostFeed> Get()
+        public async Task<HttpResponseMessage> Get()
         {
-            IEnumerable<BlogPost> blogPosts = await RavenSession.Query<BlogPost>()
-                .Take(int.MaxValue)
-                .ToListAsync();
+            HttpResponseMessage result;
+            ClaimsPrincipal user = User as ClaimsPrincipal;
+            Claim userIdClaim = user.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
 
-            PostFeed feed = new PostFeed
+            if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
             {
-                Title = ConfigurationManager.AppSettings["Bloggy:Title"],
-                Author = ConfigurationManager.AppSettings["Bloggy:Author"],
-                Summary = ConfigurationManager.AppSettings["Bloggy:MainDescription"],
-                Posts = blogPosts.Select(p =>
-                    new PostModel(p, GetCategoryScheme())).OrderByDescending(p => p.PublishDate).ToArray()
-            };
+                result = Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                IEnumerable<BlogPost> blogPosts = await RavenSession.Query<BlogPost>()
+                    .Where(post => post.AuthorId == userIdClaim.Value)
+                    .Take(int.MaxValue)
+                    .ToListAsync();
 
-            return feed;
+                PostFeed feed = new PostFeed
+                {
+                    Title = ConfigurationManager.AppSettings["Bloggy:Title"],
+                    Author = ConfigurationManager.AppSettings["Bloggy:Author"],
+                    Summary = ConfigurationManager.AppSettings["Bloggy:MainDescription"],
+                    Posts = blogPosts.Select(p =>
+                        new PostModel(p, GetCategoryScheme())).OrderByDescending(p => p.PublishDate).ToArray()
+                };
+
+                result = Request.CreateResponse(HttpStatusCode.OK, feed);
+            }
+
+            return result;
         }
 
         // GET api/posts/5
-        public async Task<PostModel> Get(int id)
+        public async Task<HttpResponseMessage> Get(int id)
         {
-            BlogPost blogPost = await RavenSession.LoadAsync<BlogPost>(id);
-            if (blogPost == null)
+            HttpResponseMessage result;
+            ClaimsPrincipal user = User as ClaimsPrincipal;
+            Claim userIdClaim = user.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                result = Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                BlogPost blogPost = await RavenSession.LoadAsync<BlogPost>(id);
+                if (blogPost == null)
+                {
+                    result = Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+                else
+                {
+                    if (userIdClaim.Value.Equals(blogPost.AuthorId, StringComparison.InvariantCultureIgnoreCase) == false)
+                    {
+                        // TODO: Log here
+                        // Basically, the blogPost author is not the one who has been authenticated. return 404 for security reasons.
+                        result = Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
+                    else
+                    {
+                        PostModel post = new PostModel(blogPost, GetCategoryScheme());
+                        result = Request.CreateResponse(HttpStatusCode.OK, post);
+                    }
+                }
             }
 
-            return new PostModel(blogPost, GetCategoryScheme());
+            return result;
         }
 
         // POST api/posts
@@ -116,10 +155,10 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
                 }
                 else
                 {
-                    if (blogPost.AuthorId.Equals(userIdClaim.Value, StringComparison.InvariantCultureIgnoreCase) == false)
+                    if (userIdClaim.Value.Equals(blogPost.AuthorId, StringComparison.InvariantCultureIgnoreCase) == false)
                     {
-                        // Basically, the blogPost author is not the one who has been authenticated.
-                        // return 404 for security reasons.
+                        // TODO: Log here
+                        // Basically, the blogPost author is not the one who has been authenticated. return 404 for security reasons.
                         result = Request.CreateResponse(HttpStatusCode.NotFound);
                     }
                     else
@@ -159,14 +198,38 @@ namespace Bloggy.Client.Web.Controllers.AtomPub
         // DELETE api/posts/5
         public async Task<HttpResponseMessage> Delete(int id)
         {
-            BlogPost blogPost = await RavenSession.LoadAsync<BlogPost>(id);
-            if (blogPost == null)
+            HttpResponseMessage result;
+            ClaimsPrincipal user = User as ClaimsPrincipal;
+            Claim userIdClaim = user.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                result = Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                BlogPost blogPost = await RavenSession.LoadAsync<BlogPost>(id);
+                if (blogPost == null)
+                {
+                    result = Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+                else
+                {
+                    if (userIdClaim.Value.Equals(blogPost.AuthorId, StringComparison.InvariantCultureIgnoreCase) == false)
+                    {
+                        // Basically, the blogPost author is not the one who has been authenticated.
+                        // return 404 for security reasons.
+                        result = Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
+                    else
+                    {
+                        RavenSession.Delete(blogPost);
+                        result = Request.CreateResponse(HttpStatusCode.NoContent);
+                    }
+                }
             }
 
-            RavenSession.Delete(blogPost);
-            return new HttpResponseMessage(HttpStatusCode.NoContent);
+            return result;
         }
 
         // privates

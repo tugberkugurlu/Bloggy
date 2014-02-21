@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\BlogMedia.cs" />
     <Compile Include="Entities\BlogPost.cs" />
     <Compile Include="Entities\BlogPostComment.cs" />
     <Compile Include="Entities\IComment.cs" />

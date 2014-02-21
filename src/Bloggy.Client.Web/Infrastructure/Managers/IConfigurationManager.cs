@@ -14,5 +14,7 @@ namespace Bloggy.Client.Web.Infrastructure.Managers
 
         string RavenDbUrl { get; }
         string RavenDbDefaultDatabase { get; }
+
+        string AzureBlobStorageConnectionString { get; }
     }
 }

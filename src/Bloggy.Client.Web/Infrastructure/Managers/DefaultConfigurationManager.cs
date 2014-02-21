@@ -14,6 +14,7 @@ namespace Bloggy.Client.Web.Infrastructure.Managers
         private readonly string _recaptchaPrivateKey;
         private readonly string _ravenDbUrl;
         private readonly string _ravenDbDefaultDatabase;
+        private readonly string _azureBlobStorageConnectionString;
 
         protected const string OldBlogConnectionStringConfigKey = "Bloggy:OldBlog:ConnectionString";
         protected const string AkismetEnabledConfigKey = "Bloggy:Akismet:Enabled";
@@ -24,6 +25,7 @@ namespace Bloggy.Client.Web.Infrastructure.Managers
         protected const string RecaptchaPrivateKeyConfigKey = "Bloggy:Recaptcha:PrivateKey";
         protected const string RavenDbUrlConfigKey = "Bloggy:RavenDb:Url";
         protected const string RavenDbDefaultDatabaseConfigKey = "Bloggy:RavenDb:DefaultDatabase";
+        protected const string AzureBlobStorageConnectionStringConfigKey = "Bloggy:AzureBlobStorageConnectionString";
 
         public DefaultConfigurationManager()
         {
@@ -38,6 +40,7 @@ namespace Bloggy.Client.Web.Infrastructure.Managers
             _recaptchaPublicKey = GetValue(RecaptchaPublicKeyConfigKey);
             _ravenDbUrl = GetValue(RavenDbUrlConfigKey);
             _ravenDbDefaultDatabase = GetValue(RavenDbDefaultDatabaseConfigKey);
+            _azureBlobStorageConnectionString = GetValue(AzureBlobStorageConnectionStringConfigKey);
             _isAkismetEnabled = (isAkismetEnabled != null) && isAkismetEnabled.Value;
             _isRecaptchaEnabled = (isRecaptchaEnabled != null) && isRecaptchaEnabled.Value;
         }
@@ -85,6 +88,11 @@ namespace Bloggy.Client.Web.Infrastructure.Managers
         public virtual string RavenDbDefaultDatabase
         {
             get { return _ravenDbDefaultDatabase; }
+        }
+
+        public virtual string AzureBlobStorageConnectionString
+        {
+            get { return _azureBlobStorageConnectionString; }
         }
 
         // Privates

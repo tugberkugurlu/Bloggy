@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Owin;
 using Raven.Client;
 using Raven.Client.Document;
@@ -82,6 +84,10 @@ namespace Bloggy.Client.Web
             builder.Register(c => Mapper.Engine).As<IMappingEngine>().SingleInstance();
             builder.Register(c => new RavenUserStore<BlogUser>(c.Resolve<IAsyncDocumentSession>(), false)).As<IUserStore<BlogUser>>().InstancePerApiRequest();
             builder.RegisterType<UserManager<BlogUser>>().InstancePerApiRequest();
+
+            builder.Register(c => CloudStorageAccount.Parse(c.Resolve<IConfigurationManager>().AzureBlobStorageConnectionString)).As<CloudStorageAccount>().InstancePerApiRequest();
+            builder.Register(c => c.Resolve<CloudStorageAccount>().CreateCloudBlobClient()).As<CloudBlobClient>().InstancePerApiRequest();
+            builder.RegisterType<AzureBlobStoragePictureManager>().As<IPictureManager>().InstancePerApiRequest();
 
             return builder.Build();
         }
