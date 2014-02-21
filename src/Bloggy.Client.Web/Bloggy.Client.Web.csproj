@@ -188,12 +188,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="WebApiDoodle.Web">
-      <HintPath>..\..\packages\WebApiDoodle.Web.3.0.0-pre01\lib\net45\WebApiDoodle.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="WebApiDoodle.Web.Meta">
-      <HintPath>..\..\packages\WebApiDoodle.Web.Meta.3.0.0-pre01\lib\net45\WebApiDoodle.Web.Meta.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -515,6 +509,7 @@
     <Compile Include="Infrastructure\AutoMapper\NullIntTypeConverter.cs" />
     <Compile Include="Infrastructure\CommonExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\StringExtensions.cs" />
+    <Compile Include="Infrastructure\Filters\InvalidModelStateFilterAttribute.cs" />
     <Compile Include="Infrastructure\HelperPage.cs" />
     <Compile Include="Infrastructure\Hypermedia\EditLink.cs" />
     <Compile Include="Infrastructure\Hypermedia\IResponseEnricher.cs" />
@@ -530,7 +525,7 @@
     <Compile Include="Infrastructure\Mapping\IntTypeConverter.cs" />
     <Compile Include="Infrastructure\Mapping\NullIntTypeConverter.cs" />
     <Compile Include="Infrastructure\AtomPub\MessageHandlers\WlwMessageHandler.cs" />
-    <Compile Include="Infrastructure\MessageHandlers\BasicAuthFilter.cs" />
+    <Compile Include="Infrastructure\MessageHandlers\BasicAuthenticationHandler.cs" />
     <Compile Include="Infrastructure\MessageHandlers\BloggyBasicAuthHandler.cs" />
     <Compile Include="Infrastructure\RavenController.cs" />
     <Compile Include="Infrastructure\HtmlSanitizationUtility.cs" />

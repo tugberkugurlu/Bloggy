@@ -1,9 +1,9 @@
-using System.Web.Http;
 using Bloggy.Client.Web.Infrastructure.AtomPub.Formatters;
 using Bloggy.Client.Web.Infrastructure.AtomPub.MessageHandlers;
+using Bloggy.Client.Web.Infrastructure.Filters;
 using Bloggy.Client.Web.Infrastructure.Hypermedia.MessageHandlers;
 using Bloggy.Client.Web.Infrastructure.MessageHandlers;
-using WebApiDoodle.Web.Filters;
+using System.Web.Http;
 
 namespace Bloggy.Client.Web
 {
@@ -20,14 +20,13 @@ namespace Bloggy.Client.Web
 
         internal static void RegisterFilters(this HttpConfiguration config)
         {
-            config.Filters.Add(new BloggyBasicAuthenticationFilter());
             config.Filters.Add(new InvalidModelStateFilterAttribute());
         }
 
         internal static void RegisterMessageHandlers(this HttpConfiguration config)
         {
             config.MessageHandlers.Add(new WlwMessageHandler());
-            // config.MessageHandlers.Add(new BloggyBasicAuthHandler());
+            config.MessageHandlers.Add(new BloggyBasicAuthHandler());
             config.MessageHandlers.Add(new EnrichingHandler());
         }
 

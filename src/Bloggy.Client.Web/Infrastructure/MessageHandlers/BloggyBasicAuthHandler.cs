@@ -6,14 +6,12 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Dependencies;
-using WebApiDoodle.Web.MessageHandlers;
 
 namespace Bloggy.Client.Web.Infrastructure.MessageHandlers
 {
     public class BloggyBasicAuthHandler : BasicAuthenticationHandler
     {
-        protected override async Task<IPrincipal> AuthenticateUserAsync(HttpRequestMessage request,
-            string username, string password, CancellationToken cancellationToken)
+        protected override async Task<IPrincipal> AuthenticateUserAsync(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken)
         {
             IPrincipal result = null;
             IDependencyScope dependencyScope = request.GetDependencyScope();
