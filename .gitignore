@@ -113,3 +113,4 @@ src/Bloggy.Client.Web/Config/appSettings.web.*
 PublishProfiles
 artifacts
 Web.Prod.config
+.vs/
